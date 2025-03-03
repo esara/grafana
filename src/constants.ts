@@ -6,6 +6,7 @@ export enum ROUTES {
   Home = 'home',
   Causely = 'causely',
   HelloWorld = 'hello-world',
+  Causely = 'causely',
 }
 
 export const DATASOURCE_REF = {

@@ -1,17 +1,34 @@
 import React from 'react';
 import { SceneApp, useSceneApp } from '@grafana/scenes';
 import { AppRootProps } from '@grafana/data';
-import { config } from '@grafana/runtime';
+import { BackendSrvRequest, config, getBackendSrv } from '@grafana/runtime';
 import { Alert } from '@grafana/ui';
 import { DATASOURCE_REF } from '../../constants';
 import { PluginPropsContext } from '../../utils/utils.plugin';
-import { serviceSummaryPage } from '../../pages/Causely/serviceSummaryPage';
 import { helloWorldPage } from '../../pages/HelloWorld/helloWorldPage';
 import { homePage } from '../../pages/Home/homePage';
+import { withDrilldownPage } from '../../pages/WithDrilldown/withDrilldownPage';
+import { withTabsPage } from '../../pages/WithTabs/withTabsPage';
+  
+export const loginAuth =  () => {
+  // Make request to backend to login, then print result
 
+  console.info("Login Auth");
+  const request: BackendSrvRequest = {
+    url: '/echo',
+    method: 'POST',
+  } 
+
+  const response = getBackendSrv().fetch(request);
+
+  // const dataResponse = await lastValueFrom(response);
+
+  console.log("DataResponse", response);
+
+}
 function getSceneApp() {
   return new SceneApp({
-    pages: [helloWorldPage, homePage, serviceSummaryPage],
+    pages: [helloWorldPage, homePage, withDrilldownPage, withTabsPage],
     urlSyncOptions: {
       updateUrlOnInit: true,
       createBrowserHistorySteps: true,
