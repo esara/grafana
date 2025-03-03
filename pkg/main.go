@@ -3,9 +3,9 @@ package main
 import (
 	"os"
 
+	"github.com/esara/causely/pkg/plugin"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/app"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
-	"github.com/esara/causely/pkg/plugin"
 )
 
 func main() {
@@ -18,6 +18,7 @@ func main() {
 	// ID).
 	if err := app.Manage("esara-causely-app", plugin.NewApp, app.ManageOpts{}); err != nil {
 		log.DefaultLogger.Error(err.Error())
+
 		os.Exit(1)
 	}
 }

@@ -141,6 +141,7 @@ const updatePluginAndReload = async (pluginId: string, data: Partial<PluginMeta<
 };
 
 const updatePlugin = async (pluginId: string, data: Partial<PluginMeta>) => {
+  console.log('Updating plugin', pluginId, data);
   const response = getBackendSrv().fetch({
     url: `/api/plugins/${pluginId}/settings`,
     method: 'POST',

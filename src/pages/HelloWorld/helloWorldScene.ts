@@ -1,6 +1,9 @@
 import { EmbeddedScene, SceneFlexLayout, SceneFlexItem, PanelBuilders } from '@grafana/scenes';
+import { loginAuth } from 'components/App/App';
 
 export function helloWorldScene() {
+
+  loginAuth();
   return new EmbeddedScene({
     body: new SceneFlexLayout({
       children: [
