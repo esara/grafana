@@ -47,6 +47,14 @@
       "path": "/a/%PLUGIN_ID%/hello-world",
       "addToNav": true,
       "defaultNav": false
+    },
+    {
+      "type": "page",
+      "icon": "cog",
+      "name": "Configuration",
+      "path": "/plugins/%PLUGIN_ID%",
+      "role": "Admin",
+      "addToNav": true
     }
   ],
   "dependencies": {
