@@ -8,16 +8,24 @@ import { lastValueFrom } from 'rxjs';
 
 type JsonData = {
   apiUrl?: string;
+  isApiKeySet?: boolean;
+  isCauselyPasswordSet?: boolean;
   causelyUsername?: string;
-  causelyPassword?: string;
 };
 
 type State = {
   // The URL to reach our custom API.
   apiUrl: string;
+  // Tells us if the API key secret is set.
+  // Set to `true` ONLY if it has already been set and haven't been changed.
+  // (We unfortunately need an auxiliray variable for this, as `secureJsonData` is never exposed to the browser after it is set)
+  isApiKeySet: boolean;
+  // An secret key for our custom API.
+  apiKey: string;
   // Causely Username
   causelyUsername: string;
   // Causely Password
+  isCauselyPasswordSet: boolean;
   causelyPassword: string;
 };
 
@@ -28,6 +36,9 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
   const { enabled, pinned, jsonData } = plugin.meta;
   const [state, setState] = useState<State>({
     apiUrl: jsonData?.apiUrl || '',
+    apiKey: '',
+    isApiKeySet: Boolean(jsonData?.isApiKeySet),
+    isCauselyPasswordSet: Boolean(jsonData?.isCauselyPasswordSet),
     causelyUsername: '',
     causelyPassword: '',
   });
@@ -41,12 +52,33 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
     });
   };
 
+  const onResetApiKey = () =>
+    setState({
+      ...state,
+      apiKey: '',
+      isApiKeySet: false,
+    });
+
+  const onChangeApiKey = (event: ChangeEvent<HTMLInputElement>) => {
+    setState({
+      ...state,
+      apiKey: event.target.value.trim(),
+    });
+  };
+
   const onChangeUsername = (event: ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,
       causelyUsername: event.target.value.trim(),
     });
   };
+
+  const onResetCauselyPassword = () =>
+    setState({
+      ...state,
+      causelyPassword: '',
+      isCauselyPasswordSet: false,
+    });
 
   const onChangePassword = (event: ChangeEvent<HTMLInputElement>) => {
     setState({
@@ -61,16 +93,16 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
       pinned,
       jsonData: {
         apiUrl: state.apiUrl,
+        isApiKeySet: true,
+        isCauselyPasswordSet: true,
         causelyUsername: state.causelyUsername,
-        causelyPassword: state.causelyPassword,
       },
       // This cannot be queried later by the frontend.
       // We don't want to override it in case it was set previously and left untouched now.
-      // secureJsonData: state.isApiKeySet
-      //   ? undefined
-      //   : {
-      //       apiKey: state.apiKey,
-      //     },
+      secureJsonData: {
+        ...(state.isApiKeySet ? {} : { apiKey: state.apiKey }),
+        ...(state.isCauselyPasswordSet ? {} : { causelyPassword: state.causelyPassword }),
+      },
     });
   };
 
@@ -78,7 +110,7 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
     <form onSubmit={onSubmit}>
       <FieldSet label="API Settings" className={s.marginTopXl}>
         {/* API Key */}
-        {/* <Field label="API Key" description="A secret key for authenticating to our custom API">
+        <Field label="API Key" description="A secret key for authenticating to our custom API">
           <SecretInput
             width={60}
             data-testid={testIds.appConfig.apiKey}
@@ -89,7 +121,7 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
             onChange={onChangeApiKey}
             onReset={onResetApiKey}
           />
-        </Field> */}
+        </Field>
 
         {/* API Url */}
         <Field label="API Url" description="" className={s.marginTop}>
@@ -118,15 +150,16 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
         </Field>
 
         {/* Causely Password */}
-        <Field label="Causely Password" description="" className={s.marginTop}>
-          <Input
+        <Field label="Causely Password" description="Causely Password for authernication" className={s.marginTop}>
+          <SecretInput
             width={60}
-            id="causely-password"
             data-testid={testIds.appConfig.causelyPassword}
-            label={`API Url`}
+            id="causely-password"
             value={state?.causelyPassword}
-            placeholder={``}
+            isConfigured={state.isCauselyPasswordSet}
+            placeholder={'Your secret Causely Password'}
             onChange={onChangePassword}
+            onReset={onResetCauselyPassword}
           />
         </Field>
 
