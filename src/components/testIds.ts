@@ -3,6 +3,8 @@ export const testIds = {
     container: 'data-testid ac-container',
     apiKey: 'data-testid ac-api-key',
     apiUrl: 'data-testid ac-api-url',
+    causelyPassword: 'data-testid ac-causely-password',
+    causelyUsername: 'data-testid ac-causely-username',
     submit: 'data-testid ac-submit-form',
   },
   pageOne: {
