@@ -29,15 +29,8 @@
     },
     {
       "type": "page",
-      "name": "Page with tabs",
-      "path": "/a/%PLUGIN_ID%/page-with-tabs",
-      "addToNav": true,
-      "defaultNav": false
-    },
-    {
-      "type": "page",
-      "name": "Page with drilldown",
-      "path": "/a/%PLUGIN_ID%/page-with-drilldown",
+      "name": "Service Overview",
+      "path": "/a/%PLUGIN_ID%/causely",
       "addToNav": true,
       "defaultNav": false
     },

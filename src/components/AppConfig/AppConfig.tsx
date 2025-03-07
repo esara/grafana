@@ -7,21 +7,14 @@ import { testIds } from '../testIds';
 import { lastValueFrom } from 'rxjs';
 
 type JsonData = {
-  apiUrl?: string;
-  isApiKeySet?: boolean;
+  causelyDomain?: string;
   isCauselyPasswordSet?: boolean;
   causelyUsername?: string;
 };
 
 type State = {
   // The URL to reach our custom API.
-  apiUrl: string;
-  // Tells us if the API key secret is set.
-  // Set to `true` ONLY if it has already been set and haven't been changed.
-  // (We unfortunately need an auxiliray variable for this, as `secureJsonData` is never exposed to the browser after it is set)
-  isApiKeySet: boolean;
-  // An secret key for our custom API.
-  apiKey: string;
+  causelyDomain: string;
   // Causely Username
   causelyUsername: string;
   // Causely Password
@@ -35,34 +28,18 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
   const s = useStyles2(getStyles);
   const { enabled, pinned, jsonData } = plugin.meta;
   const [state, setState] = useState<State>({
-    apiUrl: jsonData?.apiUrl || '',
-    apiKey: '',
-    isApiKeySet: Boolean(jsonData?.isApiKeySet),
+    causelyDomain: jsonData?.causelyDomain || '',
     isCauselyPasswordSet: Boolean(jsonData?.isCauselyPasswordSet),
     causelyUsername: '',
     causelyPassword: '',
   });
 
-  const isSubmitDisabled = Boolean(!state.apiUrl || !state.causelyUsername || !state.causelyPassword);
+  const isSubmitDisabled = Boolean(!state.causelyDomain || !state.causelyUsername || !state.causelyPassword);
 
-  const onChangeApiUrl = (event: ChangeEvent<HTMLInputElement>) => {
+  const onChangeCauselyDomain = (event: ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,
-      apiUrl: event.target.value.trim(),
-    });
-  };
-
-  const onResetApiKey = () =>
-    setState({
-      ...state,
-      apiKey: '',
-      isApiKeySet: false,
-    });
-
-  const onChangeApiKey = (event: ChangeEvent<HTMLInputElement>) => {
-    setState({
-      ...state,
-      apiKey: event.target.value.trim(),
+      causelyDomain: event.target.value.trim(),
     });
   };
 
@@ -92,15 +69,13 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
       enabled,
       pinned,
       jsonData: {
-        apiUrl: state.apiUrl,
-        isApiKeySet: true,
+        causelyDomain: state.causelyDomain,
         isCauselyPasswordSet: true,
         causelyUsername: state.causelyUsername,
       },
       // This cannot be queried later by the frontend.
       // We don't want to override it in case it was set previously and left untouched now.
       secureJsonData: {
-        ...(state.isApiKeySet ? {} : { apiKey: state.apiKey }),
         ...(state.isCauselyPasswordSet ? {} : { causelyPassword: state.causelyPassword }),
       },
     });
@@ -108,31 +83,16 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
 
   return (
     <form onSubmit={onSubmit}>
-      <FieldSet label="API Settings" className={s.marginTopXl}>
-        {/* API Key */}
-        <Field label="API Key" description="A secret key for authenticating to our custom API">
-          <SecretInput
-            width={60}
-            data-testid={testIds.appConfig.apiKey}
-            id="api-key"
-            value={state?.apiKey}
-            isConfigured={state.isApiKeySet}
-            placeholder={'Your secret API key'}
-            onChange={onChangeApiKey}
-            onReset={onResetApiKey}
-          />
-        </Field>
-
-        {/* API Url */}
-        <Field label="API Url" description="" className={s.marginTop}>
+      <FieldSet label="Causely Settings" className={s.marginTopXl}>
+        <Field label="Causely Domain" description="" className={s.marginTop}>
           <Input
             width={60}
-            id="api-url"
-            data-testid={testIds.appConfig.apiUrl}
-            label={`API Url`}
-            value={state?.apiUrl}
-            placeholder={`E.g.: http://mywebsite.com/api/v1`}
-            onChange={onChangeApiUrl}
+            id="causely-dmain"
+            data-testid={testIds.appConfig.causelyDomain}
+            label={`Causely Domain`}
+            value={state?.causelyDomain}
+            placeholder={`causely.app`}
+            onChange={onChangeCauselyDomain}
           />
         </Field>
 
