@@ -7,6 +7,9 @@ import (
 	"io"
 	"net/http"
 	"time"
+
+	gqmdl "github.com/esara/causely/pkg/causelyGraphQl"
+	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
 type UserResponse struct {
@@ -15,14 +18,10 @@ type UserResponse struct {
 	ExpiresIn    int    `json:"expiresIn"`
 }
 
-var domain = "causely.app"
-var userName string
-var password string
-
 // authenticate sends a POST request to Frontegg to get the access token.
-func authenticate(userName string, password string) (string, error) {
+func authenticate(userName string, password string, domain string) (string, error) {
 	authUrl := fmt.Sprintf("https://auth.%s", domain)
-	loginUrl := fmt.Sprintf("%s/identity/resources/auth/v1/user", authUrl)
+	loginUrl := fmt.Sprintf("%s/frontegg/identity/resources/auth/v1/user", authUrl)
 
 	payload := map[string]string{"email": userName, "password": password}
 	payloadBytes, err := json.Marshal(payload)
@@ -45,7 +44,8 @@ func authenticate(userName string, password string) (string, error) {
 	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("authentication failed: %s", res.Status)
+		responseData, _ := io.ReadAll(res.Body)
+		return "", fmt.Errorf("authentication failed: %s - %s", res.Status, responseData)
 	}
 
 	responseData, err := io.ReadAll(res.Body)
@@ -61,10 +61,20 @@ func authenticate(userName string, password string) (string, error) {
 	return response.AccessToken, nil
 }
 
-// getGraphQL proxies the GraphQL response to the Causely API and returns the json response.
-func getGraphQL(token string, body io.Reader) ([]byte, error) {
+// createRequestBody creates a JSON-encoded body for the HTTP request.
+func createRequestBody(data map[string]interface{}) (io.Reader, error) {
+	bodyBytes, err := json.Marshal(data)
+	if err != nil {
+		log.DefaultLogger.Error("Error marshalling request body: ", err)
+		return nil, err
+	}
+	return bytes.NewReader(bodyBytes), nil
+}
+
+// getGraphQL proxies the GraphQL request to the Causely API and returns the json response.
+func getGraphQL(token string, body io.Reader, domain string) ([]byte, error) {
 	baseUrl := fmt.Sprintf("https://api.%s", domain)
-	url := fmt.Sprintf("%s/query", baseUrl)
+	url := fmt.Sprintf("%s/query/", baseUrl)
 	client := &http.Client{Timeout: 10 * time.Second}
 	req, err := http.NewRequest(http.MethodPost, url, body)
 	if err != nil {
@@ -80,11 +90,17 @@ func getGraphQL(token string, body io.Reader) ([]byte, error) {
 	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK {
-		responseData, _ := io.ReadAll(res.Body) // Optionally log the response.
+		responseData, _ := io.ReadAll(res.Body)
 		return nil, fmt.Errorf("request failed: %s - %s", res.Status, responseData)
 	}
 
-	return io.ReadAll(res.Body)
+	responseData, err := io.ReadAll(res.Body)
+	if err != nil {
+		log.DefaultLogger.Error("Error reading GraphQL response body: ", err)
+		return nil, fmt.Errorf("error reading response body: %w", err)
+	}
+
+	return responseData, nil
 }
 
 // handleQuery is an HTTP POST resource that returns graphql JSON response.
@@ -93,16 +109,25 @@ func (a *App) handleQuery(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	token, err := authenticate(userName, password)
+	token, err := authenticate(a.username, a.password, a.domain)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	response, err := getGraphQL(token, req.Body)
+
+	bodyData := payloadEntityTypeCounts()
+	body, err := createRequestBody(bodyData)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	response, err := getGraphQL(token, body, a.domain)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	w.Header().Add("Content-Type", "application/json")
 	if _, err := w.Write(response); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -148,4 +173,41 @@ func (a *App) registerRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/query", a.handleQuery)
 	mux.HandleFunc("/ping", a.handlePing)
 	mux.HandleFunc("/echo", a.handleEcho)
+}
+
+// Declare a variable that will be a string value
+var queryDefectCounts = "query defectCounts($bucketSize: String, $filter: DefectFilter, $groupRecurring: Boolean) {\n  defectCounts(\n    bucketSize: $bucketSize\n    filter: $filter\n    groupRecurring: $groupRecurring\n  ) {\n    severity\n    defectAutoCount\n    defectCount\n    defectManualCount\n    defectName\n    entityType\n    time\n    __typename\n  }\n}"
+var queryEntityTypeCounts = "query entityTypeCounts($entityFilter: EntityFilter) {\n  entityTypeCounts(entityFilter: $entityFilter) {\n    entityType\n    count\n    severity\n    __typename\n  }\n}"
+
+func payloadDefectCounts() map[string]interface{} {
+	bodyData := map[string]interface{}{
+		"operationName": "defectCounts",
+		"variables": map[string]interface{}{
+			"entityFilter": map[string]interface{}{
+				"entityTypes": []string{
+					"KubernetesService",
+					"Service",
+				},
+			},
+		},
+		"query": queryDefectCounts,
+	}
+	return bodyData
+}
+
+func payloadEntityTypeCounts() map[string]interface{} {
+	//Limiting results to service level
+	entityFilterServices := gqmdl.EntityFilter{
+		EntityTypes: []string{
+			"Service",
+		}}
+
+	bodyData := map[string]interface{}{
+		"operationName": "entityTypeCounts",
+		"variables": map[string]interface{}{
+			"entityFilter": entityFilterServices,
+		},
+		"query": queryEntityTypeCounts,
+	}
+	return bodyData
 }

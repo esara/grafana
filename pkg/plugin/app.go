@@ -2,10 +2,13 @@ package plugin
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/instancemgmt"
+	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/resource/httpadapter"
 )
 
@@ -22,11 +25,36 @@ var (
 // App is an example app backend plugin which can respond to data queries.
 type App struct {
 	backend.CallResourceHandler
+	domain   string
+	username string
+	password string
+}
+
+type JSONDataStruct struct {
+	CauselyDomain string `json:"causelyDomain"`
+	CauselyUser   string `json:"causelyUser"`
 }
 
 // NewApp creates a new example *App instance.
-func NewApp(_ context.Context, _ backend.AppInstanceSettings) (instancemgmt.Instance, error) {
+func NewApp(_ context.Context, appSettings backend.AppInstanceSettings) (instancemgmt.Instance, error) {
+	log.DefaultLogger.Debug("Creating new app instance")
 	var app App
+	var err error
+
+	log.DefaultLogger.Debug("Loading settings")
+
+	// Unmarshal JSONData
+	var jsonDataStruct JSONDataStruct
+	err = json.Unmarshal(appSettings.JSONData, &jsonDataStruct)
+	if err != nil {
+		fmt.Println("Error unmarshalling JSONData:", err)
+		return nil, err
+	}
+	fmt.Println("Causely Domain:", jsonDataStruct.CauselyDomain)
+	fmt.Println("Causely User:", jsonDataStruct.CauselyUser)
+	app.domain = jsonDataStruct.CauselyDomain
+	app.username = jsonDataStruct.CauselyUser
+	app.password = appSettings.DecryptedSecureJSONData["password"]
 
 	// Use a httpadapter (provided by the SDK) for resource calls. This allows us
 	// to use a *http.ServeMux for resource calls, so we can map multiple routes

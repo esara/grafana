@@ -5,14 +5,13 @@ import { config } from '@grafana/runtime';
 import { Alert } from '@grafana/ui';
 import { DATASOURCE_REF } from '../../constants';
 import { PluginPropsContext } from '../../utils/utils.plugin';
+import { serviceSummaryPage } from '../../pages/Causely/serviceSummaryPage';
 import { helloWorldPage } from '../../pages/HelloWorld/helloWorldPage';
 import { homePage } from '../../pages/Home/homePage';
-import { withDrilldownPage } from '../../pages/WithDrilldown/withDrilldownPage';
-import { withTabsPage } from '../../pages/WithTabs/withTabsPage';
 
 function getSceneApp() {
   return new SceneApp({
-    pages: [helloWorldPage, homePage, withDrilldownPage, withTabsPage],
+    pages: [helloWorldPage, homePage, serviceSummaryPage],
     urlSyncOptions: {
       updateUrlOnInit: true,
       createBrowserHistorySteps: true,

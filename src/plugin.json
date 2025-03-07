@@ -29,15 +29,8 @@
     },
     {
       "type": "page",
-      "name": "Page with tabs",
-      "path": "/a/%PLUGIN_ID%/page-with-tabs",
-      "addToNav": true,
-      "defaultNav": false
-    },
-    {
-      "type": "page",
-      "name": "Page with drilldown",
-      "path": "/a/%PLUGIN_ID%/page-with-drilldown",
+      "name": "Service Overview",
+      "path": "/a/%PLUGIN_ID%/causely",
       "addToNav": true,
       "defaultNav": false
     },
@@ -47,6 +40,14 @@
       "path": "/a/%PLUGIN_ID%/hello-world",
       "addToNav": true,
       "defaultNav": false
+    },
+    {
+      "type": "page",
+      "icon": "cog",
+      "name": "Configuration",
+      "path": "/plugins/%PLUGIN_ID%",
+      "role": "Admin",
+      "addToNav": true
     }
   ],
   "dependencies": {
