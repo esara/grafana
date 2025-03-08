@@ -32,7 +32,7 @@ type App struct {
 
 type JSONDataStruct struct {
 	CauselyDomain string `json:"causelyDomain"`
-	CauselyUser   string `json:"causelyUser"`
+	CauselyUser   string `json:"causelyUsername"`
 }
 
 // NewApp creates a new example *App instance.
@@ -54,7 +54,7 @@ func NewApp(_ context.Context, appSettings backend.AppInstanceSettings) (instanc
 	fmt.Println("Causely User:", jsonDataStruct.CauselyUser)
 	app.domain = jsonDataStruct.CauselyDomain
 	app.username = jsonDataStruct.CauselyUser
-	app.password = appSettings.DecryptedSecureJSONData["password"]
+	app.password = appSettings.DecryptedSecureJSONData["causelyPassword"]
 
 	// Use a httpadapter (provided by the SDK) for resource calls. This allows us
 	// to use a *http.ServeMux for resource calls, so we can map multiple routes
