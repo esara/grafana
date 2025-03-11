@@ -1,19 +1,15 @@
-import React, { useState } from 'react';
-import { prefixRoute } from "../../utils/utils.routing";
-import { ROUTES } from "../../constants";
+import React, {useEffect, useState} from 'react';
 import { GrafanaTheme2, PageLayoutType } from '@grafana/data';
 import {Button, LinkButton, useStyles2} from '@grafana/ui';
 import { getBackendSrv, PluginPage } from "@grafana/runtime";
 import { css } from "@emotion/css";
 import { testIds } from 'components/testIds';
 import {SceneComponentProps, SceneObjectBase, SceneObjectState} from "@grafana/scenes";
+import {EntityHealthCard, EntityHealthCardData} from "./entityHealthCard/entityHealthCard.component";
+import { ApiDefectCount, ApiEntityTypeCount, EntityHealthCardsUtil } from './entityHealthCard/entityHealthCards.util';
+import {Column, Theme, Grid} from '@carbon/react';
 
-export type ApiEntityTypeCount = {
-    __typename?: 'EntityTypeCount';
-    count: number;
-    entityType: string;
-    severity?: string;
-};
+import ('./entityHealthCard/entityHealthCard.scss');
 
 interface ApiEntityTypeCounts extends SceneObjectState {
     entityTypeCounts: ApiEntityTypeCount[];
@@ -28,16 +24,31 @@ export class ServiceSummaryObject extends SceneObjectBase<ApiEntityTypeCounts> {
     };
 }
 
+
 function ServiceSummaryObjectRenderer({ model }: SceneComponentProps<ServiceSummaryObject>) {
     const [data, setData] = useState<any>(null);
+    const [entityHealthCardDatas, setEntityHealthCardDatas] = useState<EntityHealthCardData[]>([]);
     const s = useStyles2(getStyles);
-    const handleClick = () => {
 
-        getBackendSrv().get(`api/plugins/esara-causely-app/resources/ping`),
-        getBackendSrv().post(`api/plugins/esara-causely-app/resources/query`).then((response)=> {
+    useEffect(() => {
+        setEntityHealthCardDatas(EntityHealthCardsUtil.toEntityHealthCardDataList(
+            mockDataDefectCounts.defectCounts,
+            mockDataentityTypeCounts.entityTypeCounts
+        ));
+    }, [])
+    const handleClick = () => {
+        getBackendSrv()
+        .post(`api/plugins/esara-causely-app/resources/query`)
+        .then((response)=> {
             const data: ApiEntityTypeCounts = response.data;
             console.log("Response", data);
             setData(response);
+            return data.entityTypeCounts;
+        }).then((entityTypeCounts: ApiEntityTypeCount[]) => {
+            setEntityHealthCardDatas(EntityHealthCardsUtil.toEntityHealthCardDataList(
+                mockDataDefectCounts.defectCounts,//TODO Add api
+                entityTypeCounts
+            ));
         }).catch((error) => {
             console.error("Error", error);
         }).finally(() => {
@@ -48,10 +59,6 @@ function ServiceSummaryObjectRenderer({ model }: SceneComponentProps<ServiceSumm
         <PluginPage layout={PageLayoutType.Canvas}>
             <div className={s.page} data-testid={testIds.serviceSummary.container}>
                 <div className={s.container}>
-                    <LinkButton data-testid={testIds.serviceSummary.navigateBack} icon="arrow-left" href={prefixRoute(ROUTES.Causely)}>
-                        Back
-                    </LinkButton>
-
                     <Button variant="primary" onClick={() => handleClick()}>
                         Make api request
                     </Button>
@@ -61,8 +68,25 @@ function ServiceSummaryObjectRenderer({ model }: SceneComponentProps<ServiceSumm
                             <pre>{JSON.stringify(data, null, 2)}</pre>
                         </div>
                     )}
+                    <Theme theme="g100" id={"carbon-container"}>
+                    <Grid>
 
-                    <div className={s.content}>Playground</div>
+                        {entityHealthCardDatas.map((entityHealthCardData, index) => {
+                            return (
+                                <Column lg={4} key={entityHealthCardData.severity} >
+                                    {/*<Layer>*/}
+                                        <EntityHealthCard
+                                            key={entityHealthCardData.severity}
+                                            data={entityHealthCardData}
+                                            label="Services"
+                                        />
+                                    {/*</Layer>*/}
+                                </Column>
+
+                            )
+                        })}
+                    </Grid>
+                    </Theme>
                 </div>
             </div>
         </PluginPage>
@@ -77,7 +101,7 @@ const getStyles = (theme: GrafanaTheme2) => ({
     justify-content: center;
   `,
     container: css`
-    width: 900px;
+    width: 100%;
     max-width: 100%;
     min-height: 500px;
   `,
@@ -85,3 +109,115 @@ const getStyles = (theme: GrafanaTheme2) => ({
     margin-top: ${theme.spacing(6)};
   `,
 });
+
+const mockDataentityTypeCounts = {
+    "entityTypeCounts": [
+        {
+            "entityType": "Service",
+            "count": 50,
+            "severity": "Normal",
+            "__typename": "EntityTypeCount"
+        },
+        {
+            "entityType": "Service",
+            "count": 2,
+            "severity": "Warning",
+            "__typename": "EntityTypeCount"
+        },
+        {
+            "entityType": "Service",
+            "count": 1,
+            "severity": "Major",
+            "__typename": "EntityTypeCount"
+        },
+        {
+            "entityType": "Service",
+            "count": 9,
+            "severity": "Minor",
+            "__typename": "EntityTypeCount"
+        },
+        {
+            "entityType": "Service",
+            "count": 9,
+            "severity": "Critical",
+            "__typename": "EntityTypeCount"
+        }
+
+    ]
+}
+
+const mockDataDefectCounts: {defectCounts: ApiDefectCount[]} = {
+    "defectCounts": [
+    {
+        "severity": "Critical",
+        "defectAutoCount": 0,
+        "defectCount": 1,
+        "defectManualCount": 0,
+        "defectName": "Congested",
+        "entityType": "Service",
+        "time": "2025-03-10T18:05:19Z",
+        "__typename": "DefectCount"
+    },
+    {
+        "severity": "Critical",
+        "defectAutoCount": 0,
+        "defectCount": 1,
+        "defectManualCount": 0,
+        "defectName": "DBConnections_Congested",
+        "entityType": "Workload",
+        "time": "2025-03-10T18:05:19Z",
+        "__typename": "DefectCount"
+    },
+    {
+        "severity": "Medium",
+        "defectAutoCount": 0,
+        "defectCount": 1,
+        "defectManualCount": 0,
+        "defectName": "InefficientGC",
+        "entityType": "Service",
+        "time": "2025-03-10T18:05:19Z",
+        "__typename": "DefectCount"
+    },
+    {
+        "severity": "Low",
+        "defectAutoCount": 0,
+        "defectCount": 1,
+        "defectManualCount": 0,
+        "defectName": "Malfunction",
+        "entityType": "Controller",
+        "time": "2025-03-10T18:05:19Z",
+        "__typename": "DefectCount"
+    },
+    {
+        "severity": "Low",
+        "defectAutoCount": 0,
+        "defectCount": 1,
+        "defectManualCount": 0,
+        "defectName": "Malfunction",
+        "entityType": "Service",
+        "time": "2025-03-10T18:05:19Z",
+        "__typename": "DefectCount"
+    },
+    {
+        "severity": "Low",
+        "defectAutoCount": 0,
+        "defectCount": 1,
+        "defectManualCount": 0,
+        "defectName": "Memory_NoisyNeighbor",
+        "entityType": "Container",
+        "time": "2025-03-10T18:05:19Z",
+        "__typename": "DefectCount"
+    },
+    {
+        "severity": "Low",
+        "defectAutoCount": 0,
+        "defectCount": 1,
+        "defectManualCount": 0,
+        "defectName": "SlowDatabaseServerQuery",
+        "entityType": "Workload",
+        "time": "2025-03-10T18:05:19Z",
+        "__typename": "DefectCount"
+    }
+]
+
+}
