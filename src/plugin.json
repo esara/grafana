@@ -25,12 +25,19 @@
       "name": "Home",
       "path": "/a/%PLUGIN_ID%/home",
       "addToNav": true,
+      "defaultNav": false
+    },
+    {
+      "type": "page",
+      "name": "Causely",
+      "path": "/a/%PLUGIN_ID%/causely",
+      "addToNav": true,
       "defaultNav": true
     },
     {
       "type": "page",
       "name": "Service Overview",
-      "path": "/a/%PLUGIN_ID%/causely",
+      "path": "/a/%PLUGIN_ID%/service-overview",
       "addToNav": true,
       "defaultNav": false
     },
