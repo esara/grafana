@@ -1,11 +1,6 @@
-//@use '@carbon/react';
-//@use '@carbon/layout';
-@use '../../../../node_modules/@carbon/styles/index';
-@use '../../../../node_modules/@carbon/type/index';
-
+@use '@carbon/type';
 
 .entity-health-card {
-
   .content {
     margin: 0.5rem 0;
     display: flex;
@@ -50,74 +45,3 @@
     @include type.type-style('body-01');
   }
 }
-
-//#carbon-container {
-//
-//  //@use '@carbon/layout';
-//
-//  /*.entity-health-cards {
-//    background: aqua;
-//    display: flex;
-//    flex-wrap: wrap;
-//    gap: 1rem;
-//    justify-content: center;
-//  }*/
-//
-//  //
-//
-//
-//}
-
-
-
-//.severity-normal{hover: #c0f1ce;
-//.severity-normal{low-opacity: #defbe6;
-
-
-//.entity-health-card {
-  //background: #212c8a;
-  //padding: 1rem;
-  //width: fit-content;
-  //min-width: 18.75rem;
-//}
-
-//
-//  &__card-group {
-//    display: flex;
-//    flex-wrap: wrap;
-//    gap: 1rem;
-//    justify-content: center;
-//  }
-//  &__card {
-//    background: var(--cui-callout-darker-2-background);
-//    padding: 1rem;
-//    width: fit-content;
-//    min-width: 18.75rem;
-//
-//    &__stats {
-//      margin: 0.5rem 0;
-//      display: flex;
-//      align-items: center;
-//      gap: 0.25rem;
-//    }
-//
-
-//
-//    &__subtitle {
-//      margin: 0;
-//
-//      @include type.type-style('body-01');
-//    }
-//  }
-//
-//}
-//// #{$prefix} {
-//  .entity-severity-cards {
-//    background: #218a6b;
-//
-
-//
-//
-//    }
-//  }
-//// }
