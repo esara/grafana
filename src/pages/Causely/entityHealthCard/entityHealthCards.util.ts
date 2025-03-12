@@ -19,7 +19,7 @@ export type ApiDefectCount = {
   defectManualCount: number;
   defectName?: string;
   entityType?: string;
-  severity: ApiDefectSeverity;
+  severity: ApiDefectSeverity | string;//TODO : Remove string when remove mock data
   time?: string;
 };
 
@@ -30,7 +30,7 @@ export enum ApiDefectSeverity {
   Medium = 'Medium'
 }
 
-const defectSeverityToEntitySeverityMap = {
+const defectSeverityToEntitySeverityMap: {[key: string]: string} = {
   [ApiDefectSeverity.Critical]: 'Critical',
   [ApiDefectSeverity.High]: 'Major',
   [ApiDefectSeverity.Medium]: 'Minor',
@@ -100,7 +100,7 @@ export class EntityHealthCardsUtil {
     }, {});
 
     return Object.keys(entitySeverityCounts)
-      .map((severity) => {
+      .map((severity: string) => {
         return {
           severity,
           title: EntityHealthCardsUtil.getTitle(severity),
