@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from 'react';
-import { Button, ClickableTile, Heading, Section, Theme } from '@carbon/react';
+import { ClickableTile, Heading, Section} from '@carbon/react';
 
 import ('./entityHealthCard.scss');
 
@@ -24,7 +24,8 @@ export const EntityHealthCard: FC<EntityHealthCardProps> = (
   const { severity, count, total, percentage, rootCauseCount, title } = data;
 
   const hrefLink = 'https://portal.causely.app/observe/services'
-  return (
+  // @ts-ignore
+    return (
     <div className={'entity-health-card'}>
       <ClickableTile href={hrefLink} id="clickable-tile-1"
                      target="_blank" //open link in separate tab

@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import { GrafanaTheme2, PageLayoutType } from '@grafana/data';
-import {Button, LinkButton, useStyles2} from '@grafana/ui';
+import {Button, useStyles2} from '@grafana/ui';
 import { getBackendSrv, PluginPage } from "@grafana/runtime";
 import { css } from "@emotion/css";
 import { testIds } from 'components/testIds';
 import {SceneComponentProps, SceneObjectBase, SceneObjectState} from "@grafana/scenes";
 import {EntityHealthCard, EntityHealthCardData} from "./entityHealthCard/entityHealthCard.component";
-import { ApiDefectCount, ApiEntityTypeCount, EntityHealthCardsUtil } from './entityHealthCard/entityHealthCards.util';
+import { ApiEntityTypeCount, EntityHealthCardsUtil } from './entityHealthCard/entityHealthCards.util';
 import {Column, Theme, Grid} from '@carbon/react';
 
 import ('./entityHealthCard/entityHealthCard.scss');
@@ -33,7 +33,7 @@ function ServiceSummaryObjectRenderer({ model }: SceneComponentProps<ServiceSumm
     useEffect(() => {
         setEntityHealthCardDatas(EntityHealthCardsUtil.toEntityHealthCardDataList(
             mockDataDefectCounts.defectCounts,
-            mockDataentityTypeCounts.entityTypeCounts
+            mockDataentityTypeCounts.entityTypeCounts as ApiEntityTypeCount[]
         ));
     }, [])
     const handleClick = () => {
@@ -116,37 +116,33 @@ const mockDataentityTypeCounts = {
             "entityType": "Service",
             "count": 50,
             "severity": "Normal",
-            "__typename": "EntityTypeCount"
         },
         {
             "entityType": "Service",
             "count": 2,
             "severity": "Warning",
-            "__typename": "EntityTypeCount"
         },
         {
             "entityType": "Service",
             "count": 1,
             "severity": "Major",
-            "__typename": "EntityTypeCount"
         },
         {
             "entityType": "Service",
             "count": 9,
             "severity": "Minor",
-            "__typename": "EntityTypeCount"
         },
         {
             "entityType": "Service",
             "count": 9,
             "severity": "Critical",
-            "__typename": "EntityTypeCount"
         }
 
     ]
 }
 
-const mockDataDefectCounts: {defectCounts: ApiDefectCount[]} = {
+
+const mockDataDefectCounts = {
     "defectCounts": [
     {
         "severity": "Critical",
@@ -156,7 +152,7 @@ const mockDataDefectCounts: {defectCounts: ApiDefectCount[]} = {
         "defectName": "Congested",
         "entityType": "Service",
         "time": "2025-03-10T18:05:19Z",
-        "__typename": "DefectCount"
+        
     },
     {
         "severity": "Critical",
@@ -166,7 +162,6 @@ const mockDataDefectCounts: {defectCounts: ApiDefectCount[]} = {
         "defectName": "DBConnections_Congested",
         "entityType": "Workload",
         "time": "2025-03-10T18:05:19Z",
-        "__typename": "DefectCount"
     },
     {
         "severity": "Medium",
@@ -176,7 +171,7 @@ const mockDataDefectCounts: {defectCounts: ApiDefectCount[]} = {
         "defectName": "InefficientGC",
         "entityType": "Service",
         "time": "2025-03-10T18:05:19Z",
-        "__typename": "DefectCount"
+        
     },
     {
         "severity": "Low",
@@ -186,7 +181,7 @@ const mockDataDefectCounts: {defectCounts: ApiDefectCount[]} = {
         "defectName": "Malfunction",
         "entityType": "Controller",
         "time": "2025-03-10T18:05:19Z",
-        "__typename": "DefectCount"
+        
     },
     {
         "severity": "Low",
@@ -196,7 +191,6 @@ const mockDataDefectCounts: {defectCounts: ApiDefectCount[]} = {
         "defectName": "Malfunction",
         "entityType": "Service",
         "time": "2025-03-10T18:05:19Z",
-        "__typename": "DefectCount"
     },
     {
         "severity": "Low",
@@ -206,7 +200,6 @@ const mockDataDefectCounts: {defectCounts: ApiDefectCount[]} = {
         "defectName": "Memory_NoisyNeighbor",
         "entityType": "Container",
         "time": "2025-03-10T18:05:19Z",
-        "__typename": "DefectCount"
     },
     {
         "severity": "Low",
@@ -216,7 +209,6 @@ const mockDataDefectCounts: {defectCounts: ApiDefectCount[]} = {
         "defectName": "SlowDatabaseServerQuery",
         "entityType": "Workload",
         "time": "2025-03-10T18:05:19Z",
-        "__typename": "DefectCount"
     }
 ]
 

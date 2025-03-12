@@ -25,14 +25,14 @@
       "name": "Home",
       "path": "/a/%PLUGIN_ID%/home",
       "addToNav": true,
-      "defaultNav": false
+      "defaultNav": true
     },
     {
       "type": "page",
       "name": "Causely",
       "path": "/a/%PLUGIN_ID%/causely",
       "addToNav": true,
-      "defaultNav": true
+      "defaultNav": false
     },
     {
       "type": "page",
