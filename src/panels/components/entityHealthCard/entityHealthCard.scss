@@ -1,0 +1,49 @@
+@use '@carbon/styles';
+@use '@carbon/layout';
+@use '@carbon/type';
+
+.entity-health-card {
+  .content {
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .count {
+    margin: 0.5rem 0;
+    @include type.type-style('heading-04');
+  }
+  .severity-critical{
+    color: var(--cds-support-error)
+  }
+
+  .severity-major{
+    color: var(--cds-support-caution-major);
+  }
+
+  .severity-minor{
+    color: var(--cds-support-caution-minor);
+  }
+  .severity-warning{
+    color: var(--cds-support-caution-minor);
+  }
+
+  .severity-normal{
+    color: var(--cds-support-success);
+  }
+
+  .percentage {
+      color: var(--cds-text-secondary);
+
+      @include type.type-style('body-01');
+    }
+
+  .total {
+    @include type.type-style('body-01');
+  }
+
+  .rootcause-summary {
+    margin: 0;
+    @include type.type-style('body-01');
+  }
+}
