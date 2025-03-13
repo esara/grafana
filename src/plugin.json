@@ -21,6 +21,10 @@
   },
   "includes": [
     {
+      "type": "panel",
+      "name": "causely-causely-panel"
+    },
+    {
       "type": "page",
       "name": "Home",
       "path": "/a/%PLUGIN_ID%/home",
