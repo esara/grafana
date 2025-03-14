@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {PanelProps} from '@grafana/data';
-import {Button} from '@grafana/ui';
+import {Button, Grid} from '@grafana/ui';
 import { getBackendSrv } from "@grafana/runtime";
 import {EntityHealthCard, EntityHealthCardData} from "./entityHealthCard/entityHealthCard.component";
 import { ApiEntityTypeCount, EntityHealthCardsUtil } from './entityHealthCard/entityHealthCards.util';
-import {Column, Theme, Grid} from '@carbon/react';
 
-import './entityHealthCard/entityHealthCard.scss'
 
 interface Props extends PanelProps<void> {}
 
@@ -46,25 +44,22 @@ const ServiceHealthSummaryPanel: React.FC<Props> = ({ }) => {
                     <Button variant="primary" onClick={() => handleClick()}>
                         Make api request
                     </Button>
-                    <Theme theme="g100" id={"carbon-container"}>
-                    <Grid>
+                    <Grid columns={5} alignItems={"stretch"} gap={4} >
 
                         {entityHealthCardDatas.map((entityHealthCardData, index) => {
                             return (
-                                <Column lg={4} key={entityHealthCardData.severity} >
-                                    {/*<Layer>*/}
+                                <div key={entityHealthCardData.severity}>
                                         <EntityHealthCard
                                             key={entityHealthCardData.severity}
                                             data={entityHealthCardData}
                                             label="Services"
                                         />
-                                    {/*</Layer>*/}
-                                </Column>
+                                </div>
+
 
                             )
                         })}
                     </Grid>
-                    </Theme>
                 </div>
             </div>
     );
