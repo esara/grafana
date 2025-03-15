@@ -10,6 +10,7 @@ type JsonData = {
   causelyDomain?: string;
   isCauselyPasswordSet?: boolean;
   causelyUsername?: string;
+  causelyPassword?: string;
 };
 
 type State = {

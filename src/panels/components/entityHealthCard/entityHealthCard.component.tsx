@@ -26,7 +26,7 @@ export const EntityHealthCard: FC<EntityHealthCardProps> = (
 
     return (
     <div className={'entity-health-card'}>
-        <Card href={hrefLink} id="clickable-tile-1"
+        <Card href={hrefLink} id="causely-service-health-card"
             // @ts-ignore : open link in separate tab
               target="_blank"
               rel="noopener noreferrer">

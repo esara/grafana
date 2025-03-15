@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import { GrafanaTheme2, PageLayoutType } from '@grafana/data';
-import {Button, useStyles2} from '@grafana/ui';
+import { Button, useStyles2 } from '@grafana/ui';
 import { getBackendSrv, PluginPage } from "@grafana/runtime";
 import { css } from "@emotion/css";
 import { testIds } from 'components/testIds';
-import {SceneComponentProps, SceneObjectBase, SceneObjectState} from "@grafana/scenes";
-import {EntityHealthCard, EntityHealthCardData} from "./entityHealthCard/entityHealthCard.component";
+import { SceneComponentProps, SceneObjectBase, SceneObjectState } from "@grafana/scenes";
+import { EntityHealthCard, EntityHealthCardData } from "./entityHealthCard/entityHealthCard.component";
 import { ApiEntityTypeCount, EntityHealthCardsUtil } from './entityHealthCard/entityHealthCards.util';
-import {Column, Theme, Grid} from '@carbon/react';
+import { Column, Theme, Grid } from '@carbon/react';
 
-import ('./entityHealthCard/entityHealthCard.scss');
+import './entityHealthCard/entityHealthCard.scss';
 
 interface ApiEntityTypeCounts extends SceneObjectState {
     entityTypeCounts: ApiEntityTypeCount[];
@@ -26,7 +26,7 @@ export class ServiceSummaryObject extends SceneObjectBase<ApiEntityTypeCounts> {
 
 
 function ServiceSummaryObjectRenderer({ model }: SceneComponentProps<ServiceSummaryObject>) {
-    const [data, setData] = useState<any>(null);
+    const [serviceData, setData] = useState<any>(null);
     const [entityHealthCardDatas, setEntityHealthCardDatas] = useState<EntityHealthCardData[]>([]);
     const s = useStyles2(getStyles);
 
@@ -38,10 +38,11 @@ function ServiceSummaryObjectRenderer({ model }: SceneComponentProps<ServiceSumm
     }, [])
     const handleClick = () => {
         getBackendSrv()
-        .post(`api/plugins/esara-causely-app/resources/query`)
+        // .post(`api/plugins/esara-causely-app/resources/query`, payloadDefectCounts)
+        .post(`api/plugins/esara-causely-app/resources/query`, JSON.stringify(payloadEntityTypeCounts))
         .then((response)=> {
             const data: ApiEntityTypeCounts = response.data;
-            console.log("Response", data);
+            console.log("Response", serviceData);
             setData(response);
             return data.entityTypeCounts;
         }).then((entityTypeCounts: ApiEntityTypeCount[]) => {
@@ -62,15 +63,8 @@ function ServiceSummaryObjectRenderer({ model }: SceneComponentProps<ServiceSumm
                     <Button variant="primary" onClick={() => handleClick()}>
                         Make api request
                     </Button>
-
-                    {data && (
-                        <div>
-                            <pre>{JSON.stringify(data, null, 2)}</pre>
-                        </div>
-                    )}
                     <Theme theme="g100" id={"carbon-container"}>
                     <Grid>
-
                         {entityHealthCardDatas.map((entityHealthCardData, index) => {
                             return (
                                 <Column lg={4} key={entityHealthCardData.severity} >
@@ -82,7 +76,6 @@ function ServiceSummaryObjectRenderer({ model }: SceneComponentProps<ServiceSumm
                                         />
                                     {/*</Layer>*/}
                                 </Column>
-
                             )
                         })}
                     </Grid>
@@ -109,6 +102,49 @@ const getStyles = (theme: GrafanaTheme2) => ({
     margin-top: ${theme.spacing(6)};
   `,
 });
+
+// Limiting results to service level
+const entityFilterServices = {
+    entityTypes: ["Service"]
+};
+
+export const payloadDefectCounts = {
+    operationName: "defectCounts",
+    variables: {
+        entityFilter: entityFilterServices
+    },
+    query: `query defectCounts($bucketSize: String, $filter: DefectFilter, $groupRecurring: Boolean) {
+            defectCounts(
+                bucketSize: $bucketSize
+                filter: $filter
+                groupRecurring: $groupRecurring
+            ) {
+                severity
+                defectAutoCount
+                defectCount
+                defectManualCount
+                defectName
+                entityType
+                time
+                __typename
+            }
+        }`
+};
+
+const payloadEntityTypeCounts = {
+    operationName: "entityTypeCounts",
+    variables: {
+        entityFilter: entityFilterServices
+    },
+    query: `query entityTypeCounts($entityFilter: EntityFilter) {
+            entityTypeCounts(entityFilter: $entityFilter) {
+                entityType
+                count
+                severity
+                __typename
+            }
+        }`
+};
 
 const mockDataentityTypeCounts = {
     "entityTypeCounts": [
@@ -141,75 +177,73 @@ const mockDataentityTypeCounts = {
     ]
 }
 
-
 const mockDataDefectCounts = {
     "defectCounts": [
-    {
-        "severity": "Critical",
-        "defectAutoCount": 0,
-        "defectCount": 1,
-        "defectManualCount": 0,
-        "defectName": "Congested",
-        "entityType": "Service",
-        "time": "2025-03-10T18:05:19Z",
-        
-    },
-    {
-        "severity": "Critical",
-        "defectAutoCount": 0,
-        "defectCount": 1,
-        "defectManualCount": 0,
-        "defectName": "DBConnections_Congested",
-        "entityType": "Workload",
-        "time": "2025-03-10T18:05:19Z",
-    },
-    {
-        "severity": "Medium",
-        "defectAutoCount": 0,
-        "defectCount": 1,
-        "defectManualCount": 0,
-        "defectName": "InefficientGC",
-        "entityType": "Service",
-        "time": "2025-03-10T18:05:19Z",
-        
-    },
-    {
-        "severity": "Low",
-        "defectAutoCount": 0,
-        "defectCount": 1,
-        "defectManualCount": 0,
-        "defectName": "Malfunction",
-        "entityType": "Controller",
-        "time": "2025-03-10T18:05:19Z",
-        
-    },
-    {
-        "severity": "Low",
-        "defectAutoCount": 0,
-        "defectCount": 1,
-        "defectManualCount": 0,
-        "defectName": "Malfunction",
-        "entityType": "Service",
-        "time": "2025-03-10T18:05:19Z",
-    },
-    {
-        "severity": "Low",
-        "defectAutoCount": 0,
-        "defectCount": 1,
-        "defectManualCount": 0,
-        "defectName": "Memory_NoisyNeighbor",
-        "entityType": "Container",
-        "time": "2025-03-10T18:05:19Z",
-    },
-    {
-        "severity": "Low",
-        "defectAutoCount": 0,
-        "defectCount": 1,
-        "defectManualCount": 0,
-        "defectName": "SlowDatabaseServerQuery",
-        "entityType": "Workload",
-        "time": "2025-03-10T18:05:19Z",
-    }
-]
+        {
+            "severity": "Critical",
+            "defectAutoCount": 0,
+            "defectCount": 1,
+            "defectManualCount": 0,
+            "defectName": "Congested",
+            "entityType": "Service",
+            "time": "2025-03-10T18:05:19Z",
 
+        },
+        {
+            "severity": "Critical",
+            "defectAutoCount": 0,
+            "defectCount": 1,
+            "defectManualCount": 0,
+            "defectName": "DBConnections_Congested",
+            "entityType": "Workload",
+            "time": "2025-03-10T18:05:19Z",
+        },
+        {
+            "severity": "Medium",
+            "defectAutoCount": 0,
+            "defectCount": 1,
+            "defectManualCount": 0,
+            "defectName": "InefficientGC",
+            "entityType": "Service",
+            "time": "2025-03-10T18:05:19Z",
+
+        },
+        {
+            "severity": "Low",
+            "defectAutoCount": 0,
+            "defectCount": 1,
+            "defectManualCount": 0,
+            "defectName": "Malfunction",
+            "entityType": "Controller",
+            "time": "2025-03-10T18:05:19Z",
+
+        },
+        {
+            "severity": "Low",
+            "defectAutoCount": 0,
+            "defectCount": 1,
+            "defectManualCount": 0,
+            "defectName": "Malfunction",
+            "entityType": "Service",
+            "time": "2025-03-10T18:05:19Z",
+        },
+        {
+            "severity": "Low",
+            "defectAutoCount": 0,
+            "defectCount": 1,
+            "defectManualCount": 0,
+            "defectName": "Memory_NoisyNeighbor",
+            "entityType": "Container",
+            "time": "2025-03-10T18:05:19Z",
+        },
+        {
+            "severity": "Low",
+            "defectAutoCount": 0,
+            "defectCount": 1,
+            "defectManualCount": 0,
+            "defectName": "SlowDatabaseServerQuery",
+            "entityType": "Workload",
+            "time": "2025-03-10T18:05:19Z",
+        }
+    ]
 }

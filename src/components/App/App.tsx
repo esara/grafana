@@ -7,12 +7,13 @@ import { DATASOURCE_REF } from '../../constants';
 import { PluginPropsContext } from '../../utils/utils.plugin';
 import { helloWorldPage } from '../../pages/HelloWorld/helloWorldPage';
 import { homePage } from '../../pages/Home/homePage';
+import { serviceSummaryPage } from "../../pages/Causely/causely.page";
+
 import './../../styles/main.scss';
-import {causelyPage} from "../../pages/Causely/causely.page";
 
 function getSceneApp() {
   return new SceneApp({
-    pages: [helloWorldPage, causelyPage, homePage],
+    pages: [homePage, helloWorldPage, serviceSummaryPage],
     urlSyncOptions: {
       updateUrlOnInit: true,
       createBrowserHistorySteps: true,

@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from 'react';
-import { ClickableTile, Heading, Section} from '@carbon/react';
+import { ClickableTile, Heading, Section } from '@carbon/react';
 
-import ('./entityHealthCard.scss');
+import './entityHealthCard.scss';
 
 export type EntityHealthCardData = {
     title: string;
@@ -26,7 +26,7 @@ export const EntityHealthCard: FC<EntityHealthCardProps> = (
   const hrefLink = 'https://portal.causely.app/observe/services'
     return (
     <div className={'entity-health-card'}>
-      <ClickableTile href={hrefLink} id="clickable-tile-1"
+      <ClickableTile href={hrefLink} id="causely-service-health-card"
                     // @ts-ignore
                      target="_blank" //open link in separate tab
                      rel="noopener noreferrer">

@@ -22,7 +22,7 @@
   "includes": [
     {
       "type": "panel",
-      "name": "causely-causely-panel"
+      "name": "causely-service-panel"
     },
     {
       "type": "page",
@@ -33,22 +33,8 @@
     },
     {
       "type": "page",
-      "name": "Causely",
-      "path": "/a/%PLUGIN_ID%/causely",
-      "addToNav": true,
-      "defaultNav": false
-    },
-    {
-      "type": "page",
       "name": "Service Overview",
       "path": "/a/%PLUGIN_ID%/service-overview",
-      "addToNav": true,
-      "defaultNav": false
-    },
-    {
-      "type": "page",
-      "name": "Hello world",
-      "path": "/a/%PLUGIN_ID%/hello-world",
       "addToNav": true,
       "defaultNav": false
     },

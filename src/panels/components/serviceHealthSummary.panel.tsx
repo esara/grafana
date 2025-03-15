@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {PanelProps} from '@grafana/data';
-import {Button, Grid} from '@grafana/ui';
+import { PanelProps } from '@grafana/data';
+import { Button, Grid } from '@grafana/ui';
 import { getBackendSrv } from "@grafana/runtime";
-import {EntityHealthCard, EntityHealthCardData} from "./entityHealthCard/entityHealthCard.component";
+import { EntityHealthCard, EntityHealthCardData } from "./entityHealthCard/entityHealthCard.component";
 import { ApiEntityTypeCount, EntityHealthCardsUtil } from './entityHealthCard/entityHealthCards.util';
 
 
@@ -23,7 +23,8 @@ const ServiceHealthSummaryPanel: React.FC<Props> = ({ }) => {
     }, [])
     const handleClick = () => {
         getBackendSrv()
-        .post(`api/plugins/esara-causely-app/resources/query`)
+        // .post(`api/plugins/esara-causely-app/resources/query`, payloadDefectCounts)
+        .post(`api/plugins/esara-causely-app/resources/query`, JSON.stringify(payloadEntityTypeCounts))
         .then((response)=> {
             const data: ApiEntityTypeCounts = response.data;
             return data.entityTypeCounts;
@@ -39,31 +40,73 @@ const ServiceHealthSummaryPanel: React.FC<Props> = ({ }) => {
         });
     }
     return (
-            <div className="service-health-summary-panel">
-                <div>
-                    <Button variant="primary" onClick={() => handleClick()}>
-                        Make api request
-                    </Button>
-                    <Grid columns={5} alignItems={"stretch"} gap={4} >
+        <div className="service-health-summary-panel">
+            <div>
+                <Button variant="primary" onClick={() => handleClick()}>
+                    Make api request
+                </Button>
+                <Grid columns={5} alignItems={"stretch"} gap={4} >
 
-                        {entityHealthCardDatas.map((entityHealthCardData, index) => {
-                            return (
-                                <div key={entityHealthCardData.severity}>
-                                        <EntityHealthCard
-                                            key={entityHealthCardData.severity}
-                                            data={entityHealthCardData}
-                                            label="Services"
-                                        />
-                                </div>
-
-
-                            )
-                        })}
-                    </Grid>
-                </div>
+                    {entityHealthCardDatas.map((entityHealthCardData, index) => {
+                        return (
+                            <div key={entityHealthCardData.severity}>
+                                    <EntityHealthCard
+                                        key={entityHealthCardData.severity}
+                                        data={entityHealthCardData}
+                                        label="Services"
+                                    />
+                            </div>
+                        )
+                    })}
+                </Grid>
             </div>
+        </div>
     );
 }
+
+// Limiting results to service level
+const entityFilterServices = {
+    entityTypes: ["Service"]
+};
+
+export const payloadDefectCounts = {
+    operationName: "defectCounts",
+    variables: {
+        entityFilter: entityFilterServices
+    },
+    query: `query defectCounts($bucketSize: String, $filter: DefectFilter, $groupRecurring: Boolean) {
+            defectCounts(
+                bucketSize: $bucketSize
+                filter: $filter
+                groupRecurring: $groupRecurring
+            ) {
+                severity
+                defectAutoCount
+                defectCount
+                defectManualCount
+                defectName
+                entityType
+                time
+                __typename
+            }
+        }`
+};
+
+const payloadEntityTypeCounts = {
+    operationName: "entityTypeCounts",
+    variables: {
+        entityFilter: entityFilterServices
+    },
+    query: `query entityTypeCounts($entityFilter: EntityFilter) {
+            entityTypeCounts(entityFilter: $entityFilter) {
+                entityType
+                count
+                severity
+                __typename
+            }
+        }`
+};
+
 const mockDataentityTypeCounts = {
     "entityTypeCounts": [
         {
