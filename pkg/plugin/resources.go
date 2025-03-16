@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"time"
 
-	gqmdl "github.com/esara/causely/pkg/causelyGraphQl"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
@@ -105,6 +104,7 @@ func getGraphQL(token string, body io.Reader, domain string) ([]byte, error) {
 
 // handleQuery is an HTTP POST resource that returns graphql JSON response.
 func (a *App) handleQuery(w http.ResponseWriter, req *http.Request) {
+
 	if req.Method != http.MethodPost {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -115,7 +115,13 @@ func (a *App) handleQuery(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	bodyData := payloadEntityTypeCounts()
+	bodyData := make(map[string]interface{})
+	if err := json.NewDecoder(req.Body).Decode(&bodyData); err != nil {
+		http.Error(w, "invalid request body", http.StatusBadRequest)
+		return
+	}
+	log.DefaultLogger.Info("Query Request Body: ", bodyData)
+
 	body, err := createRequestBody(bodyData)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -173,41 +179,4 @@ func (a *App) registerRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/query", a.handleQuery)
 	mux.HandleFunc("/ping", a.handlePing)
 	mux.HandleFunc("/echo", a.handleEcho)
-}
-
-// Declare a variable that will be a string value
-var queryDefectCounts = "query defectCounts($bucketSize: String, $filter: DefectFilter, $groupRecurring: Boolean) {\n  defectCounts(\n    bucketSize: $bucketSize\n    filter: $filter\n    groupRecurring: $groupRecurring\n  ) {\n    severity\n    defectAutoCount\n    defectCount\n    defectManualCount\n    defectName\n    entityType\n    time\n    __typename\n  }\n}"
-var queryEntityTypeCounts = "query entityTypeCounts($entityFilter: EntityFilter) {\n  entityTypeCounts(entityFilter: $entityFilter) {\n    entityType\n    count\n    severity\n    __typename\n  }\n}"
-
-func payloadDefectCounts() map[string]interface{} {
-	bodyData := map[string]interface{}{
-		"operationName": "defectCounts",
-		"variables": map[string]interface{}{
-			"entityFilter": map[string]interface{}{
-				"entityTypes": []string{
-					"KubernetesService",
-					"Service",
-				},
-			},
-		},
-		"query": queryDefectCounts,
-	}
-	return bodyData
-}
-
-func payloadEntityTypeCounts() map[string]interface{} {
-	//Limiting results to service level
-	entityFilterServices := gqmdl.EntityFilter{
-		EntityTypes: []string{
-			"Service",
-		}}
-
-	bodyData := map[string]interface{}{
-		"operationName": "entityTypeCounts",
-		"variables": map[string]interface{}{
-			"entityFilter": entityFilterServices,
-		},
-		"query": queryEntityTypeCounts,
-	}
-	return bodyData
 }
