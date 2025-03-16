@@ -6,7 +6,7 @@ import { css } from '@emotion/css';
 import { testIds } from '../testIds';
 import { lastValueFrom } from 'rxjs';
 
-type JsonData = {
+export type JsonData = {
   causelyDomain?: string;
   isCauselyPasswordSet?: boolean;
   causelyUsername?: string;

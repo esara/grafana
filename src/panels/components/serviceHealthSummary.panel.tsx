@@ -1,14 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { PanelProps } from '@grafana/data';
-import { Button, Grid } from '@grafana/ui';
-import { getBackendSrv } from '@grafana/runtime';
+import {AppPluginMeta, PanelProps} from '@grafana/data';
+import {Button, Grid, TextLink} from '@grafana/ui';
+import {FetchResponse, getBackendSrv} from '@grafana/runtime';
 import { EntityHealthCard, EntityHealthCardData } from './entityHealthCard/entityHealthCard.component';
 import { ApiDefectCount, ApiEntityTypeCount, EntityHealthCardsUtil } from './entityHealthCard/entityHealthCards.util';
-
+import {lastValueFrom} from "rxjs";
+import {JsonData} from "../../components/AppConfig/AppConfig";
+import {prefixRoute} from "../../utils/utils.routing";
+import {AppPluginId} from "../../constants";
 interface Props extends PanelProps<void> {}
 
 
-const ServiceHealthSummaryPanel: React.FC<Props> = ({}) => {
+const ServiceHealthSummaryPanel: React.FC<Props> = () => {
+  const  [credentialsSet, setCredentialsSet] = useState<boolean>(false);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = getBackendSrv().fetch({
+        url: `/api/plugins/${AppPluginId}/settings`,
+        method: 'GET',
+      });
+
+      const dataResponse:FetchResponse<AppPluginMeta<JsonData>> = await lastValueFrom(response);
+      const causelyCreds: JsonData = dataResponse?.data?.jsonData || {};
+
+      setCredentialsSet(causelyCreds.isCauselyPasswordSet && causelyCreds.causelyUsername && causelyCreds.causelyDomain);
+    }
+    fetchData();
+  }, []); // Or [] if effect doesn't need props or state
+
+  if (credentialsSet) {
+    return <ServiceHealthSummaryPanel1 />;
+  }
+  return(
+      <>
+        <div>Please configure the plugin in the  <TextLink href={`/plugins/${AppPluginId}`} >app configuration page</TextLink>.</div>
+      </>
+
+  )
+}
+
+const ServiceHealthSummaryPanel1: React.FC<Props> = () => {
   const [entityHealthCardDatas, setEntityHealthCardDatas] = useState<EntityHealthCardData[]>([]);
 
   useEffect(() => {
@@ -39,8 +71,8 @@ const ServiceHealthSummaryPanel: React.FC<Props> = ({}) => {
 
   const handleClick = () => {
     const promises = [
-      getBackendSrv().post(`api/plugins/esara-causely-app/resources/query`, entityCountPayload),
-      getBackendSrv().post(`api/plugins/esara-causely-app/resources/query`, defectCountPayload),
+      getBackendSrv().post(`api/plugins/${AppPluginId}/resources/query`, entityCountPayload),
+      getBackendSrv().post(`api/plugins/${AppPluginId}/resources/query`, defectCountPayload),
     ];
 
     Promise.all(promises)
