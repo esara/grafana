@@ -21,6 +21,10 @@
   },
   "includes": [
     {
+      "type": "panel",
+      "name": "causely-service-panel"
+    },
+    {
       "type": "page",
       "name": "Home",
       "path": "/a/%PLUGIN_ID%/home",
@@ -30,14 +34,7 @@
     {
       "type": "page",
       "name": "Service Overview",
-      "path": "/a/%PLUGIN_ID%/causely",
-      "addToNav": true,
-      "defaultNav": false
-    },
-    {
-      "type": "page",
-      "name": "Hello world",
-      "path": "/a/%PLUGIN_ID%/hello-world",
+      "path": "/a/%PLUGIN_ID%/service-overview",
       "addToNav": true,
       "defaultNav": false
     },

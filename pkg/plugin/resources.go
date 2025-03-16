@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"time"
 
-	gqmdl "github.com/esara/causely/pkg/causelyGraphQl"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
@@ -61,16 +60,6 @@ func authenticate(userName string, password string, domain string) (string, erro
 	return response.AccessToken, nil
 }
 
-// createRequestBody creates a JSON-encoded body for the HTTP request.
-func createRequestBody(data map[string]interface{}) (io.Reader, error) {
-	bodyBytes, err := json.Marshal(data)
-	if err != nil {
-		log.DefaultLogger.Error("Error marshalling request body: ", err)
-		return nil, err
-	}
-	return bytes.NewReader(bodyBytes), nil
-}
-
 // getGraphQL proxies the GraphQL request to the Causely API and returns the json response.
 func getGraphQL(token string, body io.Reader, domain string) ([]byte, error) {
 	baseUrl := fmt.Sprintf("https://api.%s", domain)
@@ -115,14 +104,13 @@ func (app *App) handleQuery(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	bodyData := payloadEntityTypeCounts()
-	body, err := createRequestBody(bodyData)
+	requestBody, err := io.ReadAll(req.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	response, err := getGraphQL(token, body, a.domain)
+	response, err := getGraphQL(token, bytes.NewReader(requestBody), app.domain)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -173,41 +161,4 @@ func (app *App) registerRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("/query", app.handleQuery)
 	mux.HandleFunc("/ping", app.handlePing)
 	mux.HandleFunc("/echo", app.handleEcho)
-}
-
-// Declare a variable that will be a string value
-var queryDefectCounts = "query defectCounts($bucketSize: String, $filter: DefectFilter, $groupRecurring: Boolean) {\n  defectCounts(\n    bucketSize: $bucketSize\n    filter: $filter\n    groupRecurring: $groupRecurring\n  ) {\n    severity\n    defectAutoCount\n    defectCount\n    defectManualCount\n    defectName\n    entityType\n    time\n    __typename\n  }\n}"
-var queryEntityTypeCounts = "query entityTypeCounts($entityFilter: EntityFilter) {\n  entityTypeCounts(entityFilter: $entityFilter) {\n    entityType\n    count\n    severity\n    __typename\n  }\n}"
-
-func payloadDefectCounts() map[string]interface{} {
-	bodyData := map[string]interface{}{
-		"operationName": "defectCounts",
-		"variables": map[string]interface{}{
-			"entityFilter": map[string]interface{}{
-				"entityTypes": []string{
-					"KubernetesService",
-					"Service",
-				},
-			},
-		},
-		"query": queryDefectCounts,
-	}
-	return bodyData
-}
-
-func payloadEntityTypeCounts() map[string]interface{} {
-	//Limiting results to service level
-	entityFilterServices := gqmdl.EntityFilter{
-		EntityTypes: []string{
-			"Service",
-		}}
-
-	bodyData := map[string]interface{}{
-		"operationName": "entityTypeCounts",
-		"variables": map[string]interface{}{
-			"entityFilter": entityFilterServices,
-		},
-		"query": queryEntityTypeCounts,
-	}
-	return bodyData
 }

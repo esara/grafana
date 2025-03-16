@@ -4,8 +4,8 @@ export const PLUGIN_BASE_URL = `/a/${pluginJson.id}`;
 
 export enum ROUTES {
   Home = 'home',
-  Causely = 'causely',
   HelloWorld = 'hello-world',
+  ServiceOverview = 'service-overview',
 }
 
 export const DATASOURCE_REF = {

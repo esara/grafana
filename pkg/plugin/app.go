@@ -50,8 +50,6 @@ func NewApp(_ context.Context, appSettings backend.AppInstanceSettings) (instanc
 		fmt.Println("Error unmarshalling JSONData:", err)
 		return nil, err
 	}
-	fmt.Println("Causely Domain:", jsonDataStruct.CauselyDomain)
-	fmt.Println("Causely User:", jsonDataStruct.CauselyUser)
 	app.domain = jsonDataStruct.CauselyDomain
 	app.username = jsonDataStruct.CauselyUser
 	app.password = appSettings.DecryptedSecureJSONData["causelyPassword"]
