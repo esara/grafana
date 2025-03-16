@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {AppPluginMeta, PanelProps} from '@grafana/data';
-import {Button, Grid, LoadingPlaceholder, TextLink} from '@grafana/ui';
+import {TextLink} from '@grafana/ui';
 import {FetchResponse, getBackendSrv} from '@grafana/runtime';
-import { EntityHealthCard, EntityHealthCardData } from './entityHealthCard/entityHealthCard.component';
 import {lastValueFrom} from "rxjs";
 import {JsonData} from "../../components/AppConfig/AppConfig";
 import {AppPluginId} from "../../constants";
-import useServiceHealthApi from "./useServiceHealthApi";
+import {ServiceHealthSummaryContent} from "./serveHealthSummaryContent.component";
 interface Props extends PanelProps<void> {}
 
 
@@ -30,7 +29,7 @@ const ServiceHealthSummaryPanel: React.FC<Props> = () => {
   }, []); // Or [] if effect doesn't need props or state
 
   if (credentialsSet) {
-    return <ServiceHealthSummary/>;
+    return <ServiceHealthSummaryContent/>;
   }
   return(
       <>
@@ -38,38 +37,5 @@ const ServiceHealthSummaryPanel: React.FC<Props> = () => {
       </>
   )
 }
-
-const ServiceHealthSummary: React.FC = () => {
-  const {isLoading, data, error, fetchData} = useServiceHealthApi();
-
-  if (isLoading) {
-    return (
-        <LoadingPlaceholder text="Loading..." />
-    )
-  }
-  if (error) {
-      return (
-          <div>Error: {error}</div>
-      )
-  }
-  return (
-    <div className="service-health-summary-panel">
-      <div>
-        <Button variant="primary" onClick={() => fetchData()}>
-          Make api request
-        </Button>
-        <Grid columns={5} alignItems={'stretch'} gap={4}>
-          {data.map((entityHealthCardData: EntityHealthCardData) => {
-            return (
-              <div key={entityHealthCardData.severity}>
-                <EntityHealthCard key={entityHealthCardData.severity} data={entityHealthCardData} label="Services" />
-              </div>
-            );
-          })}
-        </Grid>
-      </div>
-    </div>
-  );
-};
 
 export default ServiceHealthSummaryPanel;
