@@ -102,7 +102,7 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
             width={60}
             id="causey-username"
             data-testid={testIds.appConfig.causelyUsername}
-            label={`Causely Username`}
+            label={`Causely Email`}
             value={state?.causelyUsername}
             placeholder={``}
             onChange={onChangeUsername}
@@ -117,7 +117,7 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
             id="causely-password"
             value={state?.causelyPassword}
             isConfigured={state.isCauselyPasswordSet}
-            placeholder={'Your secret Causely Password'}
+            placeholder={'Causely Password'}
             onChange={onChangePassword}
             onReset={onResetCauselyPassword}
           />
