@@ -1,3 +1,10 @@
+.service-health-summary-panel {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-items: stretch;
+  height: 100%;
+}
 .entity-health-card {
   .content {
     margin: 0.5rem 0;

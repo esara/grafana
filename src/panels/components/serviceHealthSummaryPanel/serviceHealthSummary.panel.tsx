@@ -3,8 +3,8 @@ import {AppPluginMeta, PanelProps} from '@grafana/data';
 import {TextLink} from '@grafana/ui';
 import {FetchResponse, getBackendSrv} from '@grafana/runtime';
 import {lastValueFrom} from "rxjs";
-import {JsonData} from "../../components/AppConfig/AppConfig";
-import {AppPluginId} from "../../constants";
+import {JsonData} from "../../../components/AppConfig/AppConfig";
+import {AppPluginId} from "../../../constants";
 import {ServiceHealthSummaryContent} from "./serveHealthSummaryContent.component";
 interface Props extends PanelProps<void> {}
 

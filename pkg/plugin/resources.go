@@ -60,16 +60,6 @@ func authenticate(userName string, password string, domain string) (string, erro
 	return response.AccessToken, nil
 }
 
-// createRequestBody creates a JSON-encoded body for the HTTP request.
-func createRequestBody(data map[string]interface{}) (io.Reader, error) {
-	bodyBytes, err := json.Marshal(data)
-	if err != nil {
-		log.DefaultLogger.Error("Error marshalling request body: ", err)
-		return nil, err
-	}
-	return bytes.NewReader(bodyBytes), nil
-}
-
 // getGraphQL proxies the GraphQL request to the Causely API and returns the json response.
 func getGraphQL(token string, body io.Reader, domain string) ([]byte, error) {
 	baseUrl := fmt.Sprintf("https://api.%s", domain)
@@ -103,32 +93,24 @@ func getGraphQL(token string, body io.Reader, domain string) ([]byte, error) {
 }
 
 // handleQuery is an HTTP POST resource that returns graphql JSON response.
-func (a *App) handleQuery(w http.ResponseWriter, req *http.Request) {
-
+func (app *App) handleQuery(w http.ResponseWriter, req *http.Request) {
 	if req.Method != http.MethodPost {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	token, err := authenticate(a.username, a.password, a.domain)
+	token, err := authenticate(app.username, app.password, app.domain)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	bodyData := make(map[string]interface{})
-	if err := json.NewDecoder(req.Body).Decode(&bodyData); err != nil {
-		http.Error(w, "invalid request body", http.StatusBadRequest)
-		return
-	}
-	log.DefaultLogger.Info("Query Request Body: ", bodyData)
-
-	body, err := createRequestBody(bodyData)
+	requestBody, err := io.ReadAll(req.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	response, err := getGraphQL(token, body, a.domain)
+	response, err := getGraphQL(token, bytes.NewReader(requestBody), app.domain)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -143,7 +125,7 @@ func (a *App) handleQuery(w http.ResponseWriter, req *http.Request) {
 }
 
 // handlePing is an example HTTP GET resource that returns a {"message": "ok"} JSON response.
-func (a *App) handlePing(w http.ResponseWriter, req *http.Request) {
+func (app *App) handlePing(w http.ResponseWriter, req *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	if _, err := w.Write([]byte(`{"message": "ok"}`)); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -154,7 +136,7 @@ func (a *App) handlePing(w http.ResponseWriter, req *http.Request) {
 
 // handleEcho is an example HTTP POST resource that accepts a JSON with a "message" key and
 // returns to the client whatever it is sent.
-func (a *App) handleEcho(w http.ResponseWriter, req *http.Request) {
+func (app *App) handleEcho(w http.ResponseWriter, req *http.Request) {
 	if req.Method != http.MethodPost {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -175,8 +157,8 @@ func (a *App) handleEcho(w http.ResponseWriter, req *http.Request) {
 }
 
 // registerRoutes takes a *http.ServeMux and registers some HTTP handlers.
-func (a *App) registerRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("/query", a.handleQuery)
-	mux.HandleFunc("/ping", a.handlePing)
-	mux.HandleFunc("/echo", a.handleEcho)
+func (app *App) registerRoutes(mux *http.ServeMux) {
+	mux.HandleFunc("/query", app.handleQuery)
+	mux.HandleFunc("/ping", app.handlePing)
+	mux.HandleFunc("/echo", app.handleEcho)
 }
