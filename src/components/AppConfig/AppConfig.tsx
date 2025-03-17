@@ -102,7 +102,7 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
             width={60}
             id="causey-username"
             data-testid={testIds.appConfig.causelyUsername}
-            label={`Causely Email`}
+            label={`Causely Username`}
             value={state?.causelyUsername}
             placeholder={``}
             onChange={onChangeUsername}

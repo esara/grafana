@@ -51,7 +51,7 @@
         }
       ],
       "title": "Causely Service Health Panel",
-      "type": "causely-causely-panel"
+      "type": "causely-service-panel"
     }
   ],
   "refresh": "",
@@ -66,7 +66,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Provisioned causelyPanel dashboard",
+  "title": "Provisioned Causely dashboard",
   "uid": "a538aeff-5a8a-42a5-901c-938d896fdd6f",
   "version": 1,
   "weekStart": ""

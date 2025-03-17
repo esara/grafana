@@ -7,8 +7,8 @@ test('should be possible to save app configuration', async ({ appConfigPage, pag
   await page.getByRole('button', { name: /reset/i }).click();
 
   // enter some valid values
-  await page.getByRole('textbox', { name: 'Causely Password' }).fill('admin');
-  await page.getByRole('textbox', { name: 'Causely Domain' }).clear();
+  await page.getByRole('textbox', { name: 'Causely Username' }).fill('admin');
+  await page.getByRole('textbox', { name: 'Causely Password' }).clear();
   await page.getByRole('textbox', { name: 'Causely Domain' }).fill('causely.app');
 
   // listen for the server response on the saved form

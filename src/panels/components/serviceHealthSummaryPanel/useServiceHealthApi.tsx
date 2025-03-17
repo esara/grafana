@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import {getBackendSrv} from "@grafana/runtime";
-import {AppPluginId} from "../../../constants";
-import {ApiDefectCount, ApiEntityTypeCount, EntityHealthCardsUtil} from "./entityHealthCards.util";
-import {EntityHealthCardData} from "./entityHealthCard.component";
+import { getBackendSrv } from "@grafana/runtime";
+import { AppPluginId } from "../../../constants";
+import { ApiDefectCount, ApiEntityTypeCount, EntityHealthCardsUtil } from "./entityHealthCards.util";
+import { EntityHealthCardData } from "./entityHealthCard.component";
 
 const entityCountPayload = {
     operationName: 'entityTypeCounts',
@@ -55,7 +55,6 @@ const useServiceHealthApi = () => {
 
         return () => clearInterval(interval); // Cleanup interval
     }, []);
-
 
     return { isLoading, data, error, fetchData };
 };

@@ -6,8 +6,6 @@ export const AppPluginId = `${pluginJson.id}`;
 
 export enum ROUTES {
   Home = 'home',
-  Causely = 'causely',
-  ServiceSummary = 'service-summary',
   HelloWorld = 'hello-world',
 }
 

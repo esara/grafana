@@ -22,7 +22,7 @@
   "includes": [
     {
       "type": "panel",
-      "name": "causely-causely-panel"
+      "name": "causely-service-panel"
     }
   ],
   "dependencies": {

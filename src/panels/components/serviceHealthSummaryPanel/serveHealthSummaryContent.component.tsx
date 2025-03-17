@@ -1,7 +1,7 @@
 import React from "react";
 import useServiceHealthApi from "./useServiceHealthApi";
-import {LoadingPlaceholder} from "@grafana/ui";
-import {EntityHealthCard, EntityHealthCardData} from "./entityHealthCard.component";
+import { LoadingPlaceholder } from "@grafana/ui";
+import { EntityHealthCard, EntityHealthCardData } from "./entityHealthCard.component";
 
 export const ServiceHealthSummaryContent: React.FC = () => {
     const {isLoading, data, error} = useServiceHealthApi();
