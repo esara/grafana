@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "panel",
-  "name": "Causely Service Panel",
+  "name": "Causely - Service Health Summary Panel",
   "id": "causely-service-panel",
   "info": {
     "keywords": ["panel"],

@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from 'react';
-import {Card} from '@grafana/ui';
+import { Card } from '@grafana/ui';
 
 import './entityHealthCard.scss'
 
@@ -26,7 +26,7 @@ export const EntityHealthCard: FC<EntityHealthCardProps> = (
 
     return (
     <div className={'entity-health-card'}>
-        <Card href={hrefLink} id="causely-service-health-card"
+        <Card href={hrefLink} id="causely-entity-health-card"
             // @ts-ignore : open link in separate tab
               target="_blank"
               rel="noopener noreferrer">

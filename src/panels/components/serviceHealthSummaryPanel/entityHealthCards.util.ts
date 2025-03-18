@@ -67,6 +67,7 @@ export class EntityHealthCardsUtil {
   }
   
   private static getTitle(severity: string): string {
+    console.log("Severity", severity);
     switch (severity.toLowerCase()) {
       case "normal":
         return "Healthy Services";

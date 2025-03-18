@@ -23,28 +23,6 @@
     {
       "type": "panel",
       "name": "causely-service-panel"
-    },
-    {
-      "type": "page",
-      "name": "Home",
-      "path": "/a/%PLUGIN_ID%/home",
-      "addToNav": true,
-      "defaultNav": true
-    },
-    {
-      "type": "page",
-      "name": "Service Overview",
-      "path": "/a/%PLUGIN_ID%/service-overview",
-      "addToNav": true,
-      "defaultNav": false
-    },
-    {
-      "type": "page",
-      "icon": "cog",
-      "name": "Configuration",
-      "path": "/plugins/%PLUGIN_ID%",
-      "role": "Admin",
-      "addToNav": true
     }
   ],
   "dependencies": {

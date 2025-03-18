@@ -6,11 +6,10 @@ import { css } from '@emotion/css';
 import { testIds } from '../testIds';
 import { lastValueFrom } from 'rxjs';
 
-type JsonData = {
+export type JsonData = {
   causelyDomain?: string;
   isCauselyPasswordSet?: boolean;
   causelyUsername?: string;
-  causelyPassword?: string;
 };
 
 type State = {
@@ -118,7 +117,7 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
             id="causely-password"
             value={state?.causelyPassword}
             isConfigured={state.isCauselyPasswordSet}
-            placeholder={'Your secret Causely Password'}
+            placeholder={'Causely Password'}
             onChange={onChangePassword}
             onReset={onResetCauselyPassword}
           />
