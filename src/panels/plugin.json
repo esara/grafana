@@ -4,8 +4,8 @@
   "name": "Causely - Service Health Summary Panel",
   "id": "causely-service-panel",
   "info": {
-    "keywords": ["panel"],
-    "description": "",
+    "keywords": ["panel", "causely", "service-health", "monitoring"],
+    "description": "A comprehensive panel that displays service health status, dependencies, and key metrics. Visualize service relationships and health indicators in an intuitive interface.",
     "author": {
       "name": "Causely"
     },
@@ -14,7 +14,12 @@
       "large": "img/logo.svg"
     },
     "links": [],
-    "screenshots": [],
+    "screenshots": [
+      {
+        "name": "panel-preview",
+        "path": "img/panel-preview.png"
+      }
+    ],
     "version": "%VERSION%",
     "updated": "%TODAY%"
   },
