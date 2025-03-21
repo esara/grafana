@@ -17,8 +17,8 @@
     },
     "screenshots": [
       {
-        "name": "dashboard-overview",
-        "path": "img/dashboard-overview.png"
+        "name": "configuration",
+        "path": "img/configuration.png"
       },
       {
         "name": "service-health-panel",
