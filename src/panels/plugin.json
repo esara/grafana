@@ -7,7 +7,7 @@
     "keywords": ["panel", "causely", "service-health", "monitoring"],
     "description": "A comprehensive panel that displays service health status, dependencies, and key metrics. Visualize service relationships and health indicators in an intuitive interface.",
     "author": {
-      "name": "Causely"
+      "name": "esara"
     },
     "logos": {
       "small": "img/logo.svg",
@@ -16,8 +16,8 @@
     "links": [],
     "screenshots": [
       {
-        "name": "panel-preview",
-        "path": "img/panel-preview.png"
+        "name": "service-health-panel",
+        "path": "img/service-health-panel.png"
       }
     ],
     "version": "%VERSION%",
