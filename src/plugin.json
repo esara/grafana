@@ -9,7 +9,7 @@
     "keywords": ["app", "causely", "service-health", "monitoring"],
     "description": "Causely App for Grafana provides real-time service health monitoring and insights. Track service dependencies, health status, and performance metrics in a unified dashboard.",
     "author": {
-      "name": "Esara"
+      "name": "esara"
     },
     "logos": {
       "small": "img/logo.svg",
