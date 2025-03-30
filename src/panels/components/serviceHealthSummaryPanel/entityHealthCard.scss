@@ -1,0 +1,43 @@
+.service-health-summary-panel {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: stretch;
+  height: 100%;
+  overflow: scroll;
+}
+.entity-health-card {
+  .content {
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .count {
+    margin: 0.5rem 0;
+    font-size: 1.75rem;
+  }
+  .severity-critical{
+    color: #fa4d56;
+  }
+
+  .severity-major{
+    color: #ff832b;
+  }
+
+  .severity-minor{
+    color: #f1c21b;
+  }
+  .severity-warning{
+    color: #f1c21b;
+  }
+
+  .severity-normal{
+    color: #42be65
+  }
+
+  .percentage {
+      font-size: .90rem;
+      color: #c6c6c6;
+    }
+}

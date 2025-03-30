@@ -1,19 +1,21 @@
 import { test, expect } from './fixtures';
 
 test('should be possible to save app configuration', async ({ appConfigPage, page }) => {
-  const saveButton = page.getByRole('button', { name: /Save API settings/i });
+  // Wait for the page to load
+  await page.waitForLoadState('networkidle');
 
-  // reset the configured secret
-  await page.getByRole('button', { name: /reset/i }).click();
+  // Click the Configuration tab first to ensure we're on the right page
+  await page.locator('[data-testid="data-testid Tab Configuration"]').click();
+  await page.waitForLoadState('networkidle');
 
   // enter some valid values
-  await page.getByRole('textbox', { name: 'API Key' }).fill('secret-api-key');
-  await page.getByRole('textbox', { name: 'API Url' }).clear();
-  await page.getByRole('textbox', { name: 'API Url' }).fill('http://www.my-awsome-grafana-app.com/api');
+  await page.getByRole('textbox', { name: 'Causely Username' }).fill('admin');
+  await page.getByRole('textbox', { name: 'Causely Password' }).fill('password');
+  await page.getByRole('textbox', { name: 'Causely Domain' }).fill('causely.app');
 
   // listen for the server response on the saved form
   const saveResponse = appConfigPage.waitForSettingsResponse();
 
-  await saveButton.click();
+  await page.getByRole('button', { name: /Save Causely Credentials/i }).click();
   await expect(saveResponse).toBeOK();
 });

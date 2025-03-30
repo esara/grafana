@@ -6,51 +6,37 @@
   "backend": true,
   "executable": "gpx_causely",
   "info": {
-    "keywords": ["app"],
-    "description": "",
+    "keywords": ["app", "causely", "service-health", "monitoring"],
+    "description": "Causely App for Grafana provides real-time service health monitoring and insights. Track service dependencies, health status, and performance metrics in a unified dashboard.",
     "author": {
-      "name": "Esara"
+      "name": "esara"
     },
     "logos": {
       "small": "img/logo.svg",
       "large": "img/logo.svg"
     },
-    "screenshots": [],
+    "screenshots": [
+      {
+        "name": "configuration",
+        "path": "img/configuration.png"
+      },
+      {
+        "name": "service-health-panel",
+        "path": "img/service-health-panel.png"
+      }
+    ],
     "version": "%VERSION%",
     "updated": "%TODAY%"
   },
   "includes": [
     {
-      "type": "page",
-      "name": "Home",
-      "path": "/a/%PLUGIN_ID%/home",
-      "addToNav": true,
-      "defaultNav": true
-    },
-    {
-      "type": "page",
-      "name": "Page with tabs",
-      "path": "/a/%PLUGIN_ID%/page-with-tabs",
-      "addToNav": true,
-      "defaultNav": false
-    },
-    {
-      "type": "page",
-      "name": "Page with drilldown",
-      "path": "/a/%PLUGIN_ID%/page-with-drilldown",
-      "addToNav": true,
-      "defaultNav": false
-    },
-    {
-      "type": "page",
-      "name": "Hello world",
-      "path": "/a/%PLUGIN_ID%/hello-world",
-      "addToNav": true,
-      "defaultNav": false
+      "type": "panel",
+      "name": "causely-service-panel",
+      "path": "panels/plugin.json"
     }
   ],
   "dependencies": {
-    "grafanaDependency": ">=10.4.0",
+    "grafanaDependency": ">=11.2.7",
     "plugins": []
   }
 }
