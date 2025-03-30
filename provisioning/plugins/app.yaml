@@ -6,7 +6,7 @@ apps:
     org_name: 'esara'
     disabled: false
     jsonData:
-      apiUrl: http://default-url.com
-      isApiKeySet: true
+      causelyDomain: causely.app
+      causelyUser: admin
     secureJsonData:
-      apiKey: secret-key
+      causelyPassword: password
