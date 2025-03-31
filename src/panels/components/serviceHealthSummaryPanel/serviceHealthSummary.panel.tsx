@@ -13,13 +13,12 @@ const ServiceHealthSummaryPanel: React.FC<Props> = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const response = getBackendSrv().fetch({
+      const response = getBackendSrv().fetch<AppPluginMeta<JsonData>>({
         url: `/api/plugins/${AppPluginId}/settings`,
         method: 'GET',
       });
 
-      // @ts-ignore
-      const dataResponse: FetchResponse<AppPluginMeta<JsonData>> = await lastValueFrom<>(response);
+      const dataResponse: FetchResponse<AppPluginMeta<JsonData>> = await lastValueFrom<FetchResponse<AppPluginMeta<JsonData>>>(response);
       const causelyCreds: JsonData = dataResponse?.data?.jsonData || {};
 
       setCredentialsSet(!!(causelyCreds.isCauselyPasswordSet && causelyCreds.causelyUsername && causelyCreds.causelyDomain));
