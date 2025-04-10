@@ -42,8 +42,7 @@ const useServiceHealthApi = () => {
                     setData(EntityHealthCardsUtil.toEntityHealthCardDataList(defectCounts, entityCounts));
                 })
         } catch (error) {
-            // @ts-ignore
-            setError(error.message);
+            setError(error instanceof Error ? error.message : 'An unknown error occurred');
         } finally {
             setIsLoading(false);
         }

@@ -7,6 +7,6 @@ apps:
     disabled: false
     jsonData:
       causelyDomain: causely.app
-      causelyUser: admin
+      causelyUsername: admin
     secureJsonData:
       causelyPassword: password

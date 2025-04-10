@@ -30,7 +30,7 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
   const [state, setState] = useState<State>({
     causelyDomain: jsonData?.causelyDomain || '',
     isCauselyPasswordSet: Boolean(jsonData?.isCauselyPasswordSet),
-    causelyUsername: '',
+    causelyUsername: jsonData?.causelyUsername || '',
     causelyPassword: '',
   });
 
