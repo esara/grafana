@@ -1,5 +1,4 @@
 import React from 'react';
-import { SceneApp, useSceneApp } from '@grafana/scenes';
 import { AppRootProps } from '@grafana/data';
 import { config } from '@grafana/runtime';
 import { Alert } from '@grafana/ui';
@@ -7,21 +6,9 @@ import { DATASOURCE_REF } from '../../constants';
 import { PluginPropsContext } from '../../utils/utils.plugin';
 import './../../styles/main.scss';
 
-function getSceneApp() {
-  return new SceneApp({
-    pages: [],
-    urlSyncOptions: {
-      updateUrlOnInit: true,
-      createBrowserHistorySteps: true,
-    },
-  });
-}
-
-function AppWithScenes() {
-  const scene = useSceneApp(getSceneApp);
-
+function App(props: AppRootProps) {
   return (
-    <>
+    <PluginPropsContext.Provider value={props}>
       {!config.datasources[DATASOURCE_REF.uid] && (
         <Alert title={`Missing ${DATASOURCE_REF.uid} datasource`}>
           These demos depend on <b>testdata</b> datasource: <code>{JSON.stringify(DATASOURCE_REF)}</code>. See{' '}
@@ -31,16 +18,7 @@ function AppWithScenes() {
           for more details.
         </Alert>
       )}
-
-      <scene.Component model={scene} />
-    </>
-  );
-}
-
-function App(props: AppRootProps) {
-  return (
-    <PluginPropsContext.Provider value={props}>
-      <AppWithScenes />
+      {/* Add your main app content here */}
     </PluginPropsContext.Provider>
   );
 }

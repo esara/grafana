@@ -20,18 +20,18 @@ type EntityHealthCardProps = {
 export const EntityHealthCard: FC<EntityHealthCardProps> = (
   props: EntityHealthCardProps,
 ): ReactElement => {
-  const { data, label } = props;
-  const { severity, count, total, percentage, rootCauseCount, title } = data;
-  const hrefLink = 'https://portal.causely.app/observe/services'
+    const { data, label } = props;
+    const { severity, count, total, percentage, rootCauseCount, title } = data;
+    const handleOnClick = () => {
+        const hrefLink = 'https://portal.causely.app/observe/services'
+        window.open(hrefLink, '_blank', 'noopener,noreferrer');
+    };
 
     return (
     <div className={'entity-health-card'}>
-        <Card href={hrefLink} id="causely-entity-health-card"
-            // @ts-ignore : open link in separate tab
-              target="_blank"
-              rel="noopener noreferrer">
+        <Card id="causely-entity-health-card"
+                onClick={handleOnClick}>
             <Card.Heading>
-
                 {title}
             </Card.Heading>
             <Card.Description>

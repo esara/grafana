@@ -6,10 +6,13 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
+
+const defaultTimeout = 10 * time.Second
 
 type UserResponse struct {
 	AccessToken  string `json:"accessToken"`
@@ -17,10 +20,24 @@ type UserResponse struct {
 	ExpiresIn    int    `json:"expiresIn"`
 }
 
+// NewHTTPClient creates a new http.Client with the default timeout.
+func NewHTTPClient() *http.Client {
+	return &http.Client{Timeout: defaultTimeout}
+}
+
+var httpClient *http.Client
+
 // authenticate sends a POST request to Frontegg to get the access token.
 func authenticate(userName string, password string, domain string) (string, error) {
+	if httpClient == nil {
+		httpClient = NewHTTPClient()
+	}
+
 	authUrl := fmt.Sprintf("https://auth.%s", domain)
-	loginUrl := fmt.Sprintf("%s/frontegg/identity/resources/auth/v1/user", authUrl)
+	loginUrl, err := url.JoinPath(authUrl, "frontegg/identity/resources/auth/v1/user")
+	if err != nil {
+		return "", fmt.Errorf("failed to construct login URL: %w", err)
+	}
 
 	payload := map[string]string{"email": userName, "password": password}
 	payloadBytes, err := json.Marshal(payload)
@@ -28,7 +45,6 @@ func authenticate(userName string, password string, domain string) (string, erro
 		return "", err
 	}
 
-	client := &http.Client{}
 	req, err := http.NewRequest(http.MethodPost, loginUrl, bytes.NewReader(payloadBytes))
 	if err != nil {
 		return "", err
@@ -36,7 +52,7 @@ func authenticate(userName string, password string, domain string) (string, erro
 	req.Header.Set("accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
 
-	res, err := client.Do(req)
+	res, err := httpClient.Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -44,17 +60,20 @@ func authenticate(userName string, password string, domain string) (string, erro
 
 	if res.StatusCode != http.StatusOK {
 		responseData, _ := io.ReadAll(res.Body)
-		return "", fmt.Errorf("authentication failed: %s - %s", res.Status, responseData)
+		log.DefaultLogger.Error("Authentication failed", "status", res.Status, "response", string(responseData))
+		return "", fmt.Errorf("authentication failed, see Grafana server log for details")
 	}
 
 	responseData, err := io.ReadAll(res.Body)
 	if err != nil {
-		return "", fmt.Errorf("error reading response body: %w", err)
+		log.DefaultLogger.Error("Error reading response body", "error", err)
+		return "", fmt.Errorf("error reading response bod, see Grafana server log for details")
 	}
 
 	var response UserResponse
 	if err = json.Unmarshal(responseData, &response); err != nil {
-		return "", fmt.Errorf("failed to parse response: %w", err)
+		log.DefaultLogger.Error("Failed to parse response", "error", err)
+		return "", fmt.Errorf("failed to parse response, see Grafana server log for details")
 	}
 
 	return response.AccessToken, nil
@@ -62,9 +81,15 @@ func authenticate(userName string, password string, domain string) (string, erro
 
 // getGraphQL proxies the GraphQL request to the Causely API and returns the json response.
 func getGraphQL(token string, body io.Reader, domain string) ([]byte, error) {
+	if httpClient == nil {
+		httpClient = NewHTTPClient()
+	}
+
 	baseUrl := fmt.Sprintf("https://api.%s", domain)
-	url := fmt.Sprintf("%s/query/", baseUrl)
-	client := &http.Client{Timeout: 10 * time.Second}
+	url, err := url.JoinPath(baseUrl, "query")
+	if err != nil {
+		return nil, fmt.Errorf("failed to construct GraphQL URL: %w", err)
+	}
 	req, err := http.NewRequest(http.MethodPost, url, body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %w", err)
@@ -72,7 +97,7 @@ func getGraphQL(token string, body io.Reader, domain string) ([]byte, error) {
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+token)
 
-	res, err := client.Do(req)
+	res, err := httpClient.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("request failed: %w", err)
 	}
@@ -80,13 +105,14 @@ func getGraphQL(token string, body io.Reader, domain string) ([]byte, error) {
 
 	if res.StatusCode != http.StatusOK {
 		responseData, _ := io.ReadAll(res.Body)
-		return nil, fmt.Errorf("request failed: %s - %s", res.Status, responseData)
+		log.DefaultLogger.Error("GraphQL request failed", "status", res.Status, "response", string(responseData))
+		return nil, fmt.Errorf("request failed, see Grafana server log for details")
 	}
 
 	responseData, err := io.ReadAll(res.Body)
 	if err != nil {
-		log.DefaultLogger.Error("Error reading GraphQL response body: ", err)
-		return nil, fmt.Errorf("error reading response body: %w", err)
+		log.DefaultLogger.Error("Error reading GraphQL response body", "error", err)
+		return nil, fmt.Errorf("request failed, see Grafana server log for details")
 	}
 
 	return responseData, nil
@@ -100,19 +126,22 @@ func (app *App) handleQuery(w http.ResponseWriter, req *http.Request) {
 	}
 	token, err := authenticate(app.username, app.password, app.domain)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.DefaultLogger.Error("Authentication failed", "error", err)
+		http.Error(w, "authentication failed, see Grafana server log for details", http.StatusInternalServerError)
 		return
 	}
 
 	requestBody, err := io.ReadAll(req.Body)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.DefaultLogger.Error("Error reading request body", "error", err)
+		http.Error(w, "error reading request body see Grafana server log for details", http.StatusInternalServerError)
 		return
 	}
 
 	response, err := getGraphQL(token, bytes.NewReader(requestBody), app.domain)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.DefaultLogger.Error("GraphQL request failed", "error", err)
+		http.Error(w, "graphql request failed, see Grafana server log for details", http.StatusInternalServerError)
 		return
 	}
 
