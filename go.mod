@@ -2,7 +2,7 @@ module github.com/esara/causely
 
 go 1.24.1
 
-require github.com/grafana/grafana-plugin-sdk-go v0.276.0
+require github.com/grafana/grafana-plugin-sdk-go v0.277.0
 
 require (
 	github.com/BurntSushi/toml v1.4.0 // indirect
@@ -80,10 +80,10 @@ require (
 	go.opentelemetry.io/proto/otlp v1.5.0 // indirect
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0 // indirect
 	golang.org/x/mod v0.23.0 // indirect
-	golang.org/x/net v0.37.0 // indirect
+	golang.org/x/net v0.39.0 // indirect
 	golang.org/x/sync v0.13.0 // indirect
-	golang.org/x/sys v0.31.0 // indirect
-	golang.org/x/text v0.23.0 // indirect
+	golang.org/x/sys v0.32.0 // indirect
+	golang.org/x/text v0.24.0 // indirect
 	golang.org/x/tools v0.30.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	google.golang.org/genproto v0.0.0-20210630183607-d20f26d13c79 // indirect
