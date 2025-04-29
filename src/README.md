@@ -21,13 +21,13 @@ An active Causely subscription.  You can sign up for a free trial [here][3].
 
 **Prerequisite:**
 - Grafana Cloud account (including the free tier)
-- Causely credentials (username and password)
+- Causely credentials (either clientId/secret or username/password)
 
 **Steps:**
 1. In Grafana Cloud, go to **Administration** > **Plugins and data** > **Plugins** in the side navigation menu.
 2. Search for the **Causely** plugin and click to open the plugin page.
 3. Navigate to the **Configuration** tab
-4. Enter a valid **Causely username** and **password**.
+4. Enter a valid **Causely clientId/secret** or **Causely username/password**.
 5. Click **Save Causely Credentials**.
 
 ## Install the Plugin Directly
