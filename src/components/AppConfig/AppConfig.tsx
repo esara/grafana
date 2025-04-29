@@ -8,13 +8,20 @@ import { lastValueFrom } from 'rxjs';
 
 export type JsonData = {
   causelyDomain?: string;
+  isCauselySecretSet?: boolean;
   isCauselyPasswordSet?: boolean;
+  causelyClientId?: string;
   causelyUsername?: string;
 };
 
 type State = {
   // The URL to reach our custom API.
   causelyDomain: string;
+  // Causely ClientId
+  causelyClientId: string;
+  // Causely Secret
+  isCauselySecretSet: boolean;
+  causelySecret: string;
   // Causely Username
   causelyUsername: string;
   // Causely Password
@@ -29,17 +36,32 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
   const { enabled, pinned, jsonData } = plugin.meta;
   const [state, setState] = useState<State>({
     causelyDomain: jsonData?.causelyDomain || '',
-    isCauselyPasswordSet: Boolean(jsonData?.isCauselyPasswordSet),
+    causelyClientId: jsonData?.causelyClientId || '',
+    isCauselySecretSet: Boolean(jsonData?.isCauselySecretSet),
+    causelySecret: '',
     causelyUsername: jsonData?.causelyUsername || '',
+    isCauselyPasswordSet: Boolean(jsonData?.isCauselyPasswordSet),
     causelyPassword: '',
   });
 
-  const isSubmitDisabled = Boolean(!state.causelyDomain || !state.causelyUsername || !state.causelyPassword);
+  const isSubmitDisabled = Boolean(
+    !state.causelyDomain || 
+    (!state.causelyClientId && !state.causelyUsername) || // At least one of clientId or username must be set
+    (state.causelyClientId && !state.causelySecret && !state.isCauselySecretSet) || // If clientId is set, secret must be set
+    (state.causelyUsername && !state.causelyPassword && !state.isCauselyPasswordSet) // If username is set, password must be set
+  );
 
   const onChangeCauselyDomain = (event: ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,
       causelyDomain: event.target.value.trim(),
+    });
+  };
+
+  const onChangeClientId = (event: ChangeEvent<HTMLInputElement>) => {
+    setState({
+      ...state,
+      causelyClientId: event.target.value.trim(),
     });
   };
 
@@ -50,12 +72,26 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
     });
   };
 
+  const onResetCauselySecret = () =>
+      setState({
+        ...state,
+        causelySecret: '',
+        isCauselySecretSet: false,
+      });
+
   const onResetCauselyPassword = () =>
     setState({
       ...state,
       causelyPassword: '',
       isCauselyPasswordSet: false,
     });
+
+  const onChangeSecret = (event: ChangeEvent<HTMLInputElement>) => {
+    setState({
+      ...state,
+      causelySecret: event.target.value.trim(),
+    });
+  };
 
   const onChangePassword = (event: ChangeEvent<HTMLInputElement>) => {
     setState({
@@ -70,12 +106,15 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
       pinned,
       jsonData: {
         causelyDomain: state.causelyDomain,
+        isCauselySecretSet: true,
         isCauselyPasswordSet: true,
+        causelyClientId: state.causelyClientId,
         causelyUsername: state.causelyUsername,
       },
       // This cannot be queried later by the frontend.
       // We don't want to override it in case it was set previously and left untouched now.
       secureJsonData: {
+        ...(state.isCauselySecretSet ? {} : { causelySecret: state.causelySecret }),
         ...(state.isCauselyPasswordSet ? {} : { causelyPassword: state.causelyPassword }),
       },
     });
@@ -87,12 +126,39 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
         <Field label="Causely Domain" description="" className={s.marginTop}>
           <Input
             width={60}
-            id="causely-dmain"
+            id="causely-domain"
             data-testid={testIds.appConfig.causelyDomain}
             label={`Causely Domain`}
             value={state?.causelyDomain}
             placeholder={`causely.app`}
             onChange={onChangeCauselyDomain}
+          />
+        </Field>
+
+        {/* Causely ClientId */}
+        <Field label="Causely ClientId" description="" className={s.marginTop}>
+          <Input
+              width={60}
+              id="causey-clientid"
+              data-testid={testIds.appConfig.causelyClientId}
+              label={`Causely ClientId`}
+              value={state?.causelyClientId}
+              placeholder={``}
+              onChange={onChangeClientId}
+          />
+        </Field>
+
+        {/* Causely Secret */}
+        <Field label="Causely Secret" description="Causely Secret for authentication" className={s.marginTop}>
+          <SecretInput
+              width={60}
+              data-testid={testIds.appConfig.causelyPassword}
+              id="causely-secret"
+              value={state?.causelySecret}
+              isConfigured={state.isCauselySecretSet}
+              placeholder={'Causely Secret'}
+              onChange={onChangeSecret}
+              onReset={onResetCauselySecret}
           />
         </Field>
 
@@ -110,7 +176,7 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
         </Field>
 
         {/* Causely Password */}
-        <Field label="Causely Password" description="Causely Password for authernication" className={s.marginTop}>
+        <Field label="Causely Password" description="Causely Password for authentication" className={s.marginTop}>
           <SecretInput
             width={60}
             data-testid={testIds.appConfig.causelyPassword}

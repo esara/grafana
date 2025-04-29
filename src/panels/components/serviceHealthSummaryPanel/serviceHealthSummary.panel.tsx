@@ -21,7 +21,13 @@ const ServiceHealthSummaryPanel: React.FC<Props> = () => {
       const dataResponse: FetchResponse<AppPluginMeta<JsonData>> = await lastValueFrom<FetchResponse<AppPluginMeta<JsonData>>>(response);
       const causelyCreds: JsonData = dataResponse?.data?.jsonData || {};
 
-      setCredentialsSet(!!(causelyCreds.isCauselyPasswordSet && causelyCreds.causelyUsername && causelyCreds.causelyDomain));
+      setCredentialsSet(!!(
+        causelyCreds.causelyDomain && 
+        (
+          (causelyCreds.isCauselySecretSet && causelyCreds.causelyClientId) || 
+          (causelyCreds.isCauselyPasswordSet && causelyCreds.causelyUsername)
+        )
+      ));
     }
     fetchData();
   }, []); // Or [] if effect doesn't need props or state

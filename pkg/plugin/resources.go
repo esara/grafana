@@ -15,9 +15,11 @@ import (
 const defaultTimeout = 10 * time.Second
 
 type UserResponse struct {
-	AccessToken  string `json:"accessToken"`
-	RefreshToken string `json:"refreshToken"`
-	ExpiresIn    int    `json:"expiresIn"`
+	Access_token  string `json:"access_token"` // For client ID authentication
+	Refresh_token string `json:"refreshToken"`
+	AccessToken   string `json:"accessToken"` // For username authentication
+	RefreshToken  string `json:"refreshToken"`
+	ExpiresIn     int    `json:"expiresIn"`
 }
 
 // NewHTTPClient creates a new http.Client with the default timeout.
@@ -28,18 +30,11 @@ func NewHTTPClient() *http.Client {
 var httpClient *http.Client
 
 // authenticate sends a POST request to Frontegg to get the access token.
-func authenticate(userName string, password string, domain string) (string, error) {
+func authenticate(loginUrl string, payload map[string]string) (string, error) {
 	if httpClient == nil {
 		httpClient = NewHTTPClient()
 	}
 
-	authUrl := fmt.Sprintf("https://auth.%s", domain)
-	loginUrl, err := url.JoinPath(authUrl, "frontegg/identity/resources/auth/v1/user")
-	if err != nil {
-		return "", fmt.Errorf("failed to construct login URL: %w", err)
-	}
-
-	payload := map[string]string{"email": userName, "password": password}
 	payloadBytes, err := json.Marshal(payload)
 	if err != nil {
 		return "", err
@@ -76,7 +71,17 @@ func authenticate(userName string, password string, domain string) (string, erro
 		return "", fmt.Errorf("failed to parse response, see Grafana server log for details")
 	}
 
-	return response.AccessToken, nil
+	// Get token from either field
+	token := response.Access_token
+	if token == "" {
+		token = response.AccessToken
+	}
+	if token == "" {
+		log.DefaultLogger.Error("No access token found in response")
+		return "", fmt.Errorf("no access token found in response")
+	}
+
+	return token, nil
 }
 
 // getGraphQL proxies the GraphQL request to the Causely API and returns the json response.
@@ -124,7 +129,31 @@ func (app *App) handleQuery(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	token, err := authenticate(app.username, app.password, app.domain)
+
+	var err error
+	var loginUrl string
+	var payload map[string]string
+	authUrl := fmt.Sprintf("https://auth.%s", app.domain)
+	// Create authentication payload and url using either clientId or username
+	if app.clientId != "" && app.secret != "" {
+		payload = map[string]string{"clientId": app.clientId, "secret": app.secret}
+		loginUrl, err = url.JoinPath(authUrl, "frontegg/identity/resources/auth/v2/api-token")
+	} else if app.username != "" && app.password != "" {
+		payload = map[string]string{"email": app.username, "password": app.password}
+		loginUrl, err = url.JoinPath(authUrl, "frontegg/identity/resources/auth/v1/user")
+	} else {
+		log.DefaultLogger.Error("Missing clientId aod username credentials")
+		http.Error(w, "missing clientId aod username credentials", http.StatusInternalServerError)
+		return
+	}
+	// Check for errors during loginUrl creation
+	if err != nil {
+		log.DefaultLogger.Error("Failed to construct login URL", "error", err)
+		http.Error(w, "failed to construct login URL", http.StatusInternalServerError)
+		return
+	}
+
+	token, err := authenticate(loginUrl, payload)
 	if err != nil {
 		log.DefaultLogger.Error("Authentication failed", "error", err)
 		http.Error(w, "authentication failed, see Grafana server log for details", http.StatusInternalServerError)

@@ -26,13 +26,16 @@ var (
 type App struct {
 	backend.CallResourceHandler
 	domain   string
+	clientId string
+	secret   string
 	username string
 	password string
 }
 
 type JSONDataStruct struct {
-	CauselyDomain string `json:"causelyDomain"`
-	CauselyUser   string `json:"causelyUsername"`
+	CauselyDomain   string `json:"causelyDomain"`
+	CauselyUser     string `json:"causelyUsername"`
+	CauselyClientId string `json:"causelyClientId"`
 }
 
 // NewApp creates a new example *App instance.
@@ -52,7 +55,9 @@ func NewApp(_ context.Context, appSettings backend.AppInstanceSettings) (instanc
 	}
 	app.domain = jsonDataStruct.CauselyDomain
 	app.username = jsonDataStruct.CauselyUser
+	app.clientId = jsonDataStruct.CauselyClientId
 	app.password = appSettings.DecryptedSecureJSONData["causelyPassword"]
+	app.secret = appSettings.DecryptedSecureJSONData["causelySecret"]
 
 	// Use a httpadapter (provided by the SDK) for resource calls. This allows us
 	// to use a *http.ServeMux for resource calls, so we can map multiple routes

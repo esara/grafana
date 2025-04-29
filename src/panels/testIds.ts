@@ -2,6 +2,8 @@ export const testIds = {
   appConfig: {
     container: 'data-testid ac-container',
     causelyDomain: 'data-testid ac-causely-domain',
+    causelyClientId: 'data-testid ac-causely-client-id',
+    causelySecret: 'data-testid ac-causely-secret',
     causelyUsername: 'data-testid ac-causely-username',
     causelyPassword: 'data-testid ac-causely-password',
     submit: 'data-testid ac-submit-form',
