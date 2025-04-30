@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AppPluginMeta, PanelProps } from '@grafana/data';
 import { TextLink } from '@grafana/ui';
-import { FetchResponse, getBackendSrv } from '@grafana/runtime';
-import { lastValueFrom } from "rxjs";
+import { getBackendSrv } from '@grafana/runtime';
 import { JsonData } from "../../../components/AppConfig/AppConfig";
 import { AppPluginId } from "../../../constants";
 import { ServiceHealthSummaryContent } from "./serveHealthSummaryContent.component";
@@ -13,13 +12,8 @@ const ServiceHealthSummaryPanel: React.FC<Props> = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const response = getBackendSrv().fetch<AppPluginMeta<JsonData>>({
-        url: `/api/plugins/${AppPluginId}/settings`,
-        method: 'GET',
-      });
-
-      const dataResponse: FetchResponse<AppPluginMeta<JsonData>> = await lastValueFrom<FetchResponse<AppPluginMeta<JsonData>>>(response);
-      const causelyCreds: JsonData = dataResponse?.data?.jsonData || {};
+      const response = await getBackendSrv().get<AppPluginMeta<JsonData>>(`/api/plugins/${AppPluginId}/settings`);
+      const causelyCreds: JsonData = response?.jsonData || {};
 
       setCredentialsSet(!!(
         causelyCreds.causelyDomain && 
