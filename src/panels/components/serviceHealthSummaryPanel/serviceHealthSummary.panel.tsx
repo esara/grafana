@@ -16,9 +16,9 @@ const ServiceHealthSummaryPanel: React.FC<Props> = () => {
       const causelyCreds: JsonData = response?.jsonData || {};
 
       setCredentialsSet(!!(
-        causelyCreds.causelyDomain && 
+        causelyCreds.causelyDomain &&
         (
-          (causelyCreds.isCauselySecretSet && causelyCreds.causelyClientId) || 
+          (causelyCreds.isCauselySecretSet && causelyCreds.causelyClientId) ||
           (causelyCreds.isCauselyPasswordSet && causelyCreds.causelyUsername)
         )
       ));

@@ -7,7 +7,7 @@ apps:
     disabled: false
     jsonData:
       causelyDomain: causely.app
-      causelyClienId:
+      causelyClientId:
       causelyUsername:
     secureJsonData:
       causelySecret: secret
