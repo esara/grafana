@@ -1,11 +1,11 @@
-import { RenderWhenAuthenticated } from "components/sdk/renderWhenAuthenticated/renderWhenAuthenticated.component";
+import { CuiRenderWhenAuthenticated } from "sdk/renderWhenAuthenticated/cuiRenderWhenAuthenticated.component";
 import React from "react";
 
 export const RootCausePanel: React.FC = () => {
    
     return (
-        <RenderWhenAuthenticated>
-            Hello World
-        </RenderWhenAuthenticated>
+        <CuiRenderWhenAuthenticated>
+            <RootCauseContent/>
+        </CuiRenderWhenAuthenticated>
     );
 };

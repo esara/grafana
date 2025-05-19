@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { getBackendSrv } from '@grafana/runtime';
 import { TextLink } from '@grafana/ui';
 import { AppPluginMeta } from '@grafana/data';
-import { JsonData } from '../../AppConfig/AppConfig';
-import { AppPluginId } from '../../../constants';
+import { JsonData } from '../../components/AppConfig/AppConfig';
+import { AppPluginId } from '../../constants';
 
 interface Props {
   children: React.ReactNode;
 }
 
-export const RenderWhenAuthenticated: React.FC<Props> = ({ children }) => {
+export const CuiRenderWhenAuthenticated: React.FC<Props> = ({ children }) => {
   const [credentialsSet, setCredentialsSet] = useState<boolean>(false);
 
   useEffect(() => {
