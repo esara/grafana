@@ -1,10 +1,11 @@
+import { RenderWhenAuthenticated } from "components/sdk/renderWhenAuthenticated/renderWhenAuthenticated.component";
 import React from "react";
 
 export const RootCausePanel: React.FC = () => {
    
     return (
-        <div>
+        <RenderWhenAuthenticated>
             Hello World
-        </div>
+        </RenderWhenAuthenticated>
     );
 };
