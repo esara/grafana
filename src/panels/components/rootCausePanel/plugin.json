@@ -1,0 +1,30 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "panel",
+  "name": "Causely - Root Cause Panel",
+  "id": "causely-rootcause-panel",
+  "info": {
+    "keywords": ["panel", "causely", "root-cause", "monitoring"],
+    "description": "A comprehensive panel that displays urgent root causes in you env as they happen. Visualize service relationships and health indicators in an intuitive interface.",
+    "author": {
+      "name": "esara"
+    },
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [],
+    "screenshots": [
+      {
+        "name": "service-health-panel",
+        "path": "img/service-health-panel.png"
+      }
+    ],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=11.2.7",
+    "plugins": []
+  }
+}
