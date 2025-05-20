@@ -30,15 +30,15 @@ export type ApiAdgGraphEdge = {
 
 export type ApiAdgGraphNode = {
   __typename?: 'ADGGraphNode';
-  changedResources: Array<ApiConstraintResource>;
+  changedResources: ApiConstraintResource[];
   entity: ApiEntity;
-  relatedResources: Array<ApiConstraintResource>;
+  relatedResources: ApiConstraintResource[];
 };
 
 export type ApiAdgNode = {
   __typename?: 'ADGNode';
   node?: Maybe<ApiConstraintResource>;
-  relatedResources: Array<ApiConstraintResource>;
+  relatedResources: ApiConstraintResource[];
 };
 
 export type ApiAction = {
@@ -62,8 +62,8 @@ export type ApiAgent = {
   __typename?: 'Agent';
   buildVersion?: Maybe<Scalars['String']['output']>;
   clusterName?: Maybe<Scalars['String']['output']>;
-  configuredScrapers?: Maybe<Array<ApiAgentConfiguredScraper>>;
-  discoveredScrapers?: Maybe<Array<ApiAgentDiscoveredScraper>>;
+  configuredScrapers?: Maybe<ApiAgentConfiguredScraper[]>;
+  discoveredScrapers?: Maybe<ApiAgentDiscoveredScraper[]>;
   hostname: Scalars['String']['output'];
   id: Scalars['String']['output'];
   kernelRelease?: Maybe<Scalars['String']['output']>;
@@ -94,7 +94,7 @@ export type ApiAnyValue = ApiArrayValue | ApiBoolValue | ApiBytesValue | ApiDoub
 
 export type ApiArrayValue = {
   __typename?: 'ArrayValue';
-  values: Array<ApiAnyValue>;
+  values: ApiAnyValue[];
 };
 
 
@@ -109,7 +109,7 @@ export type ApiAttributeDef = {
 
 export type ApiAttributeQuery = {
   end?: InputMaybe<Scalars['Time']['input']>;
-  entities: Array<ApiEntityAttributeQuery>;
+  entities: ApiEntityAttributeQuery[];
   start: Scalars['Time']['input'];
   stepMinutes?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -155,7 +155,7 @@ export type ApiCausalityEdge = ApiNode & {
 
 export type ApiCausalityEdgeConnection = ApiConnection & {
   __typename?: 'CausalityEdgeConnection';
-  edges: Array<ApiCausalityEdgeEdge>;
+  edges: ApiCausalityEdgeEdge[];
   pageInfo?: Maybe<ApiPageInfo>;
   totalCount: Scalars['Int']['output'];
 };
@@ -182,7 +182,7 @@ export type ApiCodebookManifestationInput = {
 };
 
 export type ApiConnection = {
-  edges: Array<ApiEdge>;
+  edges: ApiEdge[];
   pageInfo?: Maybe<ApiPageInfo>;
   totalCount: Scalars['Int']['output'];
 };
@@ -194,7 +194,7 @@ export enum ApiConstraintAnalysisChangeType {
 
 export type ApiConstraintAnalysisConnection = ApiConnection & {
   __typename?: 'ConstraintAnalysisConnection';
-  edges: Array<ApiConstraintAnalysisEdge>;
+  edges: ApiConstraintAnalysisEdge[];
   pageInfo?: Maybe<ApiPageInfo>;
   totalCount: Scalars['Int']['output'];
 };
@@ -218,7 +218,7 @@ export type ApiConstraintAnalysisFilter = {
   from?: InputMaybe<Scalars['Time']['input']>;
   nameExpr?: InputMaybe<Scalars['String']['input']>;
   to?: InputMaybe<Scalars['Time']['input']>;
-  types?: InputMaybe<Array<ApiConstraintAnalysisChangeType>>;
+  types?: InputMaybe<ApiConstraintAnalysisChangeType[]>;
 };
 
 export type ApiConstraintAnalysisInput = {
@@ -229,7 +229,7 @@ export type ApiConstraintAnalysisInput = {
 
 export type ApiConstraintAnalysisResult = {
   __typename?: 'ConstraintAnalysisResult';
-  adgEdges: Array<ApiAdgEdge>;
+  adgEdges: ApiAdgEdge[];
   config?: Maybe<ApiConstraintResource>;
   loadChange?: Maybe<ApiLoadChangesResult>;
   status: Scalars['String']['output'];
@@ -261,7 +261,7 @@ export type ApiConstraintResourceSummary = {
 export type ApiContinuousIncreaseIndicatorData = ApiIndicatorData & {
   __typename?: 'ContinuousIncreaseIndicatorData';
   name: Scalars['String']['output'];
-  relatedAttributes?: Maybe<Array<ApiMetricAttribute>>;
+  relatedAttributes?: Maybe<ApiMetricAttribute[]>;
   value?: Maybe<ApiMetricAttribute>;
   window: Scalars['Int']['output'];
 };
@@ -277,7 +277,7 @@ export type ApiCopilotQueryResponse = {
 
 export type ApiCopilotScope = {
   __typename?: 'CopilotScope';
-  context?: Maybe<Array<ApiCopilotScopeContext>>;
+  context?: Maybe<ApiCopilotScopeContext[]>;
   relatedEntityId?: Maybe<Scalars['String']['output']>;
 };
 
@@ -293,7 +293,7 @@ export type ApiCopilotScopeContextInput = {
 };
 
 export type ApiCopilotScopeInput = {
-  context?: InputMaybe<Array<ApiCopilotScopeContextInput>>;
+  context?: InputMaybe<ApiCopilotScopeContextInput[]>;
   relatedEntityId?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -301,7 +301,7 @@ export type ApiCopilotThread = {
   __typename?: 'CopilotThread';
   id: Scalars['String']['output'];
   name?: Maybe<Scalars['String']['output']>;
-  queries?: Maybe<Array<ApiCopilotQueryResponse>>;
+  queries?: Maybe<ApiCopilotQueryResponse[]>;
   scope: ApiCopilotScope;
 };
 
@@ -313,25 +313,25 @@ export type ApiDefect = ApiNode & {
   entity: ApiEntity;
   entityId: Scalars['String']['output'];
   entityType: Scalars['String']['output'];
-  events: Array<ApiEvent>;
+  events: ApiEvent[];
   fromTime: Scalars['String']['output'];
   id: Scalars['String']['output'];
-  impacts: Array<ApiSymptom>;
+  impacts: ApiSymptom[];
   likelihood: Scalars['Float']['output'];
   missingCount: Scalars['Int']['output'];
   name: Scalars['String']['output'];
-  relatedOccurrrences: Array<ApiDefect>;
+  relatedOccurrrences: ApiDefect[];
   remediated: Scalars['Boolean']['output'];
   serviceCount: Scalars['Int']['output'];
   severity: ApiDefectSeverity;
-  slos: Array<ApiSloNode>;
-  symptoms: Array<ApiSymptom>;
+  slos: ApiSloNode[];
+  symptoms: ApiSymptom[];
   toTime: Scalars['String']['output'];
 };
 
 export type ApiDefectConnection = ApiConnection & {
   __typename?: 'DefectConnection';
-  edges: Array<ApiDefectEdge>;
+  edges: ApiDefectEdge[];
   pageInfo?: Maybe<ApiPageInfo>;
   totalCount: Scalars['Int']['output'];
 };
@@ -355,15 +355,15 @@ export type ApiDefectDef = {
   displayName: Scalars['String']['output'];
   entityType: ApiEntityTypeDef;
   entityTypeName: Scalars['String']['output'];
-  events: Array<ApiEventDef>;
+  events: ApiEventDef[];
   name: Scalars['String']['output'];
-  symptoms: Array<ApiSymptomDef>;
+  symptoms: ApiSymptomDef[];
 };
 
 export type ApiDefectDescription = {
   __typename?: 'DefectDescription';
   details?: Maybe<Scalars['String']['output']>;
-  remediationOptions: Array<ApiRemediationOption>;
+  remediationOptions: ApiRemediationOption[];
   summary: Scalars['String']['output'];
 };
 
@@ -375,12 +375,12 @@ export type ApiDefectEdge = ApiEdge & {
 
 export type ApiDefectEvidence = {
   __typename?: 'DefectEvidence';
-  events?: Maybe<Array<ApiDefectEvidenceEvent>>;
-  exceptions?: Maybe<Array<ApiDefectEvidenceException>>;
-  logs?: Maybe<Array<ApiEntityLogLine>>;
+  events?: Maybe<ApiDefectEvidenceEvent[]>;
+  exceptions?: Maybe<ApiDefectEvidenceException[]>;
+  logs?: Maybe<ApiEntityLogLine[]>;
   remediation: Scalars['String']['output'];
   summary: Scalars['String']['output'];
-  symptoms?: Maybe<Array<ApiDefectEvidenceSymptom>>;
+  symptoms?: Maybe<ApiDefectEvidenceSymptom[]>;
 };
 
 export type ApiDefectEvidenceEvent = {
@@ -420,7 +420,7 @@ export type ApiDefectFilter = {
   includeNonSvcImpact?: InputMaybe<Scalars['Boolean']['input']>;
   minSymptomCount?: InputMaybe<Scalars['Int']['input']>;
   scopesFilter?: InputMaybe<ApiScopesFilterInput>;
-  severities?: InputMaybe<Array<ApiDefectSeverity>>;
+  severities?: InputMaybe<ApiDefectSeverity[]>;
   startTime?: InputMaybe<Scalars['Time']['input']>;
   state?: InputMaybe<ApiDefectState>;
 };
@@ -455,7 +455,7 @@ export type ApiDurationIndicatorData = ApiIndicatorData & {
   le: Scalars['Float']['output'];
   name: Scalars['String']['output'];
   quantile: Scalars['Float']['output'];
-  relatedAttributes?: Maybe<Array<ApiMetricAttribute>>;
+  relatedAttributes?: Maybe<ApiMetricAttribute[]>;
   threshold?: Maybe<ApiMetricAttribute>;
   value?: Maybe<ApiMetricAttribute>;
   window: Scalars['Int']['output'];
@@ -469,13 +469,13 @@ export type ApiEdge = {
 export type ApiEntity = ApiNode & {
   __typename?: 'Entity';
   defects: Array<Maybe<ApiDefect>>;
-  events: Array<ApiEvent>;
+  events: ApiEvent[];
   id: Scalars['String']['output'];
-  labels: Array<ApiLabel>;
+  labels: ApiLabel[];
   name: Scalars['String']['output'];
   severity: Scalars['String']['output'];
-  slos: Array<ApiSlo>;
-  symptoms: Array<ApiSymptom>;
+  slos: ApiSlo[];
+  symptoms: ApiSymptom[];
   typeName: Scalars['String']['output'];
 };
 
@@ -486,23 +486,23 @@ export type ApiEntityAttributeQuery = {
 
 export type ApiEntityAttributeQueryResult = {
   __typename?: 'EntityAttributeQueryResult';
-  attributes: Array<ApiAttribute>;
+  attributes: ApiAttribute[];
   id: Scalars['String']['output'];
 };
 
 export type ApiEntityConnection = ApiConnection & {
   __typename?: 'EntityConnection';
-  edges: Array<ApiEntityEdge>;
+  edges: ApiEntityEdge[];
   pageInfo?: Maybe<ApiPageInfo>;
   totalCount: Scalars['Int']['output'];
 };
 
 export type ApiEntityData = {
   __typename?: 'EntityData';
-  attributes: Array<ApiAttribute>;
+  attributes: ApiAttribute[];
   id: Scalars['String']['output'];
-  indicators: Array<ApiIndicatorData>;
-  resources: Array<ApiResourceData>;
+  indicators: ApiIndicatorData[];
+  resources: ApiResourceData[];
 };
 
 export type ApiEntityDataQuery = {
@@ -514,7 +514,7 @@ export type ApiEntityDataQuery = {
 
 export type ApiEntityDataQueryResult = {
   __typename?: 'EntityDataQueryResult';
-  entities: Array<ApiEntityData>;
+  entities: ApiEntityData[];
 };
 
 export type ApiEntityEdge = ApiEdge & {
@@ -560,7 +560,7 @@ export enum ApiEntityLogsSeverity {
 
 export type ApiEntityQuery = {
   end?: InputMaybe<Scalars['Time']['input']>;
-  entities: Array<ApiEntityDataQuery>;
+  entities: ApiEntityDataQuery[];
   start?: InputMaybe<Scalars['Time']['input']>;
   stepMinutes?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -580,7 +580,7 @@ export type ApiEntityRelatedDefects = {
 
 export type ApiEntityRelation = {
   __typename?: 'EntityRelation';
-  entities: Array<ApiEntity>;
+  entities: ApiEntity[];
   name: Scalars['String']['output'];
 };
 
@@ -609,15 +609,15 @@ export type ApiEntityTypeCount = {
 
 export type ApiEntityTypeDef = {
   __typename?: 'EntityTypeDef';
-  attributes: Array<ApiAttributeDef>;
+  attributes: ApiAttributeDef[];
   contextAttributes?: Maybe<Array<Scalars['String']['output']>>;
-  defects: Array<ApiDefectDef>;
-  events: Array<ApiEventDef>;
-  indicators: Array<ApiIndicatorDef>;
+  defects: ApiDefectDef[];
+  events: ApiEventDef[];
+  indicators: ApiIndicatorDef[];
   name: Scalars['String']['output'];
-  relations: Array<ApiRelationDef>;
-  resources: Array<ApiResourceDef>;
-  symptoms: Array<ApiSymptomDef>;
+  relations: ApiRelationDef[];
+  resources: ApiResourceDef[];
+  symptoms: ApiSymptomDef[];
 };
 
 export type ApiEntityTypeDefFilter = {
@@ -628,7 +628,7 @@ export type ApiEntityTypeDefFilter = {
 export type ApiEvent = {
   __typename?: 'Event';
   active: Scalars['Boolean']['output'];
-  activeDefects?: Maybe<Array<ApiDefect>>;
+  activeDefects?: Maybe<ApiDefect[]>;
   entity: ApiEntity;
   entityId: Scalars['String']['output'];
   entityType: Scalars['String']['output'];
@@ -641,7 +641,7 @@ export type ApiEventDef = {
   __typename?: 'EventDef';
   entityType: ApiEntityTypeDef;
   entityTypeName: Scalars['String']['output'];
-  impacts: Array<ApiSlo>;
+  impacts: ApiSlo[];
   name: Scalars['String']['output'];
 };
 
@@ -679,7 +679,7 @@ export type ApiGroupSummary = {
   __typename?: 'GroupSummary';
   groupBy: Scalars['String']['output'];
   groupName: Scalars['String']['output'];
-  summaryData: Array<ApiSummaryData>;
+  summaryData: ApiSummaryData[];
 };
 
 export type ApiHeadlineContext = {
@@ -690,7 +690,7 @@ export type ApiHeadlineContext = {
   latencyImpacted: Scalars['Boolean']['output'];
   recurrenceCount: Scalars['Int']['output'];
   renderedText: Scalars['String']['output'];
-  rules: Array<ApiHeadlineRule>;
+  rules: ApiHeadlineRule[];
   serviceCount: Scalars['Int']['output'];
   sloAtRiskCount: Scalars['Int']['output'];
   sloViolatedCount: Scalars['Int']['output'];
@@ -728,7 +728,7 @@ export enum ApiHeadlineRuleId {
 
 export type ApiHeadlineRules = {
   __typename?: 'HeadlineRules';
-  rules: Array<ApiHeadlineRule>;
+  rules: ApiHeadlineRule[];
   thresholds: ApiHeadlineThresholds;
 };
 
@@ -742,7 +742,7 @@ export enum ApiHeadlineSortField {
 }
 
 export type ApiHeadlineSortInput = {
-  priority?: InputMaybe<Array<ApiHeadlineSortField>>;
+  priority?: InputMaybe<ApiHeadlineSortField[]>;
 };
 
 export type ApiHeadlineThresholds = {
@@ -762,14 +762,14 @@ export type ApiHeadlineThresholdsInput = {
 
 export type ApiHeadlines = {
   __typename?: 'Headlines';
-  headlineItems: Array<ApiHeadlineItem>;
+  headlineItems: ApiHeadlineItem[];
   rules: ApiHeadlineRules;
 };
 
 export type ApiHistogramAttribute = ApiAttribute & {
   __typename?: 'HistogramAttribute';
   attrType: ApiAttributeType;
-  buckets: Array<ApiBucket>;
+  buckets: ApiBucket[];
   count: ApiMetric;
   name: Scalars['String']['output'];
   sum: ApiMetric;
@@ -782,11 +782,11 @@ export type ApiIndicatorData = {
 
 export type ApiIndicatorDef = {
   __typename?: 'IndicatorDef';
-  attributes: Array<ApiAttributeDef>;
+  attributes: ApiAttributeDef[];
   contextAttributes?: Maybe<Array<Scalars['String']['output']>>;
   description?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
-  symptoms: Array<ApiSymptomDef>;
+  symptoms: ApiSymptomDef[];
   type: Scalars['String']['output'];
 };
 
@@ -814,7 +814,7 @@ export type ApiIntegrationStatus = {
 
 export type ApiKeyValueList = {
   __typename?: 'KeyValueList';
-  values: Array<ApiTraceKeyValue>;
+  values: ApiTraceKeyValue[];
 };
 
 export type ApiLabel = {
@@ -831,13 +831,13 @@ export type ApiLoadChangesEntityInput = {
 };
 
 export type ApiLoadChangesInput = {
-  entities: Array<ApiLoadChangesEntityInput>;
+  entities: ApiLoadChangesEntityInput[];
 };
 
 export type ApiLoadChangesResult = {
   __typename?: 'LoadChangesResult';
-  resourceSummary: Array<ApiConstraintResourceSummary>;
-  resources: Array<ApiConstraintResource>;
+  resourceSummary: ApiConstraintResourceSummary[];
+  resources: ApiConstraintResource[];
 };
 
 export type ApiManifestation = ApiNode & {
@@ -850,7 +850,7 @@ export type ApiManifestation = ApiNode & {
 
 export type ApiManifestationConnection = ApiConnection & {
   __typename?: 'ManifestationConnection';
-  edges: Array<ApiManifestationEdge>;
+  edges: ApiManifestationEdge[];
   pageInfo?: Maybe<ApiPageInfo>;
   totalCount: Scalars['Int']['output'];
 };
@@ -875,7 +875,7 @@ export type ApiManifestationFilter = {
   entityName?: InputMaybe<Scalars['String']['input']>;
   entityTypes?: InputMaybe<Array<Scalars['String']['input']>>;
   manifestationNames?: InputMaybe<Array<Scalars['String']['input']>>;
-  manifestationTypes?: InputMaybe<Array<ApiManifestationType>>;
+  manifestationTypes?: InputMaybe<ApiManifestationType[]>;
   scopesFilter?: InputMaybe<ApiScopesFilterInput>;
   startTime?: InputMaybe<Scalars['Time']['input']>;
 };
@@ -894,7 +894,7 @@ export enum ApiManifestationType {
 
 export type ApiMetric = {
   __typename?: 'Metric';
-  values: Array<ApiSamplePair>;
+  values: ApiSamplePair[];
 };
 
 export type ApiMetricAttribute = ApiAttribute & {
@@ -909,7 +909,7 @@ export type ApiMutateUserScopeInput = {
   audience: ApiUserScopeAudience;
   id?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
-  scopes: Array<ApiScopeInput>;
+  scopes: ApiScopeInput[];
 };
 
 export type ApiMutation = {
@@ -1014,9 +1014,9 @@ export type ApiPageRequestInput = {
 export type ApiQuery = {
   __typename?: 'Query';
   action: ApiAction;
-  actions: Array<ApiAction>;
-  agentCounts?: Maybe<Array<ApiAgentCount>>;
-  agents?: Maybe<Array<ApiAgent>>;
+  actions: ApiAction[];
+  agentCounts?: Maybe<ApiAgentCount[]>;
+  agents?: Maybe<ApiAgent[]>;
   causality: Array<Maybe<ApiCausalityEdge>>;
   codebookCausality: Array<Maybe<ApiCausalityEdge>>;
   codebookCausalityChain: ApiCausalityEdgeConnection;
@@ -1027,50 +1027,50 @@ export type ApiQuery = {
   constraintAnalysisGraph: Array<Maybe<ApiAdgGraphEdge>>;
   defect: ApiDefect;
   defectConnection: ApiDefectConnection;
-  defectCounts: Array<ApiDefectCount>;
+  defectCounts: ApiDefectCount[];
   defectEvidence?: Maybe<ApiDefectEvidence>;
-  defectStats: Array<ApiDefectStat>;
+  defectStats: ApiDefectStat[];
   /** @deprecated This field is depreciated. Use new entityConnection field with pagination */
   entities: Array<Maybe<ApiEntity>>;
   entity?: Maybe<ApiEntity>;
-  entityAttributes: Array<ApiEntityAttributeQueryResult>;
+  entityAttributes: ApiEntityAttributeQueryResult[];
   entityConnection: ApiEntityConnection;
   entityData: ApiEntityDataQueryResult;
   entityLogs: ApiEntityLogsResult;
-  entityRelatedDefects: Array<ApiEntityRelatedDefects>;
+  entityRelatedDefects: ApiEntityRelatedDefects[];
   entityTraces: ApiEntityTracesResult;
-  entityTypeCounts?: Maybe<Array<ApiEntityTypeCount>>;
+  entityTypeCounts?: Maybe<ApiEntityTypeCount[]>;
   entityTypeDef: ApiEntityTypeDef;
-  entityTypeDefs: Array<ApiEntityTypeDef>;
+  entityTypeDefs: ApiEntityTypeDef[];
   getCopilotQueryResponse: ApiCopilotQueryResponse;
   getCopilotThread: ApiCopilotThread;
-  getCopilotThreads?: Maybe<Array<ApiCopilotThread>>;
+  getCopilotThreads?: Maybe<ApiCopilotThread[]>;
   getUserScope?: Maybe<ApiUserScope>;
   getUserScopes: ApiUserScopeConnection;
   getUserScopesWithEntityCounts: ApiUserScopeEntityCountConnection;
   headlines: ApiHeadlines;
   isFeatureFlagEnabled: ApiFeatureFlagStatus;
   isIntegrationConnected: ApiIntegrationStatus;
-  manifestationCounts: Array<ApiManifestationCount>;
+  manifestationCounts: ApiManifestationCount[];
   manifestations: ApiManifestationConnection;
   relatedDefects: ApiRelatedDefects;
-  relatedEntities: Array<ApiEntityRelation>;
+  relatedEntities: ApiEntityRelation[];
   relatedEntityCount: ApiRelatedEntityCountConnection;
-  relatedSlos: Array<ApiSloNode>;
+  relatedSlos: ApiSloNode[];
   scopes?: Maybe<ApiScopesFilter>;
   sloConnection: ApiSloConnection;
-  sloHealth: Array<ApiSloHealth>;
+  sloHealth: ApiSloHealth[];
   sloNode: ApiSloNode;
   sloTypes: Array<Scalars['String']['output']>;
-  slos: Array<ApiSlo>;
+  slos: ApiSlo[];
   summarize: ApiSummaryContent;
-  summary: Array<ApiSummary>;
-  symptoms: Array<ApiSymptom>;
+  summary: ApiSummary[];
+  symptoms: ApiSymptom[];
   topologyGraph: Array<Maybe<ApiTopologyEdge>>;
   userSettings: ApiUserSettings;
   version: ApiVersionInfo;
   whatIf: ApiConstraintAnalysisResult;
-  workloadCounts: Array<ApiWorkloadCount>;
+  workloadCounts: ApiWorkloadCount[];
 };
 
 
@@ -1396,7 +1396,7 @@ export type ApiRatioIndicatorData = ApiIndicatorData & {
   count?: Maybe<ApiMetricAttribute>;
   name: Scalars['String']['output'];
   ratio?: Maybe<ApiMetricAttribute>;
-  relatedAttributes?: Maybe<Array<ApiMetricAttribute>>;
+  relatedAttributes?: Maybe<ApiMetricAttribute[]>;
   threshold?: Maybe<ApiMetricAttribute>;
   total?: Maybe<ApiMetricAttribute>;
   window: Scalars['Int']['output'];
@@ -1409,21 +1409,21 @@ export type ApiRelatedByFilter = {
 
 export type ApiRelatedDefects = {
   __typename?: 'RelatedDefects';
-  aggregatingDefects: Array<ApiDefect>;
-  directDefects: Array<ApiDefect>;
-  impactingDefects: Array<ApiDefect>;
+  aggregatingDefects: ApiDefect[];
+  directDefects: ApiDefect[];
+  impactingDefects: ApiDefect[];
 };
 
 export type ApiRelatedEntityCount = ApiNode & {
   __typename?: 'RelatedEntityCount';
   entity: ApiEntity;
   id: Scalars['String']['output'];
-  relatedCounts: Array<ApiEntityRelationCount>;
+  relatedCounts: ApiEntityRelationCount[];
 };
 
 export type ApiRelatedEntityCountConnection = ApiConnection & {
   __typename?: 'RelatedEntityCountConnection';
-  edges: Array<ApiRelatedEntityCountEdge>;
+  edges: ApiRelatedEntityCountEdge[];
   pageInfo?: Maybe<ApiPageInfo>;
   totalCount: Scalars['Int']['output'];
 };
@@ -1451,10 +1451,10 @@ export type ApiResourceData = {
 
 export type ApiResourceDef = {
   __typename?: 'ResourceDef';
-  attributes: Array<ApiAttributeDef>;
-  defects: Array<ApiDefectDef>;
+  attributes: ApiAttributeDef[];
+  defects: ApiDefectDef[];
   name: Scalars['String']['output'];
-  symptoms: Array<ApiSymptomDef>;
+  symptoms: ApiSymptomDef[];
   type: Scalars['String']['output'];
 };
 
@@ -1498,16 +1498,16 @@ export type ApiScopeInput = {
 
 export type ApiScopesFilter = {
   __typename?: 'ScopesFilter';
-  scopes: Array<ApiScope>;
+  scopes: ApiScope[];
 };
 
 export type ApiScopesFilterInput = {
-  scopes: Array<ApiScopeInput>;
+  scopes: ApiScopeInput[];
 };
 
 export type ApiSloConnection = ApiConnection & {
   __typename?: 'SloConnection';
-  edges: Array<ApiSloEdge>;
+  edges: ApiSloEdge[];
   pageInfo?: Maybe<ApiPageInfo>;
   totalCount: Scalars['Int']['output'];
 };
@@ -1521,7 +1521,7 @@ export type ApiSloCount = {
 
 export type ApiSloDataQuery = {
   end?: InputMaybe<Scalars['Time']['input']>;
-  queries?: InputMaybe<Array<ApiSloQuery>>;
+  queries?: InputMaybe<ApiSloQuery[]>;
   start?: InputMaybe<Scalars['Time']['input']>;
   stepMinutes?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -1537,7 +1537,7 @@ export type ApiSloFilter = {
   metricQuery?: InputMaybe<ApiSloDataQuery>;
   nameExpr?: InputMaybe<Scalars['String']['input']>;
   relatedByFilter?: InputMaybe<ApiRelatedByFilter>;
-  states?: InputMaybe<Array<ApiSloState>>;
+  states?: InputMaybe<ApiSloState[]>;
 };
 
 export type ApiSloNode = ApiNode & {
@@ -1578,7 +1578,7 @@ export type ApiStringValue = {
 export type ApiSummary = {
   __typename?: 'Summary';
   category: ApiSummaryCategory;
-  groupSummary: Array<ApiGroupSummary>;
+  groupSummary: ApiGroupSummary[];
 };
 
 export enum ApiSummaryCategory {
@@ -1590,7 +1590,7 @@ export type ApiSummaryContent = {
   __typename?: 'SummaryContent';
   content?: Maybe<Scalars['String']['output']>;
   contentType?: Maybe<ApiSummaryContentType>;
-  summaryData?: Maybe<Array<ApiSummary>>;
+  summaryData?: Maybe<ApiSummary[]>;
 };
 
 export enum ApiSummaryContentType {
@@ -1600,7 +1600,7 @@ export enum ApiSummaryContentType {
 export type ApiSummaryData = {
   __typename?: 'SummaryData';
   nodeType: Scalars['String']['output'];
-  nodes?: Maybe<Array<ApiSummaryNode>>;
+  nodes?: Maybe<ApiSummaryNode[]>;
   subCategory?: Maybe<ApiSummarySubCategory>;
 };
 
@@ -1637,7 +1637,7 @@ export enum ApiSummarySubCategory {
 export type ApiSymptom = {
   __typename?: 'Symptom';
   active: Scalars['Boolean']['output'];
-  activeDefects?: Maybe<Array<ApiDefect>>;
+  activeDefects?: Maybe<ApiDefect[]>;
   entity: ApiEntity;
   entityId: Scalars['String']['output'];
   entityType: Scalars['String']['output'];
@@ -1655,16 +1655,16 @@ export type ApiSymptomDef = {
   displayName: Scalars['String']['output'];
   entityType: ApiEntityTypeDef;
   entityTypeName: Scalars['String']['output'];
-  impacts: Array<ApiSlo>;
+  impacts: ApiSlo[];
   name: Scalars['String']['output'];
 };
 
 export type ApiTableAttribute = ApiAttribute & {
   __typename?: 'TableAttribute';
   attrType: ApiAttributeType;
-  columns: Array<ApiTableColumn>;
+  columns: ApiTableColumn[];
   name: Scalars['String']['output'];
-  rows: Array<ApiTableRow>;
+  rows: ApiTableRow[];
   unit: Scalars['String']['output'];
 };
 
@@ -1686,13 +1686,13 @@ export type ApiTableColumn = {
 
 export type ApiTableRow = {
   __typename?: 'TableRow';
-  values: Array<ApiTableCell>;
+  values: ApiTableCell[];
 };
 
 export type ApiThresholdIndicatorData = ApiIndicatorData & {
   __typename?: 'ThresholdIndicatorData';
   name: Scalars['String']['output'];
-  relatedAttributes?: Maybe<Array<ApiMetricAttribute>>;
+  relatedAttributes?: Maybe<ApiMetricAttribute[]>;
   threshold?: Maybe<ApiMetricAttribute>;
   value?: Maybe<ApiMetricAttribute>;
   window: Scalars['Int']['output'];
@@ -1713,12 +1713,12 @@ export type ApiTopologyEdge = {
 export type ApiTrace = {
   __typename?: 'Trace';
   id: Scalars['String']['output'];
-  spans?: Maybe<Array<ApiTraceSpan>>;
+  spans?: Maybe<ApiTraceSpan[]>;
 };
 
 export type ApiTraceEvent = {
   __typename?: 'TraceEvent';
-  attributes?: Maybe<Array<ApiTraceKeyValue>>;
+  attributes?: Maybe<ApiTraceKeyValue[]>;
   name: Scalars['String']['output'];
   timeUnixNano: Scalars['Int']['output'];
 };
@@ -1731,9 +1731,9 @@ export type ApiTraceKeyValue = {
 
 export type ApiTraceSpan = {
   __typename?: 'TraceSpan';
-  attributes?: Maybe<Array<ApiTraceKeyValue>>;
+  attributes?: Maybe<ApiTraceKeyValue[]>;
   endTimeUnixNano: Scalars['Int']['output'];
-  events?: Maybe<Array<ApiTraceEvent>>;
+  events?: Maybe<ApiTraceEvent[]>;
   kind: Scalars['String']['output'];
   name: Scalars['String']['output'];
   parentSpanId: Scalars['String']['output'];
@@ -1759,7 +1759,7 @@ export type ApiUserScope = ApiNode & {
   lastUpdate: Scalars['Time']['output'];
   name: Scalars['String']['output'];
   ownerId: Scalars['String']['output'];
-  scopes: Array<ApiScope>;
+  scopes: ApiScope[];
 };
 
 export enum ApiUserScopeAudience {
@@ -1769,7 +1769,7 @@ export enum ApiUserScopeAudience {
 
 export type ApiUserScopeConnection = ApiConnection & {
   __typename?: 'UserScopeConnection';
-  edges: Array<ApiUserScopeEdge>;
+  edges: ApiUserScopeEdge[];
   pageInfo?: Maybe<ApiPageInfo>;
   totalCount: Scalars['Int']['output'];
 };
@@ -1782,14 +1782,14 @@ export type ApiUserScopeEdge = ApiEdge & {
 
 export type ApiUserScopeEntityCount = ApiNode & {
   __typename?: 'UserScopeEntityCount';
-  entityTypeCount: Array<ApiEntityTypeCount>;
+  entityTypeCount: ApiEntityTypeCount[];
   id: Scalars['String']['output'];
   userScope: ApiUserScope;
 };
 
 export type ApiUserScopeEntityCountConnection = ApiConnection & {
   __typename?: 'UserScopeEntityCountConnection';
-  edges: Array<ApiUserScopeEntityCountEdge>;
+  edges: ApiUserScopeEntityCountEdge[];
   pageInfo?: Maybe<ApiPageInfo>;
   totalCount: Scalars['Int']['output'];
 };
@@ -1801,7 +1801,7 @@ export type ApiUserScopeEntityCountEdge = ApiEdge & {
 };
 
 export type ApiUserScopeFilter = {
-  audiences?: InputMaybe<Array<ApiUserScopeAudience>>;
+  audiences?: InputMaybe<ApiUserScopeAudience[]>;
   nameExpr?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -1823,7 +1823,7 @@ export type ApiUserSettingInput = {
 export type ApiUserSettings = {
   __typename?: 'UserSettings';
   id: Scalars['String']['output'];
-  settings: Array<ApiUserSetting>;
+  settings: ApiUserSetting[];
 };
 
 export type ApiUserSettingsFilter = {
@@ -1834,14 +1834,14 @@ export type ApiUserSettingsFilter = {
 
 export type ApiUserSettingsInput = {
   id: Scalars['String']['input'];
-  settings: Array<ApiUserSettingInput>;
+  settings: ApiUserSettingInput[];
 };
 
 export type ApiUtilizationIndicatorData = ApiIndicatorData & {
   __typename?: 'UtilizationIndicatorData';
   capacity?: Maybe<ApiMetricAttribute>;
   name: Scalars['String']['output'];
-  relatedAttributes?: Maybe<Array<ApiMetricAttribute>>;
+  relatedAttributes?: Maybe<ApiMetricAttribute[]>;
   threshold?: Maybe<ApiMetricAttribute>;
   usage?: Maybe<ApiMetricAttribute>;
   utilization?: Maybe<ApiMetricAttribute>;
@@ -1884,9 +1884,9 @@ export type ApiAttribute = {
   booleanValue?: Scalars['Boolean']['output'];
   histogramSum?: ApiMetric;
   histogramCount?: ApiMetric;
-  histogramBuckets?: Array<ApiBucket>;
-  columns?: Array<ApiTableColumn>;
-  rows?: Array<ApiTableRow>;
+  histogramBuckets?: ApiBucket[];
+  columns?: ApiTableColumn[];
+  rows?: ApiTableRow[];
 };
 
 // @overrideType
@@ -1906,7 +1906,7 @@ export type ApiIndicator = {
   booleanValue?: Scalars['Boolean']['output'];
   histogramSum?: ApiMetric;
   histogramCount?: ApiMetric;
-  histogramBuckets?: Array<ApiBucket>;
-  columns?: Array<ApiTableColumn>;
-  rows?: Array<ApiTableRow>;
+  histogramBuckets?: ApiBucket[];
+  columns?: ApiTableColumn[];
+  rows?: ApiTableRow[];
 };

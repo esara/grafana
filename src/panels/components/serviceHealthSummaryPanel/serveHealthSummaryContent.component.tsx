@@ -1,5 +1,5 @@
 import React from "react";
-import useServiceHealthApi from "./useServiceHealthApi";
+import { useServiceHealthApi } from "./useServiceHealthApi";
 import { EntityHealthCard, EntityHealthCardData } from "./entityHealthCard.component";
 import { CuiLoadingErrorWrapper } from "sdk/loadingErrorWrapper/cuiLoadingErrorWrapper.component";
 

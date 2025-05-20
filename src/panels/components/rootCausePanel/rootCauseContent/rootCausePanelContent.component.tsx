@@ -1,22 +1,24 @@
 import React from "react"
-import mockData from "./mockData.json"
 
 import { RootCauseCard } from "./../rootCauseCard/rootCauseCard.component"
+import { useCriticalRootCause } from './useCriticalRootCause'
 import './rootCausePanelContent.scss'
+import { CuiLoadingErrorWrapper } from "sdk/loadingErrorWrapper/cuiLoadingErrorWrapper.component";
 
 export const RootCauseContent = () => {
-    const data = mockData;
-
+    const {isLoading, data, error} = useCriticalRootCause()
+    
     return (
-        <div className={'cui--root-cause-content'}>
-            {data.map((rootCause) => {
-                return (
+        <CuiLoadingErrorWrapper isLoading={isLoading} error={error}>
+            <div className={'cui--root-cause-content'}>
+                {data.map((rootCause) => {
+                    return (
                         <div key={rootCause.id} className={'cui--root-cause-content-card'}>
-                            <RootCauseCard />
+                            <RootCauseCard rootCause={rootCause} />
                         </div>
-
-                )
-            })}
-        </div >
+                    )
+                })}
+            </div>
+        </CuiLoadingErrorWrapper>
     )
 };
