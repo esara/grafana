@@ -1,0 +1,37 @@
+@import 'styles/root-vars.scss';
+
+#{$prefix} {
+    &--root-cause-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        align-items: stretch;
+        height: 100%;
+        overflow: scroll;
+        // gap: 2 rem;
+        
+        &-card {
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            background-color: rgba(250, 77, 86, 0.3) !important;
+            flex: 1 1 10rem;
+            min-width: 25rem;
+            max-width: 25rem;
+            margin: 0.5rem;
+            height: auto;
+            padding: 1rem;
+            
+            &:hover {
+                transform: scale(1.02);
+                background-color: rgba(250, 77, 86, 0.6) !important;
+            }
+            /* The * selector targets all elements inside the root-cause-content-card */
+            * {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                word-break: break-all;
+            }
+        }
+    }
+    
+} 

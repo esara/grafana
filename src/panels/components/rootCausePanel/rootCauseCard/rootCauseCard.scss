@@ -1,0 +1,13 @@
+@import 'styles/root-vars.scss';
+
+#{$prefix} {
+    &--root-cause-card {
+        &-section {
+            margin-bottom: 1rem;
+        }
+
+        &-description {
+            margin-top: 0.5rem;
+        }
+    }
+}

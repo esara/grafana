@@ -1,0 +1,20 @@
+@import 'styles/root-vars.scss';
+
+#{$prefix} {
+  &--text {
+    margin: 0;
+
+    &-primary {
+        color: $text-primary;
+      }
+    
+      &-secondary {
+        color: $text-secondary;
+      }
+    
+      &-disabled {
+        color: $text-disabled;
+      }
+    
+  } 
+}

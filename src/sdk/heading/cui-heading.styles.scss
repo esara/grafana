@@ -1,0 +1,10 @@
+@import 'styles/root-vars.scss';
+
+#{$prefix} {
+    &--heading {
+        margin: 0;
+        font-weight: 500;
+        line-height: 1.2;
+        color: var(--grafana-text-color);
+    }
+}

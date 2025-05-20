@@ -1,0 +1,64 @@
+[{
+    "id": "RC001",
+    "name": "Root Cause xyz",
+    "symptoms": [{
+        "name": "High CPU Usage", 
+        "severity": "critical",
+        "description": "CPU usage spiked to 95% for 5 minutes"
+    }],
+    "time": "Identified 10 minutes ago",
+    "additionalInformation": {
+        "hasRemediation": true,
+        "hasEvents": true,
+        "hasLogs": true,
+        "hasExceptions": true
+    }
+},
+{
+    "id": "RC002", 
+    "name": "Database Connection Issues",
+    "symptoms": [{
+        "name": "High Latency",
+        "severity": "warning",
+        "description": "Database response time increased to 2000ms"
+    }],
+    "time": "Identified 30 minutes ago", 
+    "additionalInformation": {
+        "hasRemediation": true,
+        "hasEvents": true,
+        "hasLogs": false,
+        "hasExceptions": true
+    }
+},
+{
+    "id": "RC003",
+    "name": "Memory Leak Detected",
+    "symptoms": [{
+        "name": "Out of Memory",
+        "severity": "critical", 
+        "description": "Application memory usage growing steadily"
+    }],
+    "time": "Identified 1 hour ago",
+    "additionalInformation": {
+        "hasRemediation": true,
+        "hasEvents": false,
+        "hasLogs": true,
+        "hasExceptions": true
+    }
+},
+{
+    "id": "RC004",
+    "name": "Network Connectivity Issues",
+    "symptoms": [{
+        "name": "Service Unavailable",
+        "severity": "critical",
+        "description": "Multiple failed requests to external services"
+    }],
+    "time": "Identified 45 minutes ago",
+    "additionalInformation": {
+        "hasRemediation": true,
+        "hasEvents": true,
+        "hasLogs": true,
+        "hasExceptions": false
+    }
+}]
