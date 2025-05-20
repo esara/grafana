@@ -31,7 +31,12 @@ export const RootCauseCard = () => {
                     Identified 3 days ago with<br />
                     recurrence
                 </CUIText>
+            </div>
+
+            <div className={SdkUtil.withPrefix('root-cause-card-section')}>
+                <CUIHeading>Additional Information</CUIHeading>
                 <TagList tags={['Exception', 'Logs', 'Events', 'Remediation']} />
+                
             </div>
         </div>
     )

@@ -31,7 +31,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 15,
         "w": 24,
         "x": 0,
         "y": 0
@@ -60,7 +60,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 15
       },
       "id": 1,
       "options": {
@@ -99,6 +99,6 @@
   "timezone": "",
   "title": "Provisioned Causely dashboard",
   "uid": "a538aeff-5a8a-42a5-901c-938d896fdd6f",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
