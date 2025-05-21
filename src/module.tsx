@@ -8,7 +8,7 @@ const LazyAppConfig = lazy(() => import('./components/AppConfig/AppConfig'));
 
 const App = (props: AppRootProps) => (
   <Suspense fallback={<LoadingPlaceholder text="" />}>
-    <LazyApp {...props} />
+        <LazyApp {...props} />
   </Suspense>
 );
 

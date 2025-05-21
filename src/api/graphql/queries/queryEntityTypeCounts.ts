@@ -1,6 +1,6 @@
 import { ApiEntityTypeCount, ApiQueryEntityTypeCountsArgs } from "api/api.types";
 import { ApiUtil, QueryResult } from "api/apiUtil";
-import { EntityTypeCountsQuery } from "../schemas/entityTypeCounts";
+import { EntityTypeCountsSchema } from "../schemas/entityTypeCounts.schema";
 
 export type GetEntityCountQueryData = {
     entityTypeCounts: ApiEntityTypeCount[];
@@ -10,7 +10,7 @@ export const QueryEntityTypeCounts = (variables: ApiQueryEntityTypeCountsArgs): 
     const entityCountPayload = {
         operationName: 'entityTypeCounts',
         variables: variables,
-        query: EntityTypeCountsQuery,
+        query: EntityTypeCountsSchema,
     };
 
     return ApiUtil.postQuery<GetEntityCountQueryData>(entityCountPayload);

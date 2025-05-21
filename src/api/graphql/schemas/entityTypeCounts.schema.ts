@@ -1,4 +1,4 @@
-export const EntityTypeCountsQuery = `query entityTypeCounts($entityFilter: EntityFilter) {
+export const EntityTypeCountsSchema = `query entityTypeCounts($entityFilter: EntityFilter) {
     entityTypeCounts(entityFilter: $entityFilter){
         entityType
         severity

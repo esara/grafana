@@ -4,12 +4,13 @@ import { TextLink } from '@grafana/ui';
 import { AppPluginMeta } from '@grafana/data';
 import { JsonData } from '../../components/AppConfig/AppConfig';
 import { AppPluginId } from '../../constants';
+import { AppStateProvider } from 'components/AppStateProvider/AppStateProvider';
 
 interface Props {
   children: React.ReactNode;
 }
 
-export const CuiRenderWhenAuthenticated: React.FC<Props> = ({ children }) => {
+  export const CuiRenderWhenAuthenticated: React.FC<Props> = ({ children }) => {
   const [credentialsSet, setCredentialsSet] = useState<boolean>(false);
 
   useEffect(() => {
@@ -29,7 +30,8 @@ export const CuiRenderWhenAuthenticated: React.FC<Props> = ({ children }) => {
   }, []);
 
   if (credentialsSet) {
-    return <>{children}</>;
+    
+    return <AppStateProvider>{children}</AppStateProvider>;
   }
 
   return (

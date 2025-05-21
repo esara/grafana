@@ -1,4 +1,4 @@
-export const DefectConnectionQuery = `query defectConnection($defectFilter: DefectFilter, $groupRecurring: Boolean, $first: Int, $after: String, $last: Int, $before: String) {
+export const DefectConnectionSchema = `query defectConnection($defectFilter: DefectFilter, $groupRecurring: Boolean, $first: Int, $after: String, $last: Int, $before: String) {
     defectConnection(defectFilter: $defectFilter, groupRecurring: $groupRecurring, first: $first, after: $after, last: $last, before: $before){
         totalCount
         edges{
