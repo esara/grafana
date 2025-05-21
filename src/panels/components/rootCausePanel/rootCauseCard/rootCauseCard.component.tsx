@@ -8,6 +8,7 @@ import { ApiDefect } from "api/api.types";
 import { EntityTypeDefs } from "utils/entityTypeDefs/EntityTypeDefs.singleton";
 import { RouteUtil } from "utils/route/route.util";
 import { EntityUtil } from "utils/entity/entity.util";
+import { RootCauseCardUtil } from "./rootCauseCardUtil/rootCauseCard.util";
 
 type RootCauseCardProps = {
     rootCause: ApiDefect
@@ -15,8 +16,8 @@ type RootCauseCardProps = {
 
 const getTagsList = (rootCause: ApiDefect): string[] => {
     const tagsList: string[] = ['Remediation'];
-    
-    if (rootCause.events.length > 0) {  
+
+    if (rootCause.events.length > 0) {
         tagsList.push('Events');
     }
 
@@ -25,7 +26,10 @@ const getTagsList = (rootCause: ApiDefect): string[] => {
 
 export const RootCauseCard = ({ rootCause }: RootCauseCardProps) => {
     const symptomCount = rootCause.symptoms.length;
+    const activeSymptomsCount = rootCause.symptoms.filter((symptom) => symptom.active).length;
     const rootCauseName = EntityTypeDefs.getInstance().getDefectDef(rootCause.entity.typeName, rootCause.name).displayName;
+    const symptomDescriptions = RootCauseCardUtil.getSymptomDescription(rootCause);
+
     return (
         <div className="root-cause-card" onClick={() => {
             window.open(RouteUtil.getSingleRootCauseRoutePath(rootCause.id), '_blank');
@@ -40,10 +44,12 @@ export const RootCauseCard = ({ rootCause }: RootCauseCardProps) => {
             </div>
 
             <div className={SdkUtil.withPrefix('root-cause-card-section')}>
-                <CUIHeading>Symptoms {symptomCount}</CUIHeading>
+                <CUIHeading>Symptoms ({activeSymptomsCount})/{symptomCount}</CUIHeading>
                 <CUIText variant="secondary" className={SdkUtil.withPrefix('root-cause-card-description')}>
-                    High Request Duration on 3 services<br />
-                    and 1 other
+                    {symptomDescriptions.masterSentence}
+                </CUIText>
+                <CUIText variant="secondary" className={SdkUtil.withPrefix('root-cause-card-description')}>
+                    {symptomDescriptions.secondarySentence}
                 </CUIText>
             </div>
 

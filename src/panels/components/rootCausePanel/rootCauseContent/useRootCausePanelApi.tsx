@@ -3,7 +3,7 @@ import { QueryDefectConnections } from 'api/graphql/queries/queryDefectConnectio
 import { ApiDefectConnection, ApiQueryDefectConnectionArgs } from 'api/api.types';
 
 const defaultDefectConnectionVariables: ApiQueryDefectConnectionArgs = {
-    first: 100, // Adjust this number based on your needs
+    first: 8, // Adjust this number based on your needs
     defectFilter: {
         includeInactiveDefect: false,
     },
