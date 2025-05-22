@@ -8,7 +8,7 @@
         align-items: stretch;
         height: 100%;
         overflow: scroll;
-        // gap: 2 rem;
+        gap: 2 rem;
         
         &-card {
             cursor: pointer;
@@ -18,7 +18,7 @@
             min-width: 25rem;
             max-width: 25rem;
             margin: 0.5rem;
-            height: auto;
+            height: 23rem;
             padding: 1rem;
             
             &:hover {
@@ -29,7 +29,6 @@
             * {
                 word-wrap: break-word;
                 overflow-wrap: break-word;
-                word-break: break-all;
             }
         }
     }

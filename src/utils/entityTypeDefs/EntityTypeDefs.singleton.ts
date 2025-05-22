@@ -1,4 +1,3 @@
-import { LogLevel } from "@grafana/data";
 import { ApiAttributeDef, ApiResourceDef, ApiIndicatorDef, ApiDefectDef, ApiSymptomDef, ApiEventDef, ApiEntityTypeDef } from "api/api.types";
 import { StringsUtil } from "../strings/strings.util";
 import { QueryEntityTypeDefs } from "api/graphql/queries/queryEntityTypeDefs";
@@ -69,7 +68,6 @@ export class EntityTypeDefs implements AppStateEntityTypeDefModel {
       return def;
     }
 
-    console.log(`Attribute definition not found for ${entityType}, ${attributeName}`, LogLevel.debug);
     return {
       name: attributeName,
       description: StringsUtil.splitCamelCase(attributeName),
@@ -83,7 +81,6 @@ export class EntityTypeDefs implements AppStateEntityTypeDefModel {
       return def;
     }
 
-    console.log(`Resource definition not found for ${entityType}, ${resourceName}`, LogLevel.debug);
     return {
       name: resourceName,
       defects: [],
@@ -98,7 +95,6 @@ export class EntityTypeDefs implements AppStateEntityTypeDefModel {
     if (def) {
       return def;
     }
-    console.log(`Indicator definition not found for ${entityType}, ${indicatorName}`, LogLevel.debug);
 
     return {
       name: indicatorName,
@@ -118,7 +114,6 @@ export class EntityTypeDefs implements AppStateEntityTypeDefModel {
       };
     }
 
-    console.log(`Defect definition not found for ${entityType}, ${defectName}`, LogLevel.debug);
     return {
       entityTypeName: entityType,
       events: [],
@@ -144,8 +139,6 @@ export class EntityTypeDefs implements AppStateEntityTypeDefModel {
       };
     }
 
-    console.log(`Symptom definition not found for ${entityType}, ${symptomName}`, LogLevel.debug);
-
     return {
       entityTypeName: entityType,
       impacts: [],
@@ -159,7 +152,6 @@ export class EntityTypeDefs implements AppStateEntityTypeDefModel {
     if (def) {
       return def;
     }
-    console.log(`Event definition not found for ${entityType}, ${eventName}`, LogLevel.debug);
 
     return {
       entityTypeName: entityType,
@@ -173,7 +165,6 @@ export class EntityTypeDefs implements AppStateEntityTypeDefModel {
     if (def) {
       return def;
     }
-    console.log(`Entity definition not found for ${entityType}`, LogLevel.debug);
 
     return {
       name: entityType,

@@ -1,4 +1,5 @@
 import { ApiDefect, ApiSymptom } from "api/api.types";
+import { EntityTypeDefs } from "utils/entityTypeDefs/EntityTypeDefs.singleton";
 
 export class RootCauseCardUtil {
 
@@ -31,19 +32,12 @@ export class RootCauseCardUtil {
         const symptomWithHighestCount = Array.from(serviceSymptoms.keys()).reduce((a, b) => 
             serviceSymptoms.get(a)!.length > serviceSymptoms.get(b)!.length ? a : b
         );
-        let masterSentence = `${symptomWithHighestCount} on ${serviceSymptoms.get(symptomWithHighestCount)!.length} services`;
-        let masterSentenceSymptomCount = serviceSymptoms.get(symptomWithHighestCount)!.length;
-
         const totalCount = symptomToCount.get(symptomWithHighestCount)!;
-        const otherEntitiesCount = totalCount - serviceSymptoms.get(symptomWithHighestCount)!.length;
-        
-        if (otherEntitiesCount > 0) {
-            masterSentence += ` and ${otherEntitiesCount} other.`;
-            masterSentenceSymptomCount += otherEntitiesCount;
-        }
+        const symptomDef = EntityTypeDefs.getInstance().getSymptomDef('Service', symptomWithHighestCount);
+        const masterSentence = `${totalCount} ${symptomDef.displayName} symptoms with ${serviceSymptoms.get(symptomWithHighestCount)!.length} on services`;
 
-        const secondarySentenceSymptomCount = activeSymptoms.length - masterSentenceSymptomCount;
-        const secondarySentence = secondarySentenceSymptomCount === 0 ? undefined : `${secondarySentenceSymptomCount} other symptoms across entities`;
+        const secondarySentenceSymptomCount = activeSymptoms.length - totalCount;
+        const secondarySentence = secondarySentenceSymptomCount === 0 ? undefined : `${secondarySentenceSymptomCount} other symptom(s) across entities`;
 
         return { masterSentence, secondarySentence };
     }

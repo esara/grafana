@@ -4,7 +4,7 @@ export class RouteUtil {
     
     
     public static getSingleRootCauseRoutePath(rootCauseId: string): string {
-        return `${CauselyPortalBaseUrl}/defect/${rootCauseId}`;
+        return `${CauselyPortalBaseUrl}/rootCauses/${rootCauseId}`;
       }
 
       public static getServicesRoute(): string {

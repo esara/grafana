@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { QueryDefectConnections } from 'api/graphql/queries/queryDefectConnections';
-import { ApiDefectConnection, ApiQueryDefectConnectionArgs } from 'api/api.types';
+import { ApiDefectConnection, ApiDefectSeverity, ApiQueryDefectConnectionArgs } from 'api/api.types';
 
 const defaultDefectConnectionVariables: ApiQueryDefectConnectionArgs = {
-    first: 8, // Adjust this number based on your needs
+    first: 4, // Adjust this number based on your needs
     defectFilter: {
         includeInactiveDefect: false,
+        severities: [ApiDefectSeverity.Critical, ApiDefectSeverity.High]
     },
+
 };
 
 export const useRootCausePanelApi = () => {
