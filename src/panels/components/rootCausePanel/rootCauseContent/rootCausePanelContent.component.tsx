@@ -3,14 +3,14 @@ import React from "react"
 import { RootCauseCard } from "./../rootCauseCard/rootCauseCard.component"
 import './rootCausePanelContent.scss'
 import { CuiLoadingErrorWrapper } from "sdk/loadingErrorWrapper/cuiLoadingErrorWrapper.component";
-import { ApiDefect, ApiDefectEdge } from "api/api.types";
+import { ApiDefect, ApiDefectEdge, ApiUserScope } from "api/api.types";
 import { useRootCausePanelApi } from "./useRootCausePanelApi";
 import { CUIRenderWhen } from "sdk/cuiRenderWhen/coreRenderWhen.component";
 import { CUIText } from "sdk/text/cui-text.component";
 import { Spinner } from "@grafana/ui";
 
-export const RootCauseContent = () => {
-    const { isLoading, data, error } = useRootCausePanelApi()
+export const RootCauseContent = ({ userScope }: { userScope: ApiUserScope }) => {
+    const { isLoading, data, error } = useRootCausePanelApi(userScope)
 
     const totalCount = data?.totalCount;
 

@@ -31,20 +31,110 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 15,
+        "h": 11,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 2,
-      "options": {},
+      "id": 3,
+      "options": {
+        "apiUserScope": {
+          "id": "9999",
+          "name": "Global",
+          "scopes": []
+        }
+      },
       "pluginVersion": "1.0.2",
       "targets": [
         {
           "refId": "A"
         }
       ],
-      "title": "Panel Title",
+      "title": "Scope Globally",
+      "type": "causely-rootcause-panel"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 11
+      },
+      "id": 5,
+      "options": {
+        "apiUserScope": {
+          "audience": "GLOBAL",
+          "id": "0055089b-a8ad-4822-8285-546c378a03da",
+          "lastUpdate": "2025-05-23T19:49:36.758672Z",
+          "name": "testPublic",
+          "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
+          "scopes": [
+            {
+              "typeName": "causely.ai/service-type",
+              "typeValues": [
+                "Deployment"
+              ]
+            }
+          ]
+        }
+      },
+      "pluginVersion": "1.0.2",
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "Scope testPublic",
+      "type": "causely-rootcause-panel"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "id": 4,
+      "options": {
+        "apiUserScope": {
+          "audience": "USER",
+          "id": "0038641c-b887-4326-b84d-5bdbf0ffa604",
+          "lastUpdate": "2025-05-23T19:49:03.094978Z",
+          "name": "testPrivate",
+          "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
+          "scopes": [
+            {
+              "typeName": "causely.ai/team",
+              "typeValues": [
+                "SAURON"
+              ]
+            }
+          ]
+        }
+      },
+      "pluginVersion": "1.0.2",
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "Scope testPrivate",
       "type": "causely-rootcause-panel"
     },
     {
@@ -60,7 +150,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 28
       },
       "id": 1,
       "options": {
@@ -99,6 +189,6 @@
   "timezone": "",
   "title": "Provisioned Causely dashboard",
   "uid": "a538aeff-5a8a-42a5-901c-938d896fdd6f",
-  "version": 3,
+  "version": 5,
   "weekStart": ""
 }

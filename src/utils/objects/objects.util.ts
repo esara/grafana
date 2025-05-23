@@ -171,7 +171,7 @@ export class ObjectsUtil {
 
       return { origMsg: String(parsed) };
     } catch (error) {
-      console.log('Failed to parse JSON ', error);
+      console.error('Failed to parse JSON ', error);
       return { origMsg: text };
     }
   }
