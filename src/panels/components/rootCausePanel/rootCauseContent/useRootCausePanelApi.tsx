@@ -31,7 +31,7 @@ export const useRootCausePanelApi = () => {
 
     useEffect(() => {
         fetchData();
-        const interval = setInterval(fetchData, 60000); // Update data every 60 seconds
+        const interval = setInterval(fetchData, 15000); // Update data every 15 seconds
 
         return () => clearInterval(interval); // Cleanup interval
     }, []);

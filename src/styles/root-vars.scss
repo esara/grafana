@@ -3,6 +3,12 @@ $prefix: '.cui';
 
 // Grafana Color Palette
 
+// Background Colors (using 204, 204, 220)
+$background-color-canvas: rgb(17, 18, 23);
+$background-color-primary: rgb(24, 27, 31); //Main and preferred content
+$background-color-secondary: rgb(34, 37, 43); //Used for cards
+$background-color-elevated: rgb(34, 37, 43); //Use for menus and popovers
+
 // Primary
 $color-primary-main: #3d71d9;
 $color-primary-shade: rgb(90, 134, 222);
@@ -53,6 +59,5 @@ $text-size-xl: 1.25rem;     // 20px
 $text-size-2xl: 1.5rem;     // 24px
 $text-size-3xl: 1.875rem;   // 30px
 $text-size-4xl: 2.25rem;    // 36px
-
 
 

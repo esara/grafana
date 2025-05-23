@@ -1,5 +1,3 @@
-import { describe, expect, it } from "vitest";
-
 import { EqualityUtil } from 'utils/equality/equality.util';
 
 describe('EqualityUtil', () => {

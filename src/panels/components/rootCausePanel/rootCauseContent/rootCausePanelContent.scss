@@ -10,6 +10,17 @@
         overflow: scroll;
         gap: 2 rem;
         
+        &-empty-state {
+            background-color: $background-color-secondary;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+            padding: 2rem;
+            gap: 2rem;
+        }
         &-card {
             cursor: pointer;
             transition: transform 0.2s ease-in-out;
