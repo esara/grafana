@@ -20,7 +20,7 @@ const GlobalOption: UserScopeComboboxOption = {
 
 export const ScopeSelectEditor: React.FC<StandardEditorProps<ApiUserScope>> = ({ value, onChange }) => {
   const [options, setOptions] = useState<UserScopeComboboxOption[]>([]);
-  const [selected, setSelected] = useState<ApiUserScope | undefined>(value);
+  const [selected, setSelected] = useState<ApiUserScope | undefined>(GlobalOption.meta);
 
   React.useEffect(() => {
     QueryGetUserScopes().then((res: QueryResult<GetUserScopesQueryData>) => {

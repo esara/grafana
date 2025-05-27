@@ -5,7 +5,7 @@
   "id": "causely-rootcause-panel",
   "info": {
     "keywords": ["panel", "causely", "root-cause", "monitoring"],
-    "description": "A comprehensive panel that displays urgent root causes in you env as they happen. Visualize service relationships and health indicators in an intuitive interface.",
+    "description": "A panel that displays urgent root causes in real-time and root cause headlines. The headlines view shows both urgent root causes as they happen and notable root causes from the past 24 hours.",
     "author": {
       "name": "esara"
     },

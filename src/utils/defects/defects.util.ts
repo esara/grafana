@@ -1,4 +1,4 @@
-import { ApiDefect } from "api/api.types";
+import { ApiDefect, ApiDefectSeverity } from "api/api.types";
 import { IntlUtil } from "utils/intl/intl.util";
 import { StringsUtil } from "utils/strings/strings.util";
 import { TimeUtil } from "utils/time/time.util";
@@ -6,6 +6,18 @@ import { TimeUtil } from "utils/time/time.util";
 export type DefectStatus = 'detected' | 'remediated' | 'cleared' | 'inactive';
 
 export class DefectsUtil {
+
+  public static isDetected(defect: ApiDefect): boolean {
+    const status = DefectsUtil.toStatus(defect);
+    return status === 'detected';
+  }
+
+  public static isDiagnose(defect: ApiDefect): boolean {
+    return (
+      StringsUtil.equalsIgnoreCase(defect?.severity, ApiDefectSeverity.Critical) ||
+      StringsUtil.equalsIgnoreCase(defect?.severity, ApiDefectSeverity.High)
+    );
+  }
 
   public static toStatus(defect: ApiDefect): DefectStatus {
     if (StringsUtil.isBlank(defect?.fromTime)) {

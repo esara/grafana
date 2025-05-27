@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { QueryDefectConnections } from 'api/graphql/queries/queryDefectConnections';
-import { ApiQueryDefectConnectionArgs, ApiDefectSeverity, ApiUserScope, ApiDefectConnection } from 'api/api.types';
+import { ApiDefectConnection, ApiDefectSeverity, ApiQueryDefectConnectionArgs, ApiUserScope } from 'api/api.types';
 
 const defaultDefectConnectionVariables: ApiQueryDefectConnectionArgs = {
     first: 4, // Adjust this number based on your needs

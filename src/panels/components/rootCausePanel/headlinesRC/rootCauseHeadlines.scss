@@ -1,0 +1,52 @@
+@import 'styles/root-vars';
+
+#{$prefix} {
+  &--rootCause__headlines {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    height: 100%;
+    overflow: scroll;
+
+    &__headline-cards-container {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    &__empty-state {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      height: 100%;
+      padding: 2rem;
+      background-color: $background-color-secondary;
+      border-radius: 4px;
+    }
+
+    &__headline-card {
+      cursor: pointer;
+      background-color: $background-color-secondary;
+      border-radius: 4px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: transform 0.2s ease-in-out;
+
+      &:hover {
+        transform: scale(1.01);
+        background-color: $color-secondary-transparent;
+      }
+
+      &--urgent {
+        background-color: $urgent-root-cause-color;
+
+        &:hover {
+          background-color: $urgent-root-cause-color-transparent;
+        }
+      }
+    }
+  }
+} 

@@ -1,6 +1,5 @@
 import React from "react"
 import { CUIHeading } from "sdk/heading/cui-heading.component";
-import { SdkUtil } from "sdk/sdk.util";
 import { CUIText } from "sdk/text/cui-text.component";
 
 import { ApiDefect } from "api/api.types";
@@ -12,7 +11,11 @@ import { DefectsUtil } from "utils/defects/defects.util";
 import { RootCauseEvidence, useRootCauseEvidence } from "./useRootCauseEvidence";
 import { CuiTagList } from "sdk/tagList/cuiTagList.component";
 
+import { CUISection } from "sdk/section/cuiSection.component";
+import { CUISectionDescription } from "sdk/sectionDescription/cuiSectionDescription.component";
+
 import './rootCauseCard.scss';
+
 type RootCauseCardProps = {
     rootCause: ApiDefect
 }
@@ -40,7 +43,7 @@ const getTagsList = (rootCause: ApiDefect): string[] => {
     tagsList.push('Active');
 
     if (rootCause?.serviceCount > 0) {
-        tagsList.push('Impacts Service');
+        tagsList.push(`Impacts ${rootCause.serviceCount} Service(s)`);
     }
 
     return tagsList;
@@ -49,51 +52,60 @@ const getTagsList = (rootCause: ApiDefect): string[] => {
 export const RootCauseCard = ({ rootCause }: RootCauseCardProps) => {
     const evidence: RootCauseEvidence = useRootCauseEvidence(rootCause.id);
 
-    const symptomCount = rootCause.symptoms.length;
     const activeSymptomsCount = rootCause.symptoms.filter((symptom) => symptom.active).length;
     const rootCauseName = EntityTypeDefs.getInstance().getDefectDef(rootCause.entity.typeName, rootCause.name).displayName;
     const symptomDescriptions = RootCauseCardUtil.getSymptomDescription(rootCause);
-
-    
 
     return (
         <div className="root-cause-card" onClick={() => {
             window.open(RouteUtil.getSingleRootCauseRoutePath(rootCause.id), '_blank');
         }}>
-            
-            <CuiTagList tags={getTagsList(rootCause)} />
+            <CUISection>
+                <CuiTagList tags={getTagsList(rootCause)} />
+            </CUISection>
 
-            <div className={SdkUtil.withPrefix('root-cause-card-section')}>
+            <CUISection>
                 <CUIHeading>Root Cause</CUIHeading>
-                <CUIText variant="secondary" className={SdkUtil.withPrefix('root-cause-card-description')}>
-                    {rootCauseName} on {EntityUtil.simplifyEntityname(rootCause.entity)}
-                </CUIText>
-            </div>
+                <CUISectionDescription>
+                    <CUIText variant="secondary" >
+                        {rootCauseName} on {EntityUtil.simplifyEntityname(rootCause.entity)}
+                    </CUIText>
+                </CUISectionDescription>
+            </CUISection>
 
-            <div className={SdkUtil.withPrefix('root-cause-card-section')}>
-                <CUIHeading>Symptoms ({activeSymptomsCount})/{symptomCount}</CUIHeading>
-                <CUIText variant="secondary" className={SdkUtil.withPrefix('root-cause-card-description')}>
-                    {symptomDescriptions.masterSentence}
-                </CUIText>
-                <CUIText variant="secondary" className={SdkUtil.withPrefix('root-cause-card-description')}>
-                    {symptomDescriptions.secondarySentence}
-                </CUIText>
-            </div>
+            <CUISection>
+                <CUIHeading>Symptoms ({activeSymptomsCount})</CUIHeading>
+                <CUISectionDescription>
+                    <CUIText variant="secondary" >
+                        {symptomDescriptions.masterSentence}
+                    </CUIText>
+                </CUISectionDescription>
+                <CUISectionDescription>
+                    <CUIText variant="secondary" >
+                        {symptomDescriptions.secondarySentence}
+                    </CUIText>
+                </CUISectionDescription>
+            </CUISection>
 
-            <div className={SdkUtil.withPrefix('root-cause-card-section')}>
+            <CUISection>
                 <CUIHeading>Time</CUIHeading>
-                <CUIText variant="secondary" className={SdkUtil.withPrefix('root-cause-card-description')}>
-                    {DefectsUtil.toTimeInfo(rootCause)}
-                </CUIText>
-            </div>
+                <CUISectionDescription>
+                    <CUIText variant="secondary">
+                        {DefectsUtil.toTimeInfo(rootCause)}
+                    </CUIText>
+                </CUISectionDescription>
+            </CUISection>
 
-            <div className={SdkUtil.withPrefix('root-cause-card-section')}>
+            <CUISection>
                 <CUIHeading>Additional Information</CUIHeading>
-                <CUIText variant="secondary" className={SdkUtil.withPrefix('root-cause-card-description')}>
-                    {getEvidenceList(evidence)}
-                </CUIText>
+                <CUISectionDescription>
+                    <CUIText variant="secondary">
+                        {getEvidenceList(evidence)}
+                    </CUIText>
+                </CUISectionDescription>
 
-            </div>
+
+            </CUISection>
         </div>
     )
 }

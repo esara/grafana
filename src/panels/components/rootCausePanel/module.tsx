@@ -5,6 +5,11 @@ import { ApiUserScope } from 'api/api.types';
 
 export type RootCausePanelOptions = {
     apiUserScope: ApiUserScope;
+    panelType: PanelType;
+}
+export enum PanelType {
+    UrgentRootCause = 'urgentRcs',
+    RootCauseHeadlines = 'headlines',
 }
 
 export const plugin = new PanelPlugin<RootCausePanelOptions>(RootCausePanel)
@@ -14,6 +19,16 @@ export const plugin = new PanelPlugin<RootCausePanelOptions>(RootCausePanel)
             path: 'apiUserScope',
             name: 'User Scope',
             editor: ScopeSelectEditor,
+        }).addSelect({
+            path: 'panelType',
+            name: 'Panel Type',
+            settings: {
+                options: [
+                    { label: 'Urgent Root Cause', value: PanelType.UrgentRootCause },
+                    { label: 'Root Cause Headlines', value: PanelType.RootCauseHeadlines },
+                ],
+            },
+            defaultValue: PanelType.UrgentRootCause,
         });
     });
 

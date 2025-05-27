@@ -1,7 +1,7 @@
 // Prefix for all classes
 $prefix: '.cui';
 
-// Grafana Color Palette
+/* -- Grafana Color Palette  -- Grafana Color Palette  -- Grafana Color Palette  -- Grafana Color Palette  -- Grafana Color Palette */
 
 // Background Colors (using 204, 204, 220)
 $background-color-canvas: rgb(17, 18, 23);
@@ -46,7 +46,7 @@ $color-info-transparent: rgb(90, 134, 222);
 $color-info-border-text: #6e9fff;
 
 // Text Colors
-$text-primary: #ccccdc;      
+$text-primary: rgba(204, 204, 220);
 $text-secondary: rgba(204, 204, 220, 0.65);    
 $text-disabled: rgba(204, 204, 220, 0.6);   
 
@@ -61,3 +61,12 @@ $text-size-3xl: 1.875rem;   // 30px
 $text-size-4xl: 2.25rem;    // 36px
 
 
+/* -- CUI Colors  -- CUI Colors  -- CUI Colors  -- CUI Colors  -- CUI Colors  -- CUI Colors  -- CUI Colors  -- CUI Colors */
+
+$urgent-root-cause-color: rgba(250, 77, 86, 0.3);
+$urgent-root-cause-color-transparent: rgba(250, 77, 86, 0.5);
+$urgent-root-cause-active-color: rgba(250, 77, 86, 0.7);
+
+$root-cause-headline-color: rgba(250, 77, 86, 0.3);
+$root-cause-headline-hover-color: rgba(250, 77, 86, 0.5);
+$root-cause-headline-active-color: rgba(250, 77, 86, 0.7);

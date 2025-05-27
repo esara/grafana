@@ -24,5 +24,9 @@ export class TopologyUtil {
       StringsUtil.containsPath(entity?.name)
     );
   }
+  
+  public static toHumanizedEntityType(entity: ApiEntity): string {
+    return StringsUtil.splitCamelCase(entity?.typeName ?? '');
+  }
 
 }
