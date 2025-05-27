@@ -11,11 +11,11 @@ describe('ArraysUtil', () => {
       const e = null;
 
       // WHEN & THEN
-      expect(ArraysUtil.isArray(a)).toEqual(false);
-      expect(ArraysUtil.isArray(b)).toEqual(false);
-      expect(ArraysUtil.isArray(c)).toEqual(false);
-      expect(ArraysUtil.isArray(d)).toEqual(false);
-      expect(ArraysUtil.isArray(e)).toEqual(false);
+      expect(ArraysUtil.isArray(a)).toBe(false);
+      expect(ArraysUtil.isArray(b)).toBe(false);
+      expect(ArraysUtil.isArray(c)).toBe(false);
+      expect(ArraysUtil.isArray(d)).toBe(false);
+      expect(ArraysUtil.isArray(e)).toBe(false);
     });
 
     it('should return true when given an empty array', () => {
@@ -23,7 +23,7 @@ describe('ArraysUtil', () => {
       const a: never[] = [];
 
       // WHEN & THEN
-      expect(ArraysUtil.isArray(a)).toEqual(true);
+      expect(ArraysUtil.isArray(a)).toBe(true);
     });
 
     it('should return true when given an array with items', () => {
@@ -32,8 +32,8 @@ describe('ArraysUtil', () => {
       const b = [{ cats: 'dogs' }];
 
       // WHEN & THEN
-      expect(ArraysUtil.isArray(a)).toEqual(true);
-      expect(ArraysUtil.isArray(b)).toEqual(true);
+      expect(ArraysUtil.isArray(a)).toBe(true);
+      expect(ArraysUtil.isArray(b)).toBe(true);
     });
   });
 
@@ -82,11 +82,11 @@ describe('ArraysUtil', () => {
       const e = null;
 
       // WHEN & THEN
-      expect(ArraysUtil.isEmpty(a)).toEqual(true);
-      expect(ArraysUtil.isEmpty(b)).toEqual(true);
-      expect(ArraysUtil.isEmpty(c)).toEqual(true);
-      expect(ArraysUtil.isEmpty(d)).toEqual(true);
-      expect(ArraysUtil.isEmpty(e)).toEqual(true);
+      expect(ArraysUtil.isEmpty(a)).toBe(true);
+      expect(ArraysUtil.isEmpty(b)).toBe(true);
+      expect(ArraysUtil.isEmpty(c)).toBe(true);
+      expect(ArraysUtil.isEmpty(d)).toBe(true);
+      expect(ArraysUtil.isEmpty(e)).toBe(true);
     });
 
     it('should return true when given an empty array', () => {
@@ -94,7 +94,7 @@ describe('ArraysUtil', () => {
       const a: never[] = [];
 
       // WHEN & THEN
-      expect(ArraysUtil.isEmpty(a)).toEqual(true);
+      expect(ArraysUtil.isEmpty(a)).toBe(true);
     });
 
     it('should return false when given an array with items', () => {
@@ -103,8 +103,8 @@ describe('ArraysUtil', () => {
       const b = [{ cats: 'dogs' }];
 
       // WHEN & THEN
-      expect(ArraysUtil.isEmpty(a)).toEqual(false);
-      expect(ArraysUtil.isEmpty(b)).toEqual(false);
+      expect(ArraysUtil.isEmpty(a)).toBe(false);
+      expect(ArraysUtil.isEmpty(b)).toBe(false);
     });
   });
 

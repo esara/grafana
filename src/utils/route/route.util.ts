@@ -1,5 +1,5 @@
-// const CauselyPortalBaseUrl = 'https://portal.causely.app';
-const CauselyPortalBaseUrl = 'https://portal.staging.causely.app';
+const CauselyPortalBaseUrl = 'https://portal.causely.app';
+// const CauselyPortalBaseUrl = 'https://portal.staging.causely.app';
 
 export enum AppRoute {
   dashboard = '/dashboard',
