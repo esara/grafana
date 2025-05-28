@@ -42,7 +42,7 @@ export const RootCauseHeadlines = ({ userScope }: { userScope: ApiUserScope }) =
 
                 <CUIRenderWhen condition={isEmptyState}>
                     <div className={SdkUtil.withPrefix('rootCause__headlines__empty-state')}>
-                        No headline in last 24 hours to mention
+                        No notable headlines in the last 24hrs
                     </div>
                     <div className={getCardClassName(null)} onClick={() => {
                         window.open(RouteUtil.getDiagnoseRoutePath(), '_blank');
@@ -70,7 +70,7 @@ export const RootCauseHeadlines = ({ userScope }: { userScope: ApiUserScope }) =
                             window.open(RouteUtil.getDiagnoseRoutePath(), '_blank');
                         }}>
                             <CUIHeading>
-                                {`${urgentRcActiveCount - 3} Urgent Root Cause(1).  View in Causely`}
+                                {`There is another ${urgentRcActiveCount - 3} Urgent Root Cause(s) active. View in Causely`}
                             </CUIHeading>
                         </div>
                     </CUIRenderWhen>

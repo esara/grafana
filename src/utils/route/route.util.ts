@@ -1,5 +1,6 @@
-const CauselyPortalBaseUrl = 'https://portal.causely.app';
-// const CauselyPortalBaseUrl = 'https://portal.staging.causely.app';
+import { CauselyCredentials } from "utils/credentials/CauselyCredentials.singleton";
+
+const CauselyPortalBaseUrl = () => `https://portal.${CauselyCredentials.getInstance().getDomain()}`;
 
 export enum AppRoute {
   dashboard = '/dashboard',
@@ -34,24 +35,23 @@ export enum AppRoute {
   assureAnalysis = '/assure/analysis',
 }
 
-
 export class RouteUtil {
-
+  
 
   public static getSingleRootCauseRoutePath(rootCauseId: string): string {
-    return `${CauselyPortalBaseUrl}${AppRoute.rootCauses}/${rootCauseId}`;
+    return `${CauselyPortalBaseUrl()}${AppRoute.rootCauses}/${rootCauseId}`;
   }
 
   public static getServicesRoute(): string {
-    return `${CauselyPortalBaseUrl}${AppRoute.observeServices}`;
+    return `${CauselyPortalBaseUrl()}${AppRoute.observeServices}`;
   }
 
   public static getCauselyPortalBaseUrl(): string {
-    return CauselyPortalBaseUrl;
+    return CauselyPortalBaseUrl();
   }
 
   public static getDiagnoseRoutePath(): string {
-    return `${CauselyPortalBaseUrl}${AppRoute.diagnoseRootCauses}`;
+    return `${CauselyPortalBaseUrl()}${AppRoute.diagnoseRootCauses}`;
   }
 
 }

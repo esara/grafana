@@ -14,12 +14,7 @@ export enum PanelType {
 
 export const plugin = new PanelPlugin<RootCausePanelOptions>(RootCausePanel)
     .setPanelOptions(builder => {
-        return builder.addCustomEditor({
-            id: 'apiUserScope',
-            path: 'apiUserScope',
-            name: 'User Scope',
-            editor: ScopeSelectEditor,
-        }).addSelect({
+        return builder.addSelect({
             path: 'panelType',
             name: 'Panel Type',
             settings: {
@@ -29,6 +24,11 @@ export const plugin = new PanelPlugin<RootCausePanelOptions>(RootCausePanel)
                 ],
             },
             defaultValue: PanelType.UrgentRootCause,
+        }).addCustomEditor({
+            id: 'apiUserScope',
+            path: 'apiUserScope',
+            name: 'User Scope',
+            editor: ScopeSelectEditor,
         });
     });
 

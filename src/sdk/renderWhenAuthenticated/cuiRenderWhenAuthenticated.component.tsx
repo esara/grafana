@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { getBackendSrv } from '@grafana/runtime';
 import { TextLink } from '@grafana/ui';
-import { AppPluginMeta } from '@grafana/data';
 import { JsonData } from '../../components/AppConfig/AppConfig';
 import { AppPluginId } from '../../constants';
 import { AppStateProvider } from 'components/AppStateProvider/AppStateProvider';
+import { CauselyCredentials } from 'utils/credentials/CauselyCredentials.singleton';
 
 interface Props {
   children: React.ReactNode;
@@ -15,9 +14,7 @@ interface Props {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await getBackendSrv().get<AppPluginMeta<JsonData>>(`/api/plugins/${AppPluginId}/settings`);
-      const causelyCreds: JsonData = response?.jsonData || {};
-
+      const causelyCreds: JsonData = (await CauselyCredentials.create())?.getCredentials() || {};
       setCredentialsSet(!!(
         causelyCreds.causelyDomain &&
         (

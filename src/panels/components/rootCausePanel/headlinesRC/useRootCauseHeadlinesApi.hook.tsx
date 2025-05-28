@@ -6,9 +6,10 @@ import { QueryDefectCounts } from 'api/graphql/queries/queryDefectCounts';
 
 const defaultHeadlinesOptions = {
     timeFilter: {
-        start: TimeUtil.getStartTime(TimeOption.ONE_DAY)
+        start: TimeUtil.getStartTime(TimeOption.ONE_DAY),
+        end: TimeUtil.nowISO()
     },
-    limit: 5, // Request 
+    limit: 3, // Request 
     sort: {
         priority: [
             ApiHeadlineSortField.Active,
@@ -43,6 +44,7 @@ export const useRootCauseHeadlinesApi = (userScope: ApiUserScope) => {
             ...defaultHeadlinesOptions,
             scopesFilter: {
                 scopes: userScope?.scopes || []
+                
             }
         };
 

@@ -9,7 +9,10 @@ export type GetHeadlinesQueryData = {
 export const QueryHeadlines = (variables?: ApiHeadlineOptions): Promise<QueryResult<GetHeadlinesQueryData>> => {
     const headlinesPayload = {
         operationName: 'headlines',
-        variables: variables,
+        variables: {
+            options: {...variables},
+            
+        },
         query: HeadlinesSchema,
     };
 
