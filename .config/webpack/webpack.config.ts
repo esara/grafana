@@ -253,6 +253,7 @@ const config = async (env: Env): Promise<Configuration> => {
               typescript: { configFile: path.join(process.cwd(), 'tsconfig.json') },
             }),
             new ESLintPlugin({
+              eslintPath: require.resolve('eslint/use-at-your-own-risk'),
               extensions: ['.ts', '.tsx'],
               lintDirtyModulesOnly: Boolean(env.development), // don't lint on start, only lint changed files
             }),
