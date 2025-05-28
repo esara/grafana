@@ -1,6 +1,6 @@
 import { PanelPlugin } from '@grafana/data';
 import { RootCausePanel } from './rootCausePanel.component';
-import { ScopeSelectEditor } from '../editorOptions/scopeSelectEditor/scopeSelectEditor.component';
+import { ScopeSelectEditor } from '../panelOptions/scopeSelectEditor/scopeSelectEditor.component';
 import { ApiUserScope } from 'api/api.types';
 
 export type RootCausePanelOptions = {
