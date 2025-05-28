@@ -16,8 +16,12 @@
     "links": [],
     "screenshots": [
       {
-        "name": "service-health-panel",
-        "path": "img/service-health-panel.png"
+        "name": "root-cause-panel-urgency",
+        "path": "img/root-cause-panel-urgency.png"
+      },
+      {
+        "name": "root-cause-panel-headlines",
+        "path": "img/root-cause-panel-headlines.png"
       }
     ],
     "version": "%VERSION%",
