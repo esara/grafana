@@ -1,30 +1,22 @@
 import React from "react";
-import useServiceHealthApi from "./useServiceHealthApi";
-import { LoadingPlaceholder } from "@grafana/ui";
+import { useServiceHealthApi } from "./useServiceHealthApi";
 import { EntityHealthCard, EntityHealthCardData } from "./entityHealthCard.component";
+import { CuiLoadingErrorWrapper } from "sdk/loadingErrorWrapper/cuiLoadingErrorWrapper.component";
 
 export const ServiceHealthSummaryContent: React.FC = () => {
     const {isLoading, data, error} = useServiceHealthApi();
 
-    if (isLoading) {
-        return (
-            <LoadingPlaceholder text="Loading..." />
-        )
-    }
-    if (error) {
-        return (
-            <div>Error: {error}</div>
-        )
-    }
     return (
-        <div className="service-health-summary-panel">
-            {data.map((entityHealthCardData: EntityHealthCardData) => {
-                return (
-                    <div key={entityHealthCardData.severity}>
-                        <EntityHealthCard key={entityHealthCardData.severity} data={entityHealthCardData} label="Services" />
-                    </div>
-                );
-            })}
-        </div>
+        <CuiLoadingErrorWrapper isLoading={isLoading} error={error}>
+            <div className="service-health-summary-panel">
+                {data.map((entityHealthCardData: EntityHealthCardData) => {
+                    return (
+                        <div key={entityHealthCardData.severity}>
+                            <EntityHealthCard key={entityHealthCardData.severity} data={entityHealthCardData} label="Services" />
+                        </div>
+                    );
+                })}
+            </div>
+        </CuiLoadingErrorWrapper>
     );
 };

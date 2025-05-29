@@ -73,10 +73,12 @@
     "@grafana/schema": "^12.0.0",
     "@grafana/ui": "^12.0.0",
     "node": "^22.16.0",
+    "clsx": "2.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "^7.6.1",
-    "rxjs": "7.8.2"
+    "rxjs": "7.8.2",
+    "luxon": "3.2.1"
   },
   "packageManager": "npm@10.9.2"
 }

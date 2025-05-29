@@ -2,6 +2,7 @@ import React, { FC, ReactElement } from 'react';
 import { Card } from '@grafana/ui';
 
 import './entityHealthCard.scss'
+import { RouteUtil } from 'utils/route/route.util';
 
 export type EntityHealthCardData = {
     title: string;
@@ -23,8 +24,7 @@ export const EntityHealthCard: FC<EntityHealthCardProps> = (
     const { data, label } = props;
     const { severity, count, total, percentage, rootCauseCount, title } = data;
     const handleOnClick = () => {
-        const hrefLink = 'https://portal.causely.app/observe/services'
-        window.open(hrefLink, '_blank', 'noopener,noreferrer');
+        window.open(RouteUtil.getServicesRoute(), '_blank', 'noopener,noreferrer');
     };
 
     return (

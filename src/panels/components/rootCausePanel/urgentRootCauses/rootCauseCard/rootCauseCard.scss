@@ -1,0 +1,10 @@
+@import 'styles/root-vars.scss';
+
+#{$prefix} {
+    &--root-cause-card {
+
+        &-tag-list {
+            background-color: red;
+        }
+    }
+}

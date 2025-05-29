@@ -1,3 +1,5 @@
+import { ApiDefectCount, ApiEntityTypeCount } from "api/api.types";
+
 export type EntityHealthCardData = {
   title: string;
   percentage: string;
@@ -7,21 +9,6 @@ export type EntityHealthCardData = {
   total: number;
 };
 
-export type ApiEntityTypeCount = {
-  count: number;
-  entityType: string;
-  severity: ApiDefectSeverity;
-};
-
-export type ApiDefectCount = {
-  defectAutoCount: number;
-  defectCount: number;
-  defectManualCount: number;
-  defectName?: string;
-  entityType?: string;
-  severity: ApiDefectSeverity | string;//TODO : Remove string when remove mock data
-  time?: string;
-};
 
 export enum ApiDefectSeverity {
   Critical = 'Critical',
@@ -67,7 +54,6 @@ export class EntityHealthCardsUtil {
   }
   
   private static getTitle(severity: string): string {
-    console.log("Severity", severity);
     switch (severity.toLowerCase()) {
       case "normal":
         return "Healthy Services";
@@ -90,12 +76,16 @@ export class EntityHealthCardsUtil {
     const totalEntityCount = entityTypeCounts.reduce((total, entityTypeCount) => total + entityTypeCount.count, 0);
 
     const entitySeverityCounts: {[key: string]: number} = (entityTypeCounts ?? []).reduce((map: {[key: string]: number}, entityTypeCount) => {
-      map[entityTypeCount.severity] = (map[entityTypeCount.severity] ?? 0) + entityTypeCount.count;
+      if (entityTypeCount.severity) {
+        map[entityTypeCount.severity] = (map[entityTypeCount.severity] ?? 0) + entityTypeCount.count;
+      }
       return map;
     }, {});
 
     const defectSeverityCounts = (defectCounts ?? []).reduce((map: {[key: string]: number}, defectCount) => {
-      map[defectCount.severity] = (map[defectCount.severity] ?? 0) + defectCount.defectCount;
+      if (defectCount.severity) {
+        map[defectCount.severity] = (map[defectCount.severity] ?? 0) + defectCount.defectCount;
+      }
       return map;
     }, {});
 

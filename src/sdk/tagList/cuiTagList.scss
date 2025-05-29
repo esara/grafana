@@ -1,0 +1,10 @@
+@import 'styles/root-vars.scss';
+
+#{$prefix} {
+  &--tag-list {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 0.5rem;
+  }
+} 

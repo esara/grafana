@@ -6,7 +6,7 @@
   "backend": true,
   "executable": "gpx_causely",
   "info": {
-    "keywords": ["app", "causely", "service-health", "monitoring"],
+    "keywords": ["app", "causely", "service-health", "root-cause", "monitoring"],
     "description": "Causely App for Grafana provides real-time service health monitoring and insights. Track service dependencies, health status, and performance metrics in a unified dashboard.",
     "author": {
       "name": "esara"
@@ -23,6 +23,14 @@
       {
         "name": "service-health-panel",
         "path": "img/service-health-panel.png"
+      },
+      {
+        "name": "root-cause-panel-urgency",
+        "path": "img/root-cause-panel-urgency.png"
+      },
+      {
+        "name": "root-cause-panel-headlines",
+        "path": "img/root-cause-panel-headlines.png"
       }
     ],
     "version": "%VERSION%",
@@ -32,7 +40,12 @@
     {
       "type": "panel",
       "name": "causely-service-panel",
-      "path": "panels/plugin.json"
+      "path": "panels/components/serviceHealthSummaryPanel/plugin.json"
+    },
+    {
+      "type": "panel",
+      "name": "causely-rootcause-panel",
+      "path": "panels/components/rootCausePanel/plugin.json"
     }
   ],
   "dependencies": {

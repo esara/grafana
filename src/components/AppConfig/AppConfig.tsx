@@ -225,7 +225,6 @@ const updatePluginAndReload = async (pluginId: string, data: Partial<PluginMeta<
 };
 
 const updatePlugin = async (pluginId: string, data: Partial<PluginMeta>) => {
-  console.log('Updating plugin', pluginId, data);
   const response = await getBackendSrv().post<PluginMeta>(`/api/plugins/${pluginId}/settings`, data);
   return response;
 };
