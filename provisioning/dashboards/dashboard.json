@@ -22,12 +22,51 @@
   "links": [],
   "panels": [
     {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 14,
+      "options": {},
+      "pluginVersion": "1.0.2",
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "Service Cards",
+      "type": "causely-servicecard-panel"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 13,
+      "panels": [],
+      "title": "04 - Service Cards",
+      "type": "row"
+    },
+    {
       "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 9
       },
       "id": 12,
       "panels": [
@@ -72,254 +111,258 @@
       "type": "row"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 1
+        "y": 10
       },
       "id": 10,
-      "panels": [],
+      "panels": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 24,
+            "x": 0,
+            "y": 2
+          },
+          "id": 3,
+          "options": {
+            "apiUserScope": {
+              "id": "9999",
+              "name": "Global",
+              "scopes": []
+            },
+            "panelType": "urgentRcs"
+          },
+          "pluginVersion": "1.0.2",
+          "targets": [
+            {
+              "refId": "A"
+            }
+          ],
+          "title": "Scope Globally",
+          "type": "causely-rootcause-panel"
+        }
+      ],
       "title": "02- Urgent Root Cause Global ",
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
+      "collapsed": true,
       "gridPos": {
-        "h": 11,
+        "h": 1,
         "w": 24,
         "x": 0,
-        "y": 2
+        "y": 11
       },
-      "id": 3,
-      "options": {
-        "apiUserScope": {
-          "id": "9999",
-          "name": "Global",
-          "scopes": []
-        },
-        "panelType": "urgentRcs"
-      },
-      "pluginVersion": "1.0.2",
-      "targets": [
+      "id": 11,
+      "panels": [
         {
-          "refId": "A"
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 24,
+            "x": 0,
+            "y": 3
+          },
+          "id": 5,
+          "options": {
+            "apiUserScope": {
+              "audience": "USER",
+              "id": "95c52319-7218-4d7a-bb74-94df06df27e1",
+              "lastUpdate": "2025-05-27T20:31:16.120756Z",
+              "name": "testEmptyStateScope",
+              "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
+              "scopes": [
+                {
+                  "typeName": "causely.ai/namespace",
+                  "typeValues": [
+                    "ingress-nginx"
+                  ]
+                }
+              ]
+            },
+            "panelType": "urgentRcs"
+          },
+          "pluginVersion": "1.0.2",
+          "targets": [
+            {
+              "refId": "A"
+            }
+          ],
+          "title": "Scope testPublic",
+          "type": "causely-rootcause-panel"
+        },
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 24,
+            "x": 0,
+            "y": 14
+          },
+          "id": 4,
+          "options": {
+            "apiUserScope": {
+              "audience": "USER",
+              "id": "0038641c-b887-4326-b84d-5bdbf0ffa604",
+              "lastUpdate": "2025-05-23T19:49:03.094978Z",
+              "name": "testPrivate",
+              "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
+              "scopes": [
+                {
+                  "typeName": "causely.ai/team",
+                  "typeValues": [
+                    "SAURON"
+                  ]
+                }
+              ]
+            },
+            "panelType": "urgentRcs"
+          },
+          "pluginVersion": "1.0.2",
+          "targets": [
+            {
+              "refId": "A"
+            }
+          ],
+          "title": "Scope testPrivate",
+          "type": "causely-rootcause-panel"
         }
       ],
-      "title": "Scope Globally",
-      "type": "causely-rootcause-panel"
+      "title": "02 - Urgent Root Cause Other Scopes",
+      "type": "row"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 8,
+      "panels": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 4
+          },
+          "id": 6,
+          "options": {
+            "apiUserScope": {
+              "audience": "USER",
+              "id": "9999",
+              "lastUpdate": "2025-05-27T20:31:16.120756Z",
+              "name": "Global",
+              "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
+              "scopes": []
+            },
+            "panelType": "headlines"
+          },
+          "pluginVersion": "1.0.2",
+          "targets": [
+            {
+              "refId": "A"
+            }
+          ],
+          "title": "HeadLines Global",
+          "type": "causely-rootcause-panel"
+        }
+      ],
+      "title": "03 - HeadLines Global",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
         "y": 13
       },
-      "id": 11,
-      "panels": [],
-      "title": "02 - Urgent Root Cause Other Scopes",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 24,
-        "x": 0,
-        "y": 14
-      },
-      "id": 5,
-      "options": {
-        "apiUserScope": {
-          "audience": "USER",
-          "id": "95c52319-7218-4d7a-bb74-94df06df27e1",
-          "lastUpdate": "2025-05-27T20:31:16.120756Z",
-          "name": "testEmptyStateScope",
-          "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
-          "scopes": [
-            {
-              "typeName": "causely.ai/namespace",
-              "typeValues": [
-                "ingress-nginx"
-              ]
-            }
-          ]
-        },
-        "panelType": "urgentRcs"
-      },
-      "pluginVersion": "1.0.2",
-      "targets": [
-        {
-          "refId": "A"
-        }
-      ],
-      "title": "Scope testPublic",
-      "type": "causely-rootcause-panel"
-    },
-    {
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 24,
-        "x": 0,
-        "y": 25
-      },
-      "id": 4,
-      "options": {
-        "apiUserScope": {
-          "audience": "USER",
-          "id": "0038641c-b887-4326-b84d-5bdbf0ffa604",
-          "lastUpdate": "2025-05-23T19:49:03.094978Z",
-          "name": "testPrivate",
-          "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
-          "scopes": [
-            {
-              "typeName": "causely.ai/team",
-              "typeValues": [
-                "SAURON"
-              ]
-            }
-          ]
-        },
-        "panelType": "urgentRcs"
-      },
-      "pluginVersion": "1.0.2",
-      "targets": [
-        {
-          "refId": "A"
-        }
-      ],
-      "title": "Scope testPrivate",
-      "type": "causely-rootcause-panel"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 31
-      },
-      "id": 8,
-      "panels": [],
-      "title": "03 - HeadLines Global",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 32
-      },
-      "id": 6,
-      "options": {
-        "apiUserScope": {
-          "audience": "USER",
-          "id": "9999",
-          "lastUpdate": "2025-05-27T20:31:16.120756Z",
-          "name": "Global",
-          "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
-          "scopes": []
-        },
-        "panelType": "headlines"
-      },
-      "pluginVersion": "1.0.2",
-      "targets": [
-        {
-          "refId": "A"
-        }
-      ],
-      "title": "HeadLines Global",
-      "type": "causely-rootcause-panel"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 40
-      },
       "id": 9,
-      "panels": [],
+      "panels": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 5
+          },
+          "id": 7,
+          "options": {
+            "apiUserScope": {
+              "audience": "USER",
+              "id": "0038641c-b887-4326-b84d-5bdbf0ffa604",
+              "lastUpdate": "2025-05-23T19:49:03.094978Z",
+              "name": "testPrivate",
+              "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
+              "scopes": [
+                {
+                  "typeName": "causely.ai/team",
+                  "typeValues": [
+                    "SAURON"
+                  ]
+                }
+              ]
+            },
+            "panelType": "headlines"
+          },
+          "pluginVersion": "1.0.2",
+          "targets": [
+            {
+              "refId": "A"
+            }
+          ],
+          "title": "HeadLines (Scope EmptyState)",
+          "type": "causely-rootcause-panel"
+        }
+      ],
       "title": "03 - HeadLine Other Scopes",
       "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 41
-      },
-      "id": 7,
-      "options": {
-        "apiUserScope": {
-          "audience": "USER",
-          "id": "0038641c-b887-4326-b84d-5bdbf0ffa604",
-          "lastUpdate": "2025-05-23T19:49:03.094978Z",
-          "name": "testPrivate",
-          "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
-          "scopes": [
-            {
-              "typeName": "causely.ai/team",
-              "typeValues": [
-                "SAURON"
-              ]
-            }
-          ]
-        },
-        "panelType": "headlines"
-      },
-      "pluginVersion": "1.0.2",
-      "targets": [
-        {
-          "refId": "A"
-        }
-      ],
-      "title": "HeadLines (Scope EmptyState)",
-      "type": "causely-rootcause-panel"
     }
   ],
   "preload": false,
@@ -337,6 +380,6 @@
   "timezone": "",
   "title": "Provisioned Causely dashboard",
   "uid": "a538aeff-5a8a-42a5-901c-938d896fdd6f",
-  "version": 19,
+  "version": 21,
   "weekStart": ""
 }

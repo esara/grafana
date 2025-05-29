@@ -1,11 +1,11 @@
 {
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "panel",
-  "name": "Causely - Service Health Summary Panel",
-  "id": "causely-service-panel",
+  "name": "Causely - Service Panel",
+  "id": "causely-servicecard-panel",
   "info": {
-    "keywords": ["panel", "causely", "service-health", "monitoring"],
-    "description": "A comprehensive panel that displays service health status, dependencies, and key metrics. Visualize service relationships and health indicators in an intuitive interface.",
+    "keywords": ["panel", "causely", "service-card", "monitoring"],
+    "description": "Displays unhealthy services in real-time and the root causes impacting them",
     "author": {
       "name": "vnikitenko"
     },
@@ -16,8 +16,8 @@
     "links": [],
     "screenshots": [
       {
-        "name": "service-health-panel",
-        "path": "img/service-health-panel.png"
+        "name": "service-health-card",
+        "path": "img/service-health-card.png"
       }
     ],
     "version": "%VERSION%",

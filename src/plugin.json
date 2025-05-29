@@ -40,12 +40,17 @@
     {
       "type": "panel",
       "name": "causely-service-panel",
-      "path": "panels/components/serviceHealthSummaryPanel/plugin.json"
+      "path": "panels/components/causely-serviceHealthSummary-panel/plugin.json"
     },
     {
       "type": "panel",
       "name": "causely-rootcause-panel",
-      "path": "panels/components/rootCausePanel/plugin.json"
+      "path": "panels/components/causely-rootCause-panel/plugin.json"
+    },
+    {
+      "type": "panel",
+      "name": "causely-servicecard-panel",
+      "path": "panels/components/causely-serviceCard-panel/plugin.json"
     }
   ],
   "dependencies": {

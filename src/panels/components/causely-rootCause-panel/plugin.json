@@ -7,7 +7,7 @@
     "keywords": ["panel", "causely", "root-cause", "monitoring"],
     "description": "A panel that displays urgent root causes in real-time and root cause headlines. The headlines view shows both urgent root causes as they happen and notable root causes from the past 24 hours.",
     "author": {
-      "name": "esara"
+      "name": "vnikitenko"
     },
     "logos": {
       "small": "img/logo.svg",
