@@ -1,11 +1,23 @@
 import { ApiDefect, ApiDefectSeverity } from "api/api.types";
+import { EntityUtil } from "utils/entity/entity.util";
+import { EntityTypeDefs } from "utils/entityTypeDefs/EntityTypeDefs.singleton";
 import { IntlUtil } from "utils/intl/intl.util";
+import { ObjectsUtil } from "utils/objects/objects.util";
 import { StringsUtil } from "utils/strings/strings.util";
 import { TimeUtil } from "utils/time/time.util";
 
 export type DefectStatus = 'detected' | 'remediated' | 'cleared' | 'inactive';
 
 export class DefectsUtil {
+
+  public static defectOnEntityDescription(rootcause: ApiDefect): string {
+    if (ObjectsUtil.isUnset(rootcause)) {
+      return '';
+    }
+    const rootCauseName = EntityTypeDefs.getInstance().getDefectDef(rootcause.entity.typeName, rootcause.name).displayName;
+
+    return `${rootCauseName} on ${EntityUtil.simplifyEntityname(rootcause.entity)}`;
+  }
 
   public static isDetected(defect: ApiDefect): boolean {
     const status = DefectsUtil.toStatus(defect);

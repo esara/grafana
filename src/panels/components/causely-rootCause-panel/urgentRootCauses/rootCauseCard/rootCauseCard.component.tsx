@@ -3,9 +3,7 @@ import { CUIHeading } from "sdk/heading/cui-heading.component";
 import { CUIText } from "sdk/text/cui-text.component";
 
 import { ApiDefect } from "api/api.types";
-import { EntityTypeDefs } from "utils/entityTypeDefs/EntityTypeDefs.singleton";
 import { RouteUtil } from "utils/route/route.util";
-import { EntityUtil } from "utils/entity/entity.util";
 import { RootCauseCardUtil } from "./rootCauseCardUtil/rootCauseCard.util";
 import { DefectsUtil } from "utils/defects/defects.util";
 import { RootCauseEvidence, useRootCauseEvidence } from "./useRootCauseEvidence";
@@ -53,7 +51,6 @@ export const RootCauseCard = ({ rootCause }: RootCauseCardProps) => {
     const evidence: RootCauseEvidence = useRootCauseEvidence(rootCause.id);
 
     const activeSymptomsCount = rootCause.symptoms.filter((symptom) => symptom.active).length;
-    const rootCauseName = EntityTypeDefs.getInstance().getDefectDef(rootCause.entity.typeName, rootCause.name).displayName;
     const symptomDescriptions = RootCauseCardUtil.getSymptomDescription(rootCause);
 
     return (
@@ -68,7 +65,7 @@ export const RootCauseCard = ({ rootCause }: RootCauseCardProps) => {
                 <CUIHeading>Root Cause</CUIHeading>
                 <CUISectionDescription>
                     <CUIText variant="secondary" >
-                        {rootCauseName} on {EntityUtil.simplifyEntityname(rootCause.entity)}
+                        {DefectsUtil.defectOnEntityDescription(rootCause)}
                     </CUIText>
                 </CUISectionDescription>
             </CUISection>

@@ -35,9 +35,10 @@ type AppStateEntityTypeDefItem = {
  */
 export class EntityTypeDefs implements AppStateEntityTypeDefModel {
   private readonly entityTypeDefLookup: Record<string, AppStateEntityTypeDefItem>;
+
   private static instance: EntityTypeDefs;
 
-  private constructor(entityTypeDefs: ApiEntityTypeDef[]) {
+  private constructor(private readonly entityTypeDefs: ApiEntityTypeDef[]) {
     this.entityTypeDefLookup = this.toEntityDefLookups(entityTypeDefs);
   }
 
@@ -245,4 +246,9 @@ export class EntityTypeDefs implements AppStateEntityTypeDefModel {
       {} as Record<string, AppStateEntityTypeDefItem>,
     );
   }
+
+  public getSloTypeDefs(): ApiEntityTypeDef[] {
+    return (this.entityTypeDefs ?? []).filter((entityTypeDef) => entityTypeDef.name.endsWith('SLO'));
+  }
+  
 }
