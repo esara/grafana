@@ -31,14 +31,40 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 24,
+        "h": 12,
+        "w": 20,
         "x": 0,
         "y": 0
       },
+      "id": 15,
+      "options": {},
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "Panel Title",
+      "type": "causely-servicecard-panel"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
       "id": 14,
       "options": {},
-      "pluginVersion": "1.0.2",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "refId": "A"
@@ -53,7 +79,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 28
       },
       "id": 13,
       "panels": [],
@@ -66,7 +92,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 29
       },
       "id": 12,
       "panels": [
@@ -116,7 +142,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 30
       },
       "id": 10,
       "panels": [
@@ -163,7 +189,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 31
       },
       "id": 11,
       "panels": [
@@ -263,7 +289,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 32
       },
       "id": 8,
       "panels": [
@@ -313,7 +339,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 33
       },
       "id": 9,
       "panels": [
@@ -380,6 +406,6 @@
   "timezone": "",
   "title": "Provisioned Causely dashboard",
   "uid": "a538aeff-5a8a-42a5-901c-938d896fdd6f",
-  "version": 21,
+  "version": 2,
   "weekStart": ""
 }

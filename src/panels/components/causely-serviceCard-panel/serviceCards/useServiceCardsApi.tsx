@@ -1,17 +1,20 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ApiEntity, ApiEntityEdge, ApiEntityRelatedDefects, ApiQueryEntityConnectionArgs, ApiRelatedDefects, ApiSloEdge, ApiSloNode, ApiUserScope } from 'api/api.types';
+import { ApiEntity, ApiEntityEdge, ApiEntityRelatedDefects, ApiPageInfo, ApiQueryEntityConnectionArgs, ApiRelatedDefects, ApiSloEdge, ApiSloNode, ApiUserScope } from 'api/api.types';
 import { QueryEntityConnection } from 'api/graphql/queries/queryEntityConnection';
 import { QueryEntityRelatedDefects } from 'api/graphql/queries/queryEntityRelatedDefects';
 import { QuerySloConnection } from 'api/graphql/queries/querySloConnection';
 import { EntityTypeDefs } from 'utils/entityTypeDefs/EntityTypeDefs.singleton';
 import { ApiSloNodeWithMetaData, SloUtil } from 'utils/slo/slo.util';
 import { ObjectsUtil } from 'utils/objects/objects.util';
+import { CuiPaginationDirection } from 'sdk/pagination/cuiPagination.component';
 
 const entityConnectionVariables: ApiQueryEntityConnectionArgs = {
-    first: 5,
+    first: 4,
     entityFilter: {
         entityTypes: ['Service'],
+        severities: ['Critical', 'Major', 'Minor', 'Warning', 'Normal'],//TODO: Remove unwanted severities
     },
+
 };
 
 export type ServiceCardEntity = ApiEntity & {
@@ -23,11 +26,14 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState<Record<string, ServiceCardEntity>>(null);
     const [error, setError] = useState<string | null>(null);
+    const [pageInfo, setPageInfo] = useState<ApiPageInfo>(null);
 
-    const fetchData = useCallback((): void => {
+    const fetchData = useCallback((cursorDirection?: CuiPaginationDirection): void => {
         setError(null);
         let idToEntityMap: Record<string, ServiceCardEntity> = {};
         QueryEntityConnection({
+            after: cursorDirection === CuiPaginationDirection.NEXT ? pageInfo?.endCursor : null,
+            before: cursorDirection === CuiPaginationDirection.PREVIOUS ? pageInfo?.startCursor : null,
             ...entityConnectionVariables,
             entityFilter: {
                 ...entityConnectionVariables.entityFilter,
@@ -40,6 +46,8 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
                 acc[edge.node.id] = edge.node;
                 return acc;
             }, {} as Record<string, ApiEntity>);
+
+            setPageInfo(response.data?.entityConnection?.pageInfo);
 
             return Promise.all([
                 fetchEntityRelatedDefects(ObjectsUtil.values(idToEntityMap)),
@@ -74,7 +82,7 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
                     ...slo,
                     metaData: SloUtil.toSloMetaData(slo),
                 };
-                
+
                 idToEntityMap[entityId] = {
                     ...idToEntityMap[entityId],
                     sloConnections: [...idToEntityMap[entityId].sloConnections, sloWithMetaData]
@@ -87,7 +95,7 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
         }).catch((error) => {
             setError(error instanceof Error ? error.message : 'An unknown error occurred');
         });
-    }, [userScope]);
+    }, [userScope, pageInfo?.endCursor, pageInfo?.startCursor]);
 
     const fetchEntityRelatedDefects = (entities: ApiEntity[]): Promise<ApiEntityRelatedDefects[]> => {
         const entityIds = entities.map((entity: ApiEntity) => entity.id);
@@ -117,11 +125,12 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
     }
 
     useEffect(() => {
+        console.log('useEFFECT RUNNING');
         fetchData();
-        const interval = setInterval(fetchData, 15000); // Update data every 15 seconds
+        // const interval = setInterval(fetchData, 15000); // Update data every 15 seconds
 
-        return () => clearInterval(interval); // Cleanup interval
-    }, [fetchData]);
+        // return () => clearInterval(interval); // Cleanup interval
+    }, []);
 
-    return { isLoading, data, error, fetchData };
+    return { isLoading, data, error, fetchData, pageInfo };
 }; 

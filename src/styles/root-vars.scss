@@ -70,3 +70,9 @@ $urgent-root-cause-active-color: rgba(250, 77, 86, 0.7);
 $root-cause-headline-color: rgba(250, 77, 86, 0.3);
 $root-cause-headline-hover-color: rgba(250, 77, 86, 0.5);
 $root-cause-headline-active-color: rgba(250, 77, 86, 0.7);
+
+#{$prefix} {
+    &--text-color-urgent {
+        color: $color-error-main;
+    }
+}

@@ -6,8 +6,10 @@ import { ServiceCardEntity, useServiceCardsApi } from "./useServiceCardsApi";
 import { ObjectsUtil } from "utils/objects/objects.util";
 import { SdkUtil } from "sdk/sdk.util";
 import './serviceCards.scss';
+import { CuiPagination, CuiPaginationDirection } from "sdk/pagination/cuiPagination.component";
+
 export const ServiceCardsComponent = ({ userScope }: { userScope: ApiUserScope }) => {
-    const { isLoading, data, error } = useServiceCardsApi(userScope);
+    const { isLoading, data, error, fetchData, pageInfo } = useServiceCardsApi(userScope);
 
     return (
         <CuiLoadingErrorWrapper isLoading={isLoading} error={error}>
@@ -22,6 +24,15 @@ export const ServiceCardsComponent = ({ userScope }: { userScope: ApiUserScope }
                     )
                 })
                 }
+            </div>
+            <div className={SdkUtil.withPrefix('service-cards__pagination')}>
+                <CuiPagination
+                    onLeftScroll={() => fetchData(CuiPaginationDirection.PREVIOUS)}
+                    onRightScroll={() => fetchData(CuiPaginationDirection.NEXT)}    
+                    onPageOneScroll={() => fetchData()}
+                    leftDisabled={!pageInfo?.hasPreviousPage}
+                    rightDisabled={!pageInfo?.hasNextPage}
+                />
             </div>
         </CuiLoadingErrorWrapper>
     );

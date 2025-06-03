@@ -10,18 +10,21 @@ import { DefectsUtil } from "utils/defects/defects.util";
 import { EntityTypeDefs } from "utils/entityTypeDefs/EntityTypeDefs.singleton";
 import { ArraysUtil } from "utils/arrays/arrays.util";
 import { CUIRenderWhen } from "sdk/cuiRenderWhen/coreRenderWhen.component";
+import { SloConnectionComponent } from "./sloConnection/sloConnection.component";
+import { SdkUtil } from "sdk/sdk.util";
+import clsx from "clsx";
 
 import './serviceCard.scss';
-import { SloConnectionComponent } from "./sloConnection/sloConnection.component";
+import { Divider } from "@grafana/ui";
 
 interface ServiceCardProps {
     serviceCardEntity: ServiceCardEntity;
 }
 
-const renderCUISectionDescription = (value: string) => {
+const renderCUISectionDescription = (value: React.ReactNode, className?: string) => {
     return (
         <CUISectionDescription>
-            <CUIText variant="secondary" >
+            <CUIText variant="secondary" className={className}>
                 {value}
             </CUIText>
         </CUISectionDescription>
@@ -30,6 +33,8 @@ const renderCUISectionDescription = (value: string) => {
 export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEntity }) => {
 
     const relatedDefects = serviceCardEntity.relatedDefects;
+    const noRootCauses = ArraysUtil.isEmpty(relatedDefects?.aggregatingDefects) && ArraysUtil.isEmpty(relatedDefects?.directDefects) && ArraysUtil.isEmpty(relatedDefects?.impactingDefects);
+
     const sloConnection = serviceCardEntity.sloConnections;
 
     const entityTypeDefs = EntityTypeDefs.getInstance();
@@ -42,42 +47,51 @@ export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEn
         <div className="root-cause-card" onClick={() => {
             window.open(RouteUtil.getSingleTopologyRoutePath(serviceCardEntity.id), '_blank');
         }}>
-            {/* <CUISection>
-                <CuiTagList tags={getTagsList(rootCause)} />
-            </CUISection> */}
 
             <CUIHeading>{serviceCardEntity.name}</CUIHeading>
-
+            
+            <Divider />
+            
             <CUISection>
                 <CUIHeading>Root Cause</CUIHeading>
                 <CUIRenderWhen condition={ObjectsUtil.isUnset(relatedDefects)}>
                     <CUISectionDescription>
-                        <CUIText variant="secondary" >
+                        <CUIText variant="secondary">
                             No related defects
                         </CUIText>
                     </CUISectionDescription>
                 </CUIRenderWhen>
-                <CUIRenderWhen condition={relatedDefects?.aggregatingDefects?.length > 0}>
-                    {
-                        relatedDefects?.aggregatingDefects?.map((defect) => (
-                            renderCUISectionDescription(DefectsUtil.defectOnEntityDescription(defect))
-                        ))
-                    }
+
+                <CUIRenderWhen condition={noRootCauses}>
+                    {renderCUISectionDescription('No root cause identified impacting this service')}
                 </CUIRenderWhen>
-                <CUIRenderWhen condition={relatedDefects?.directDefects?.length > 0} >
-                    {
-                        relatedDefects?.directDefects?.map((defect) => (
-                            renderCUISectionDescription(DefectsUtil.defectOnEntityDescription(defect))
-                        ))
-                    }
+
+                <CUIRenderWhen condition={!noRootCauses}>
+                    <div className={clsx(SdkUtil.withPrefix('service-card__root-cause-container'))}>
+                        <CUIRenderWhen condition={relatedDefects?.aggregatingDefects?.length > 0}>
+                            {
+                                relatedDefects?.aggregatingDefects?.map((defect) => (
+                                    renderCUISectionDescription(DefectsUtil.defectOnEntityDescription(defect), SdkUtil.withPrefix('text-color-urgent'))
+                                ))
+                            }
+                        </CUIRenderWhen>
+                        <CUIRenderWhen condition={relatedDefects?.directDefects?.length > 0} >
+                            {
+                                relatedDefects?.directDefects?.map((defect) => (
+                                    renderCUISectionDescription(DefectsUtil.defectOnEntityDescription(defect), SdkUtil.withPrefix('text-color-urgent'))
+                                ))
+                            }
+                        </CUIRenderWhen>
+                        <CUIRenderWhen condition={relatedDefects?.impactingDefects?.length > 0} >
+                            {
+                                relatedDefects?.impactingDefects?.map((defect) => (
+                                    renderCUISectionDescription(`Service impacted by ${DefectsUtil.defectOnEntityDescription(defect)}`, SdkUtil.withPrefix('text-color-urgent'))
+                                ))
+                            }
+                        </CUIRenderWhen>
+                    </div>
                 </CUIRenderWhen>
-                <CUIRenderWhen condition={relatedDefects?.impactingDefects?.length > 0} >
-                    {
-                        relatedDefects?.impactingDefects?.map((defect) => (
-                            renderCUISectionDescription(`Service impacted by ${DefectsUtil.defectOnEntityDescription(defect)}`)
-                        ))
-                    }
-                </CUIRenderWhen>
+
             </CUISection>
 
             <CUISection>
@@ -97,7 +111,10 @@ export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEn
             </CUISection>
 
             <CUISection>
-                <CUIHeading>SLO     BUDGET</CUIHeading>
+                <CUIHeading className={SdkUtil.withPrefix('slo-budget-heading')}>
+                    <span className={SdkUtil.withPrefix('slo-budget-heading__slo')}>SLO</span>
+                    <span className={SdkUtil.withPrefix('slo-budget-heading__budget')}>Budget</span>
+                </CUIHeading>
                 <CUIRenderWhen condition={ArraysUtil.isEmpty(sloConnection)}>
                     {renderCUISectionDescription('No traffic observed for this service')}
                 </CUIRenderWhen>
@@ -105,7 +122,7 @@ export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEn
                     {
                         sloConnection?.map((slo) => (
                             <div key={slo.id}>
-                                <SloConnectionComponent slo={slo} />
+                                {renderCUISectionDescription(<SloConnectionComponent slo={slo} />)}
                             </div>
                         ))
 
