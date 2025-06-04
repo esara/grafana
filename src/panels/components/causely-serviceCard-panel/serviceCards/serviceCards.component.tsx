@@ -56,9 +56,6 @@ export const ServiceCardsComponent: React.FC<ServiceCardsComponentProps> = ({ pa
                     />
                 </div>
             </CUIRenderWhen>
-
-
-
         </CuiLoadingErrorWrapper>
     );
 }

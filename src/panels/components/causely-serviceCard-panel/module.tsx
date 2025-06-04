@@ -9,7 +9,7 @@ export type ServiceCardsPanelOptions = {
     apiUserScope: ApiUserScope;
     panelType: PanelType;
     pageSize?: PageSize; 
-    singleServiceData?: ComboboxOption<string>// Replace 'any' with your specific type
+    singleServiceData?: ComboboxOption<string>
 }
 
 export enum PanelType {
