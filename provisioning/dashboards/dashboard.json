@@ -44,15 +44,19 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 12,
-        "w": 6,
+        "h": 7,
+        "w": 10,
         "x": 0,
         "y": 1
       },
       "id": 15,
       "options": {
         "pageSize": 4,
-        "panelType": "single"
+        "panelType": "single",
+        "singleServiceData": {
+          "label": "redis",
+          "value": "09516398-3210-5d61-8703-91e513159e37"
+        }
       },
       "pluginVersion": "1.0.2",
       "targets": [
@@ -76,7 +80,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 8
       },
       "id": 14,
       "options": {
@@ -98,7 +102,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 20
       },
       "id": 12,
       "panels": [
@@ -148,7 +152,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 21
       },
       "id": 10,
       "panels": [
@@ -195,7 +199,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 22
       },
       "id": 11,
       "panels": [
@@ -302,7 +306,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 23
       },
       "id": 8,
       "panels": [
@@ -352,7 +356,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 24
       },
       "id": 9,
       "panels": [
@@ -419,6 +423,6 @@
   "timezone": "",
   "title": "Provisioned Causely dashboard",
   "uid": "a538aeff-5a8a-42a5-901c-938d896fdd6f",
-  "version": 10,
+  "version": 12,
   "weekStart": ""
 }

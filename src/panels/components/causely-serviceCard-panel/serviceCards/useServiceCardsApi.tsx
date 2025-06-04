@@ -12,13 +12,11 @@ import { ServiceCardsPanelOptions } from '../module';
 
 
 const UnHealthyServiceStates = new Set(['Critical', 'Major']);
-//TODO: Change this to only include the unhealthy states?
-const AllServiceStates = new Set(['Critical', 'Major', 'Minor', 'Warning', 'Normal']);
 
 const entityConnectionVariables: ApiQueryEntityConnectionArgs = {
     entityFilter: {
         entityTypes: ['Service'],
-        severities: Array.from(AllServiceStates),
+        severities: Array.from(UnHealthyServiceStates),
     },
 };
 
@@ -165,7 +163,7 @@ export const useServiceCardsApi = ({apiUserScope, pageSize}: ServiceCardsPanelOp
         }).finally(() => {
             setIsLoading(false);
         });
-    }, [fetchServiceCounts, apiUserScope, pageInfo?.endCursor, pageInfo?.startCursor]);
+    }, [fetchServiceCounts, apiUserScope, pageInfo?.endCursor, pageInfo?.startCursor, pageSize]);
 
     /**
      * Auto Refresh should always be on, unless the user is page scrolling.
@@ -213,6 +211,7 @@ export const useServiceCardsApi = ({apiUserScope, pageSize}: ServiceCardsPanelOp
     }
 
     useEffect(() => {
+        setIsLoading(true);
         fetchData();
         startAutoRefresh();
         
@@ -221,7 +220,7 @@ export const useServiceCardsApi = ({apiUserScope, pageSize}: ServiceCardsPanelOp
                 clearInterval(intervalRef.current);
             }
         };
-    }, []);
+    }, [apiUserScope, pageSize]);
 
     return { isLoading, data, error, fetchData, pageInfo, serviceCounts };
 };

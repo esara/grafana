@@ -5,7 +5,7 @@
   "id": "causely-servicecard-panel",
   "info": {
     "keywords": ["panel", "causely", "service-card", "monitoring"],
-    "description": "Displays unhealthy services in real-time and the root causes impacting them",
+    "description": "2 Configurations available.  Collection - Displays unhealthy services in real-time and the root causes impacting them.  Single Service - Displays a single service and current health status.",
     "author": {
       "name": "vnikitenko"
     },
@@ -16,8 +16,20 @@
     "links": [],
     "screenshots": [
       {
-        "name": "service-health-card",
-        "path": "img/service-health-card.png"
+        "name": "unhealthy-services",
+        "path": "img/unhealthy-services.png"
+      },
+      {
+        "name": "unhealthy-services-configuration",
+        "path": "img/unhealthy-services-configuration.png"
+      },
+      {
+        "name": "single-service-card",
+        "path": "img/single-service-card.png"
+      },
+      {
+        "name": "single-service-card-configuration",
+        "path": "img/single-service-card-configuration.png"
       }
     ],
     "version": "%VERSION%",

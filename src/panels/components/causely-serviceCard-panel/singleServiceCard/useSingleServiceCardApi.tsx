@@ -14,7 +14,6 @@ export type ServiceCardEntity = ApiEntity & {
 };
 
 export const useSingleServiceCardApi = (singleServiceData: ComboboxOption<string>) => {
-    console.info("singleServiceData", singleServiceData);
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState<ServiceCardEntity | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -116,7 +115,7 @@ export const useSingleServiceCardApi = (singleServiceData: ComboboxOption<string
 
         // Cleanup interval on component unmount
         return () => clearInterval(interval);
-    }, [singleServiceData]);
+    }, [singleServiceData, fetchData]);
 
     return { isLoading, data, error };
 }; 
