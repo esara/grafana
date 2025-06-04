@@ -13,12 +13,14 @@ import { CUISection } from "sdk/section/cuiSection.component";
 import { CUISectionDescription } from "sdk/sectionDescription/cuiSectionDescription.component";
 
 import './rootCauseCard.scss';
+import { EntityTypeDefs } from "utils/entityTypeDefs/EntityTypeDefs.singleton";
+import { ArraysUtil } from "utils/arrays/arrays.util";
 
 type RootCauseCardProps = {
     rootCause: ApiDefect
 }
 
-const getEvidenceList = (evidence: RootCauseEvidence): string => {
+const getEvidenceList = (evidence: RootCauseEvidence, rootCause: ApiDefect): string => {
     const evidenceList: string[] = [];
 
     if (evidence.hasEvents) {
@@ -30,8 +32,18 @@ const getEvidenceList = (evidence: RootCauseEvidence): string => {
     if (evidence.hasLogs) {
         evidenceList.push('Logs');
     }
-    if (evidence.hasRemediation) {
+
+    //Remediation
+    const entityTypeDefModel = EntityTypeDefs.getInstance();
+    const { description } = entityTypeDefModel.getDefectDef(rootCause.entity.typeName, rootCause.name);
+    const hasRemediationOptions = ArraysUtil.isNotEmpty(description?.remediationOptions);
+
+    if (hasRemediationOptions) {
         evidenceList.push('Remediation');
+    }
+
+    if (ArraysUtil.isEmpty(evidenceList)) {
+        return 'None available';
     }
 
     return evidenceList.join(', ');
@@ -98,7 +110,7 @@ export const RootCauseCard = ({ rootCause }: RootCauseCardProps) => {
                 <CUIHeading>Additional Information</CUIHeading>
                 <CUISectionDescription>
                     <CUIText variant="secondary">
-                        {getEvidenceList(evidence)}
+                        {getEvidenceList(evidence, rootCause)}
                     </CUIText>
                 </CUISectionDescription>
 

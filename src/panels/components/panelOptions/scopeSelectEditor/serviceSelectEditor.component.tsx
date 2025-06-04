@@ -23,7 +23,7 @@ export const ServiceSelectEditor: React.FC<StandardEditorProps<ComboboxOption<st
                 entityTypes: ['Service'],
                 nameExpr: inputValue,
             },
-            first: 10, // Adjust as needed
+            first: 10// Adjust as needed
         };
 
         const serviceOptions: Array<ComboboxOption<string>> = [];
