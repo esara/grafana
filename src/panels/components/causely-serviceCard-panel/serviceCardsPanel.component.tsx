@@ -11,10 +11,10 @@ export const ServiceCardsPanel: React.FC<PanelProps<ServiceCardsPanelOptions>> =
     return (
         <CuiRenderWhenAuthenticated>
             <CUIRenderWhen condition={options.panelType === PanelType.Single}>
-                <SingleServiceCardComponent userScope={options.apiUserScope}/>
+                <SingleServiceCardComponent panelOptions={options}/>
             </CUIRenderWhen>
             <CUIRenderWhen condition={options.panelType === PanelType.Collection}>
-                <ServiceCardsComponent userScope={options.apiUserScope} />
+                <ServiceCardsComponent panelOptions={options} />
             </CUIRenderWhen>
         </CuiRenderWhenAuthenticated>
     );

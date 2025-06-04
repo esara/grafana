@@ -30,8 +30,9 @@ const getEvidenceList = (evidence: RootCauseEvidence): string => {
     if (evidence.hasLogs) {
         evidenceList.push('Logs');
     }
-
-    evidenceList.push('Remediation');
+    if (evidence.hasRemediation) {
+        evidenceList.push('Remediation');
+    }
 
     return evidenceList.join(', ');
 }

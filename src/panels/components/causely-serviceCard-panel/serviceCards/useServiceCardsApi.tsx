@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { ApiEntity, ApiEntityEdge, ApiEntityRelatedDefects, ApiEntityTypeCount, ApiPageInfo, ApiQueryEntityConnectionArgs, ApiRelatedDefects, ApiSloEdge, ApiSloNode, ApiUserScope } from 'api/api.types';
+import { ApiEntity, ApiEntityEdge, ApiEntityRelatedDefects, ApiEntityTypeCount, ApiPageInfo, ApiQueryEntityConnectionArgs, ApiRelatedDefects, ApiSloEdge, ApiSloNode } from 'api/api.types';
 import { QueryEntityConnection } from 'api/graphql/queries/queryEntityConnection';
 import { QueryEntityRelatedDefects } from 'api/graphql/queries/queryEntityRelatedDefects';
 import { QuerySloConnection } from 'api/graphql/queries/querySloConnection';
@@ -8,13 +8,14 @@ import { ApiSloNodeWithMetaData, SloUtil } from 'utils/slo/slo.util';
 import { ObjectsUtil } from 'utils/objects/objects.util';
 import { CuiPaginationDirection } from 'sdk/pagination/cuiPagination.component';
 import { QueryEntityTypeCounts } from 'api/graphql/queries/queryEntityTypeCounts';
+import { ServiceCardsPanelOptions } from '../module';
 
 
 const UnHealthyServiceStates = new Set(['Critical', 'Major']);
 //TODO: Change this to only include the unhealthy states?
 const AllServiceStates = new Set(['Critical', 'Major', 'Minor', 'Warning', 'Normal']);
+
 const entityConnectionVariables: ApiQueryEntityConnectionArgs = {
-    first: 4,
     entityFilter: {
         entityTypes: ['Service'],
         severities: Array.from(AllServiceStates),
@@ -26,7 +27,7 @@ export type ServiceCardEntity = ApiEntity & {
     sloConnections?: ApiSloNodeWithMetaData[];
 };
 
-export const useServiceCardsApi = (userScope: ApiUserScope) => {
+export const useServiceCardsApi = ({apiUserScope, pageSize}: ServiceCardsPanelOptions) => {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState<Record<string, ServiceCardEntity>>(null);
     const [error, setError] = useState<string | null>(null);
@@ -47,7 +48,7 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
             entityFilter: {
                 entityTypes: ['Service'],
                 scopesFilter: {
-                    scopes: userScope?.scopes || []
+                    scopes: apiUserScope?.scopes || []
                 }
             }
         }).then(response => {
@@ -66,7 +67,7 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
                 unhealthy: unhealthyServiceCount
             });
         });
-    }, [userScope]);
+    }, [apiUserScope]);
 
     const updateApiAutoRefresh = useCallback((cursorDirection?: CuiPaginationDirection): void => {
         if (cursorDirection) {
@@ -89,12 +90,13 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
         let idToEntityMap: Record<string, ServiceCardEntity> = {};
         QueryEntityConnection({
             ...entityConnectionVariables,
+            first: pageSize,
             after: cursorDirection === CuiPaginationDirection.NEXT ? pageInfo?.endCursor : null,
             before: cursorDirection === CuiPaginationDirection.PREVIOUS ? pageInfo?.startCursor : null,
             entityFilter: {
                 ...entityConnectionVariables.entityFilter,
                 scopesFilter: {
-                    scopes: userScope?.scopes || []
+                    scopes: apiUserScope?.scopes || []
                 }
             }
         }).then(response => {
@@ -163,8 +165,13 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
         }).finally(() => {
             setIsLoading(false);
         });
-    }, [fetchServiceCounts, userScope, pageInfo?.endCursor, pageInfo?.startCursor]);
+    }, [fetchServiceCounts, apiUserScope, pageInfo?.endCursor, pageInfo?.startCursor]);
 
+    /**
+     * Auto Refresh should always be on, unless the user is page scrolling.
+     * This way they are not interrupted with auto re-renders
+     * Click First Page in pagination controls will reset the auto refresh
+     */
     const startAutoRefresh = useCallback(() => {
         if (intervalRef.current) {
             clearInterval(intervalRef.current);
@@ -172,7 +179,6 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
         
         if (!isAutoRefreshPausedRef.current) {
             intervalRef.current = setInterval(() => {
-                console.log("Auto Fresh starting");
                 fetchData();
                 
             }, 20000); // 20 seconds
@@ -207,7 +213,6 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
     }
 
     useEffect(() => {
-        console.log('useEFFECT RUNNING');
         fetchData();
         startAutoRefresh();
         

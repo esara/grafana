@@ -52,7 +52,7 @@ export const RootCauseHeadlines = ({ userScope }: { userScope: ApiUserScope }) =
                         </CUIHeading>
 
                         <CUIText>
-                            Spot the cracks before they spread— view all root cause in Causely
+                            Spot the cracks before they spread— view all root causes in Causely
                         </CUIText>
 
                     </div>
@@ -84,7 +84,7 @@ export const RootCauseHeadlines = ({ userScope }: { userScope: ApiUserScope }) =
                             </CUIHeading>
 
                             <CUIText>
-                                Spot the cracks before they spread— view all root cause in Causely
+                                Spot the cracks before they spread— view all root causes in Causely
                             </CUIText>
 
                         </div>

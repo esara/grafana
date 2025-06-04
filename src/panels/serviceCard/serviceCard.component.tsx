@@ -16,6 +16,7 @@ import clsx from "clsx";
 
 import './serviceCard.scss';
 import { Divider } from "@grafana/ui";
+import { EntityUtil } from "utils/entity/entity.util";
 
 interface ServiceCardProps {
     serviceCardEntity: ServiceCardEntity;
@@ -40,17 +41,19 @@ export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEn
     const entityTypeDefs = EntityTypeDefs.getInstance();
     const activeSymptoms = serviceCardEntity.symptoms.filter((symptom) => symptom.active)
 
+    const rootCauseCount = relatedDefects?.aggregatingDefects?.length + relatedDefects?.directDefects?.length + relatedDefects?.impactingDefects?.length;
+
     return (
-        <div className="root-cause-card" onClick={() => {
+        <div className={SdkUtil.withPrefix('service-card')} onClick={() => {
             window.open(RouteUtil.getSingleTopologyRoutePath(serviceCardEntity.id), '_blank');
         }}>
 
-            <CUIHeading>{serviceCardEntity.name}</CUIHeading>
+            <CUIHeading>{EntityUtil.simplifyEntityname(serviceCardEntity)}</CUIHeading>
             
             <Divider />
             
             <CUISection>
-                <CUIHeading>Root Cause</CUIHeading>
+                <CUIHeading>{rootCauseCount < 2 ? 'Root Cause' : `Root Causes (${rootCauseCount})`}</CUIHeading>
                 <CUIRenderWhen condition={ObjectsUtil.isUnset(relatedDefects)}>
                     <CUISectionDescription>
                         <CUIText variant="secondary">

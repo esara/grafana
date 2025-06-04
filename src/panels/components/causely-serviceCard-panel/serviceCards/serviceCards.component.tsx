@@ -1,4 +1,3 @@
-import { ApiUserScope } from "api/api.types";
 import { ServiceCardComponent } from "panels/serviceCard/serviceCard.component";
 import React from "react";
 import { CuiLoadingErrorWrapper } from "sdk/loadingErrorWrapper/cuiLoadingErrorWrapper.component";
@@ -9,9 +8,13 @@ import './serviceCards.scss';
 import { CuiPagination, CuiPaginationDirection } from "sdk/pagination/cuiPagination.component";
 import { CUIText } from "sdk/text/cui-text.component";
 import { CUIRenderWhen } from "sdk/cuiRenderWhen/coreRenderWhen.component";
+import { ServiceCardsPanelOptions } from "../module";
 
-export const ServiceCardsComponent = ({ userScope }: { userScope: ApiUserScope }) => {
-    const { isLoading, data, error, fetchData, pageInfo, serviceCounts } = useServiceCardsApi(userScope);
+export type ServiceCardsComponentProps = {
+    panelOptions: ServiceCardsPanelOptions;
+}
+export const ServiceCardsComponent: React.FC<ServiceCardsComponentProps> = ({ panelOptions }) => {
+    const { isLoading, data, error, fetchData, pageInfo, serviceCounts } = useServiceCardsApi(panelOptions);
 
     return (
         <CuiLoadingErrorWrapper isLoading={isLoading} error={error}>

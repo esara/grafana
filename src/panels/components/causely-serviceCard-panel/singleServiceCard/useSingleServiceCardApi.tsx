@@ -1,17 +1,20 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ApiEntity, ApiEntityRelatedDefects, ApiQueryEntityConnectionArgs, ApiRelatedDefects, ApiSloEdge, ApiSloNode, ApiUserScope } from 'api/api.types';
-import { QueryEntityConnection } from 'api/graphql/queries/queryEntityConnection';
+import { ApiEntity, ApiEntityRelatedDefects, ApiRelatedDefects, ApiSloEdge, ApiSloNode } from 'api/api.types';
 import { QueryEntityRelatedDefects } from 'api/graphql/queries/queryEntityRelatedDefects';
 import { QuerySloConnection } from 'api/graphql/queries/querySloConnection';
 import { EntityTypeDefs } from 'utils/entityTypeDefs/EntityTypeDefs.singleton';
 import { ApiSloNodeWithMetaData, SloUtil } from 'utils/slo/slo.util';
+import { QueryEntity } from 'api/graphql/queries/queryEntity';
+import { ObjectsUtil } from 'utils/objects/objects.util';
+import { ComboboxOption } from '@grafana/ui';
 
 export type ServiceCardEntity = ApiEntity & {
     relatedDefects?: ApiRelatedDefects;
     sloConnections?: ApiSloNodeWithMetaData[];
 };
 
-export const useSingleServiceCardApi = (userScope: ApiUserScope) => {
+export const useSingleServiceCardApi = (singleServiceData: ComboboxOption<string>) => {
+    console.info("singleServiceData", singleServiceData);
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState<ServiceCardEntity | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -19,26 +22,15 @@ export const useSingleServiceCardApi = (userScope: ApiUserScope) => {
     const fetchData = useCallback((): void => {
         setError(null);
 
-        const entityConnectionVariables: ApiQueryEntityConnectionArgs = {
-            first: 1,
-            entityFilter: {
-                entityTypes: ['Service'],
-                scopesFilter: {
-                    scopes: userScope?.scopes || []
-                }
-            },
-        };
-
-        QueryEntityConnection(entityConnectionVariables)
-            .then((response) => {
-                const edges = response.data?.entityConnection?.edges || [];
+        QueryEntity({
+            entityId: singleServiceData.value,
+        }).then((response) => {
+                const entity: ApiEntity = response.data?.entity;
                 
-                if (edges.length === 0) {
+                if (ObjectsUtil.isUnset(entity)) {
                     setData(null);
                     return null;
                 }
-
-                const entity = edges[0].node;
                 
                 return Promise.all([
                     fetchEntityRelatedDefects([entity]),
@@ -81,7 +73,7 @@ export const useSingleServiceCardApi = (userScope: ApiUserScope) => {
             .finally(() => {
                 setIsLoading(false);
             });
-    }, [userScope]);
+    }, [singleServiceData]);
 
     const fetchEntityRelatedDefects = (entities: ApiEntity[]): Promise<ApiEntityRelatedDefects[]> => {
         const entityIds = entities.map((entity: ApiEntity) => entity.id);
@@ -110,6 +102,11 @@ export const useSingleServiceCardApi = (userScope: ApiUserScope) => {
     };
 
     useEffect(() => {
+        if (ObjectsUtil.isUnset(singleServiceData)) {
+            return undefined;
+        }
+
+        setIsLoading(true);        
         fetchData();
         
         // Set up interval to refetch data every 20 seconds
@@ -119,7 +116,7 @@ export const useSingleServiceCardApi = (userScope: ApiUserScope) => {
 
         // Cleanup interval on component unmount
         return () => clearInterval(interval);
-    }, []);
+    }, [singleServiceData]);
 
     return { isLoading, data, error };
 }; 
