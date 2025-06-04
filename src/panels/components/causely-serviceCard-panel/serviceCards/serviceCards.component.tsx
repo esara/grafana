@@ -7,33 +7,55 @@ import { ObjectsUtil } from "utils/objects/objects.util";
 import { SdkUtil } from "sdk/sdk.util";
 import './serviceCards.scss';
 import { CuiPagination, CuiPaginationDirection } from "sdk/pagination/cuiPagination.component";
+import { CUIText } from "sdk/text/cui-text.component";
+import { CUIRenderWhen } from "sdk/cuiRenderWhen/coreRenderWhen.component";
 
 export const ServiceCardsComponent = ({ userScope }: { userScope: ApiUserScope }) => {
-    const { isLoading, data, error, fetchData, pageInfo } = useServiceCardsApi(userScope);
+    const { isLoading, data, error, fetchData, pageInfo, serviceCounts } = useServiceCardsApi(userScope);
 
     return (
         <CuiLoadingErrorWrapper isLoading={isLoading} error={error}>
+            <CUIRenderWhen condition={serviceCounts.unhealthy < 1}>
+                <div className={SdkUtil.withPrefix('service-cards-card')}>
+                    <CUIText size="1.125">
+                        All <span className={SdkUtil.withPrefix('service-cards-card__total')}>{serviceCounts.total}</span> services in good health
+                    </CUIText>
+                    <CUIText size="1">
+                        {`We will continue to actively monitor your environment and provide further information as it becomes available.`}
+                    </CUIText>
+                </div>
+            </CUIRenderWhen>
 
-            <div className={SdkUtil.withPrefix('service-cards')}>
-                {(ObjectsUtil.values(data) as ServiceCardEntity[]).map((entity: ServiceCardEntity) => {
-                    return (
-                        <div key={entity.id} className={SdkUtil.withPrefix('service-cards-card')}>
-                            <ServiceCardComponent serviceCardEntity={entity} />
-                        </div>
+            <CUIRenderWhen condition={serviceCounts.unhealthy > 0}>
+                <div className={SdkUtil.withPrefix('service-cards__description')}>
+                    <CUIText size="1.125">
+                        {serviceCounts.unhealthy} of out {serviceCounts.total} services unhealthy
+                    </CUIText>
+                </div>
+                <div className={SdkUtil.withPrefix('service-cards')}>
+                    {(ObjectsUtil.values(data) as ServiceCardEntity[]).map((entity: ServiceCardEntity) => {
+                        return (
+                            <div key={entity.id} className={SdkUtil.withPrefix('service-cards-card')}>
+                                <ServiceCardComponent serviceCardEntity={entity} />
+                            </div>
 
-                    )
-                })
-                }
-            </div>
-            <div className={SdkUtil.withPrefix('service-cards__pagination')}>
-                <CuiPagination
-                    onLeftScroll={() => fetchData(CuiPaginationDirection.PREVIOUS)}
-                    onRightScroll={() => fetchData(CuiPaginationDirection.NEXT)}    
-                    onPageOneScroll={() => fetchData()}
-                    leftDisabled={!pageInfo?.hasPreviousPage}
-                    rightDisabled={!pageInfo?.hasNextPage}
-                />
-            </div>
+                        )
+                    })
+                    }
+                </div>
+                <div className={SdkUtil.withPrefix('service-cards__pagination')}>
+                    <CuiPagination
+                        onLeftScroll={() => fetchData(CuiPaginationDirection.PREVIOUS)}
+                        onRightScroll={() => fetchData(CuiPaginationDirection.NEXT)}
+                        onPageOneScroll={() => fetchData()}
+                        leftDisabled={!pageInfo?.hasPreviousPage}
+                        rightDisabled={!pageInfo?.hasNextPage}
+                    />
+                </div>
+            </CUIRenderWhen>
+
+
+
         </CuiLoadingErrorWrapper>
     );
 }

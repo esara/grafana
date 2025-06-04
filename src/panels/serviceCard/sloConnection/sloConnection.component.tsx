@@ -56,7 +56,7 @@ export const SloConnectionComponent: FC<SloConnectionComponentProps> = React.mem
     <div
       className={SdkUtil.withPrefix('slo__compact-row')}
     >
-      <span className={clsx(SdkUtil.withPrefix('slo-budget-heading__slo'), budgetStatus.className)}>{sloName}</span>
+      <span className={clsx(SdkUtil.withPrefix('slo-budget-heading__slo'))}>{sloName}</span>
       <span className={clsx(SdkUtil.withPrefix('slo-budget-heading__budget'), budgetStatus.className)}>
         {budgetStatus.displayText}
       </span>

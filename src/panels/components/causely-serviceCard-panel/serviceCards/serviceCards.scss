@@ -6,7 +6,7 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: stretch;
-    max-height: 85%;
+    max-height: 84%;
     overflow: scroll;
     gap: 2 rem;
 
@@ -21,6 +21,7 @@
       padding: 2rem;
       gap: 2rem;
     }
+
     &-card {
       cursor: pointer;
       transition: transform 0.2s ease-in-out;
@@ -41,6 +42,10 @@
         word-wrap: break-word;
         overflow-wrap: break-word;
       }
+
+      &__total {
+        color:  rgb(0, 220, 120);
+      }
     }
   }
 
@@ -54,5 +59,6 @@
     padding: 1rem;
     border-top: 1px solid $color-secondary-border-text;
     z-index: 10;
+    overflow: hidden;
   }
 }

@@ -32,13 +32,15 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 20,
+        "w": 5,
         "x": 0,
         "y": 0
       },
       "id": 15,
-      "options": {},
-      "pluginVersion": "11.5.2",
+      "options": {
+        "panelType": "single"
+      },
+      "pluginVersion": "1.0.2",
       "targets": [
         {
           "refId": "A"
@@ -57,14 +59,16 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 16,
+        "h": 12,
         "w": 24,
         "x": 0,
         "y": 12
       },
       "id": 14,
-      "options": {},
-      "pluginVersion": "11.5.2",
+      "options": {
+        "panelType": "collection"
+      },
+      "pluginVersion": "1.0.2",
       "targets": [
         {
           "refId": "A"
@@ -79,7 +83,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 24
       },
       "id": 13,
       "panels": [],
@@ -92,7 +96,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 25
       },
       "id": 12,
       "panels": [
@@ -142,7 +146,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 30
+        "y": 26
       },
       "id": 10,
       "panels": [
@@ -184,211 +188,208 @@
       "type": "row"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 31
+        "y": 27
       },
       "id": 11,
-      "panels": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 11,
-            "w": 24,
-            "x": 0,
-            "y": 3
-          },
-          "id": 5,
-          "options": {
-            "apiUserScope": {
-              "audience": "USER",
-              "id": "95c52319-7218-4d7a-bb74-94df06df27e1",
-              "lastUpdate": "2025-05-27T20:31:16.120756Z",
-              "name": "testEmptyStateScope",
-              "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
-              "scopes": [
-                {
-                  "typeName": "causely.ai/namespace",
-                  "typeValues": [
-                    "ingress-nginx"
-                  ]
-                }
-              ]
-            },
-            "panelType": "urgentRcs"
-          },
-          "pluginVersion": "1.0.2",
-          "targets": [
-            {
-              "refId": "A"
-            }
-          ],
-          "title": "Scope testPublic",
-          "type": "causely-rootcause-panel"
-        },
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 24,
-            "x": 0,
-            "y": 14
-          },
-          "id": 4,
-          "options": {
-            "apiUserScope": {
-              "audience": "USER",
-              "id": "0038641c-b887-4326-b84d-5bdbf0ffa604",
-              "lastUpdate": "2025-05-23T19:49:03.094978Z",
-              "name": "testPrivate",
-              "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
-              "scopes": [
-                {
-                  "typeName": "causely.ai/team",
-                  "typeValues": [
-                    "SAURON"
-                  ]
-                }
-              ]
-            },
-            "panelType": "urgentRcs"
-          },
-          "pluginVersion": "1.0.2",
-          "targets": [
-            {
-              "refId": "A"
-            }
-          ],
-          "title": "Scope testPrivate",
-          "type": "causely-rootcause-panel"
-        }
-      ],
+      "panels": [],
       "title": "02 - Urgent Root Cause Other Scopes",
       "type": "row"
     },
     {
-      "collapsed": true,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 28
+      },
+      "id": 5,
+      "options": {
+        "apiUserScope": {
+          "audience": "USER",
+          "id": "95c52319-7218-4d7a-bb74-94df06df27e1",
+          "lastUpdate": "2025-05-27T20:31:16.120756Z",
+          "name": "testEmptyStateScope",
+          "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
+          "scopes": [
+            {
+              "typeName": "causely.ai/namespace",
+              "typeValues": [
+                "ingress-nginx"
+              ]
+            }
+          ]
+        },
+        "panelType": "urgentRcs"
+      },
+      "pluginVersion": "1.0.2",
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "Scope testPublic",
+      "type": "causely-rootcause-panel"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 39
+      },
+      "id": 4,
+      "options": {
+        "apiUserScope": {
+          "audience": "USER",
+          "id": "0038641c-b887-4326-b84d-5bdbf0ffa604",
+          "lastUpdate": "2025-05-23T19:49:03.094978Z",
+          "name": "testPrivate",
+          "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
+          "scopes": [
+            {
+              "typeName": "causely.ai/team",
+              "typeValues": [
+                "SAURON"
+              ]
+            }
+          ]
+        },
+        "panelType": "urgentRcs"
+      },
+      "pluginVersion": "1.0.2",
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "Scope testPrivate",
+      "type": "causely-rootcause-panel"
+    },
+    {
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 45
       },
       "id": 8,
-      "panels": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 4
-          },
-          "id": 6,
-          "options": {
-            "apiUserScope": {
-              "audience": "USER",
-              "id": "9999",
-              "lastUpdate": "2025-05-27T20:31:16.120756Z",
-              "name": "Global",
-              "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
-              "scopes": []
-            },
-            "panelType": "headlines"
-          },
-          "pluginVersion": "1.0.2",
-          "targets": [
-            {
-              "refId": "A"
-            }
-          ],
-          "title": "HeadLines Global",
-          "type": "causely-rootcause-panel"
-        }
-      ],
+      "panels": [],
       "title": "03 - HeadLines Global",
       "type": "row"
     },
     {
-      "collapsed": true,
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 46
+      },
+      "id": 6,
+      "options": {
+        "apiUserScope": {
+          "audience": "USER",
+          "id": "9999",
+          "lastUpdate": "2025-05-27T20:31:16.120756Z",
+          "name": "Global",
+          "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
+          "scopes": []
+        },
+        "panelType": "headlines"
+      },
+      "pluginVersion": "1.0.2",
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "HeadLines Global",
+      "type": "causely-rootcause-panel"
+    },
+    {
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 33
+        "y": 54
       },
       "id": 9,
-      "panels": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 5
-          },
-          "id": 7,
-          "options": {
-            "apiUserScope": {
-              "audience": "USER",
-              "id": "0038641c-b887-4326-b84d-5bdbf0ffa604",
-              "lastUpdate": "2025-05-23T19:49:03.094978Z",
-              "name": "testPrivate",
-              "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
-              "scopes": [
-                {
-                  "typeName": "causely.ai/team",
-                  "typeValues": [
-                    "SAURON"
-                  ]
-                }
-              ]
-            },
-            "panelType": "headlines"
-          },
-          "pluginVersion": "1.0.2",
-          "targets": [
-            {
-              "refId": "A"
-            }
-          ],
-          "title": "HeadLines (Scope EmptyState)",
-          "type": "causely-rootcause-panel"
-        }
-      ],
+      "panels": [],
       "title": "03 - HeadLine Other Scopes",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 55
+      },
+      "id": 7,
+      "options": {
+        "apiUserScope": {
+          "audience": "USER",
+          "id": "0038641c-b887-4326-b84d-5bdbf0ffa604",
+          "lastUpdate": "2025-05-23T19:49:03.094978Z",
+          "name": "testPrivate",
+          "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
+          "scopes": [
+            {
+              "typeName": "causely.ai/team",
+              "typeValues": [
+                "SAURON"
+              ]
+            }
+          ]
+        },
+        "panelType": "headlines"
+      },
+      "pluginVersion": "1.0.2",
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "HeadLines (Scope EmptyState)",
+      "type": "causely-rootcause-panel"
     }
   ],
   "preload": false,
@@ -406,6 +407,6 @@
   "timezone": "",
   "title": "Provisioned Causely dashboard",
   "uid": "a538aeff-5a8a-42a5-901c-938d896fdd6f",
-  "version": 2,
+  "version": 6,
   "weekStart": ""
 }

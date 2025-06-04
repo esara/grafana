@@ -8,15 +8,15 @@
   }
   &--slo-budget-heading {
     &--stable {
-      color: $color-success-main;
+      color: rgb(0, 220, 120, 0.80);
     }
 
     &--escalating {
-      color: $color-warning-main;
+      color: rgb(255, 221, 51, 0.80);
     }
 
     &--exhausted {
-      color: $color-error-main;
+      color: rgb(255, 85, 85, 0.80);
     }
 
     &__budget {

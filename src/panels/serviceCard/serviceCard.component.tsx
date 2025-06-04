@@ -40,9 +40,6 @@ export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEn
     const entityTypeDefs = EntityTypeDefs.getInstance();
     const activeSymptoms = serviceCardEntity.symptoms.filter((symptom) => symptom.active)
 
-    if (ArraysUtil.isNotEmpty(sloConnection)) {
-        console.log("sloConnection", sloConnection);
-    }
     return (
         <div className="root-cause-card" onClick={() => {
             window.open(RouteUtil.getSingleTopologyRoutePath(serviceCardEntity.id), '_blank');
@@ -85,14 +82,15 @@ export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEn
                         <CUIRenderWhen condition={relatedDefects?.impactingDefects?.length > 0} >
                             {
                                 relatedDefects?.impactingDefects?.map((defect) => (
-                                    renderCUISectionDescription(`Service impacted by ${DefectsUtil.defectOnEntityDescription(defect)}`, SdkUtil.withPrefix('text-color-urgent'))
+                                    renderCUISectionDescription(`Cross-Service Root Cause - ${DefectsUtil.defectOnEntityDescription(defect)}`, SdkUtil.withPrefix('text-color-urgent'))
                                 ))
                             }
                         </CUIRenderWhen>
                     </div>
                 </CUIRenderWhen>
-
             </CUISection>
+
+            <Divider />
 
             <CUISection>
                 <CUIHeading>Symptoms</CUIHeading>
@@ -109,6 +107,8 @@ export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEn
                         ))}
                 </CUIRenderWhen>
             </CUISection>
+
+            <Divider />
 
             <CUISection>
                 <CUIHeading className={SdkUtil.withPrefix('slo-budget-heading')}>

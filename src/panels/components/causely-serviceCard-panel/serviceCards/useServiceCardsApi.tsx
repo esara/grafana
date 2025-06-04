@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { ApiEntity, ApiEntityEdge, ApiEntityRelatedDefects, ApiPageInfo, ApiQueryEntityConnectionArgs, ApiRelatedDefects, ApiSloEdge, ApiSloNode, ApiUserScope } from 'api/api.types';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { ApiEntity, ApiEntityEdge, ApiEntityRelatedDefects, ApiEntityTypeCount, ApiPageInfo, ApiQueryEntityConnectionArgs, ApiRelatedDefects, ApiSloEdge, ApiSloNode, ApiUserScope } from 'api/api.types';
 import { QueryEntityConnection } from 'api/graphql/queries/queryEntityConnection';
 import { QueryEntityRelatedDefects } from 'api/graphql/queries/queryEntityRelatedDefects';
 import { QuerySloConnection } from 'api/graphql/queries/querySloConnection';
@@ -7,14 +7,18 @@ import { EntityTypeDefs } from 'utils/entityTypeDefs/EntityTypeDefs.singleton';
 import { ApiSloNodeWithMetaData, SloUtil } from 'utils/slo/slo.util';
 import { ObjectsUtil } from 'utils/objects/objects.util';
 import { CuiPaginationDirection } from 'sdk/pagination/cuiPagination.component';
+import { QueryEntityTypeCounts } from 'api/graphql/queries/queryEntityTypeCounts';
 
+
+const UnHealthyServiceStates = new Set(['Critical', 'Major']);
+//TODO: Change this to only include the unhealthy states?
+const AllServiceStates = new Set(['Critical', 'Major', 'Minor', 'Warning', 'Normal']);
 const entityConnectionVariables: ApiQueryEntityConnectionArgs = {
     first: 4,
     entityFilter: {
         entityTypes: ['Service'],
-        severities: ['Critical', 'Major', 'Minor', 'Warning', 'Normal'],//TODO: Remove unwanted severities
+        severities: Array.from(AllServiceStates),
     },
-
 };
 
 export type ServiceCardEntity = ApiEntity & {
@@ -27,14 +31,66 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
     const [data, setData] = useState<Record<string, ServiceCardEntity>>(null);
     const [error, setError] = useState<string | null>(null);
     const [pageInfo, setPageInfo] = useState<ApiPageInfo>(null);
+    const [serviceCounts, setServiceCounts] = useState<{
+        total: number;
+        unhealthy: number;
+    }>({
+        total: 0,
+        unhealthy: 0
+    });
+
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+    const isAutoRefreshPausedRef = useRef(false);
+
+    const fetchServiceCounts = useCallback(() => {
+        QueryEntityTypeCounts({
+            entityFilter: {
+                entityTypes: ['Service'],
+                scopesFilter: {
+                    scopes: userScope?.scopes || []
+                }
+            }
+        }).then(response => {
+            let totalServiceCount = 0;
+            let unhealthyServiceCount = 0;
+
+            response.data.entityTypeCounts.forEach((entityCount: ApiEntityTypeCount) => {
+                totalServiceCount += entityCount.count;
+                if (UnHealthyServiceStates.has(entityCount.severity)) {
+                    unhealthyServiceCount += entityCount.count;
+                }
+            })
+
+            setServiceCounts({
+                total: totalServiceCount,
+                unhealthy: unhealthyServiceCount
+            });
+        });
+    }, [userScope]);
+
+    const updateApiAutoRefresh = useCallback((cursorDirection?: CuiPaginationDirection): void => {
+        if (cursorDirection) {
+            isAutoRefreshPausedRef.current = true;
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
+        } else if (ObjectsUtil.isUnset(cursorDirection)) {
+            isAutoRefreshPausedRef.current = false;
+            startAutoRefresh();
+        }
+    }, []);
 
     const fetchData = useCallback((cursorDirection?: CuiPaginationDirection): void => {
         setError(null);
+        updateApiAutoRefresh(cursorDirection);
+        fetchServiceCounts();
+        
         let idToEntityMap: Record<string, ServiceCardEntity> = {};
         QueryEntityConnection({
+            ...entityConnectionVariables,
             after: cursorDirection === CuiPaginationDirection.NEXT ? pageInfo?.endCursor : null,
             before: cursorDirection === CuiPaginationDirection.PREVIOUS ? pageInfo?.startCursor : null,
-            ...entityConnectionVariables,
             entityFilter: {
                 ...entityConnectionVariables.entityFilter,
                 scopesFilter: {
@@ -42,6 +98,13 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
                 }
             }
         }).then(response => {
+            const unhealthyServiceCount = response.data?.entityConnection.totalCount;
+
+            if (ObjectsUtil.isUnset(unhealthyServiceCount) || unhealthyServiceCount < 1) {
+                //There is no unhealthy services, we only care to get total service count to display
+                return null;
+            }
+
             idToEntityMap = response.data?.entityConnection?.edges.reduce((acc, edge: ApiEntityEdge) => {
                 acc[edge.node.id] = edge.node;
                 return acc;
@@ -54,6 +117,11 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
                 fetchSloConnection(ObjectsUtil.values(idToEntityMap))
             ]);
         }).then((response) => {
+
+            if (!response) {
+                return;
+            }
+
             const [relatedDefects, sloConnection] = response;
 
             //Append relatedDefects to entityMap
@@ -88,14 +156,28 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
                     sloConnections: [...idToEntityMap[entityId].sloConnections, sloWithMetaData]
                 };
             });
-            
-            setData(idToEntityMap);
-            setIsLoading(false);
 
+            setData(idToEntityMap);
         }).catch((error) => {
             setError(error instanceof Error ? error.message : 'An unknown error occurred');
+        }).finally(() => {
+            setIsLoading(false);
         });
-    }, [userScope, pageInfo?.endCursor, pageInfo?.startCursor]);
+    }, [fetchServiceCounts, userScope, pageInfo?.endCursor, pageInfo?.startCursor]);
+
+    const startAutoRefresh = useCallback(() => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+        }
+        
+        if (!isAutoRefreshPausedRef.current) {
+            intervalRef.current = setInterval(() => {
+                console.log("Auto Fresh starting");
+                fetchData();
+                
+            }, 20000); // 20 seconds
+        }
+    }, [fetchData]);
 
     const fetchEntityRelatedDefects = (entities: ApiEntity[]): Promise<ApiEntityRelatedDefects[]> => {
         const entityIds = entities.map((entity: ApiEntity) => entity.id);
@@ -127,10 +209,14 @@ export const useServiceCardsApi = (userScope: ApiUserScope) => {
     useEffect(() => {
         console.log('useEFFECT RUNNING');
         fetchData();
-        // const interval = setInterval(fetchData, 15000); // Update data every 15 seconds
-
-        // return () => clearInterval(interval); // Cleanup interval
+        startAutoRefresh();
+        
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
+        };
     }, []);
 
-    return { isLoading, data, error, fetchData, pageInfo };
-}; 
+    return { isLoading, data, error, fetchData, pageInfo, serviceCounts };
+};

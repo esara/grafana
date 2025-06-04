@@ -73,6 +73,18 @@ $root-cause-headline-active-color: rgba(250, 77, 86, 0.7);
 
 #{$prefix} {
     &--text-color-urgent {
-        color: $color-error-main;
+        color: rgb(255, 85, 85)
+        ;
+    }
+
+    &--text-color-warning {
+        color: rgb(255, 221, 51)
+        ;
+    }
+
+    &--text-color-normal {
+        color: rgb(0, 220, 120)
+
+        ;
     }
 }

@@ -150,23 +150,6 @@ export class SloUtil {
     };
 
     const burnRateComputed = NumberUtil.mustGetNumber(attributeMap[SloAttribute.BurnRateComputed] as number);
-
-    console.info('toSloMeta', {
-      elapsedTime: NumberUtil.mustGetNumber(attributeMap[SloAttribute.ElapsedTime] as number),
-      totalWindowTime: NumberUtil.mustGetNumber(attributeMap[SloAttribute.TotalWindowTime] as number),
-      targetThreshold: NumberUtil.mustGetNumber(attributeMap[SloAttribute.TargetThreshold] as number),
-      burnRate: Math.round(
-        burnRateComputed === 0 ? getFirstNonZeroValue(attributeMap[SloAttribute.BurnRate]) : burnRateComputed,
-      ),
-      burnRateAttribute: attributeMap[SloAttribute.BurnRate],
-      errorBudget: NumberUtil.mustGetNumber(attributeMap[SloAttribute.ErrorBudget] as number),
-      errorBudgetRemaining: getFirstNonZeroValue(attributeMap[SloAttribute.ErrorBudgetRemaining]),
-      errorBudgetRemainingAttribute: attributeMap[SloAttribute.ErrorBudgetRemaining],
-      windowDuration: NumberUtil.mustGetNumber(attributeMap[SloAttribute.WindowDuration] as number),
-      windowType: attributeMap[SloAttribute.WindowType] as string,
-      calendarWindowType: attributeMap[SloAttribute.CalendarWindowType] as string,
-      isExternal: attributeMap[SloAttribute.IsExternal] as boolean,
-    });
     
     return {
       elapsedTime: NumberUtil.mustGetNumber(attributeMap[SloAttribute.ElapsedTime] as number),
