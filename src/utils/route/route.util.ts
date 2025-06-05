@@ -42,6 +42,10 @@ export class RouteUtil {
     return `${CauselyPortalBaseUrl()}${AppRoute.rootCauses}/${rootCauseId}`;
   }
 
+  public static getSingleTopologyRoutePath(entityId: string): string {
+    return `${CauselyPortalBaseUrl()}${AppRoute.observeTopology}/${entityId}`;
+  }
+
   public static getServicesRoute(): string {
     return `${CauselyPortalBaseUrl()}${AppRoute.observeServices}`;
   }

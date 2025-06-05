@@ -1,0 +1,42 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "panel",
+  "name": "Causely - Service Panel",
+  "id": "causely-servicecard-panel",
+  "info": {
+    "keywords": ["panel", "causely", "service-card", "monitoring"],
+    "description": "2 Configurations available.  Collection - Displays unhealthy services in real-time and the root causes impacting them.  Single Service - Displays a single service and current health status.",
+    "author": {
+      "name": "vnikitenko"
+    },
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [],
+    "screenshots": [
+      {
+        "name": "unhealthy-services",
+        "path": "img/unhealthy-services.png"
+      },
+      {
+        "name": "unhealthy-services-configuration",
+        "path": "img/unhealthy-services-configuration.png"
+      },
+      {
+        "name": "single-service-card",
+        "path": "img/single-service-card.png"
+      },
+      {
+        "name": "single-service-card-configuration",
+        "path": "img/single-service-card-configuration.png"
+      }
+    ],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=11.2.7",
+    "plugins": []
+  }
+}

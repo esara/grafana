@@ -1,0 +1,26 @@
+@import 'styles/root-vars.scss';
+
+#{$prefix} {
+  &--service-card {
+    &__root-cause-container {
+      color: $urgent-root-cause-color !important;
+    }
+  }
+  &--slo-budget-heading {
+    &--stable {
+      color: rgb(0, 220, 120, 0.80);
+    }
+
+    &--escalating {
+      color: rgb(255, 221, 51, 0.80);
+    }
+
+    &--exhausted {
+      color: rgb(255, 85, 85, 0.80);
+    }
+
+    &__budget {
+      float: right;
+    }
+  }
+}

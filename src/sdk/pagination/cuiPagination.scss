@@ -1,0 +1,24 @@
+@import 'styles/root-vars.scss';
+
+#{$prefix} {
+  &--pagination {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+
+    &__button-left,
+    &__button-right {
+      transition: all 0.2s ease-in-out;
+      
+      &:hover:not(:disabled) {
+        transform: scale(1.05);
+      }
+      
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+} 

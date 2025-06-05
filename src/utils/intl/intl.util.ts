@@ -1,4 +1,7 @@
 import i18next, {  } from 'i18next';
+import { Duration } from 'luxon';
+import { NumberUtil } from 'utils/number/number.util';
+import { StringsUtil } from 'utils/strings/strings.util';
 
 /**
  * IntlUtil should be used for all the values displayed in UI.
@@ -79,5 +82,58 @@ export class IntlUtil {
   public static toRelativeTime(value: number, unit: Intl.RelativeTimeFormatUnit): string {
     const language = IntlUtil.getLanguage();
     return new Intl.RelativeTimeFormat(language, { numeric: 'auto' }).format(value, unit);
+  }
+
+  public static secondsToHours(seconds: number, display: 'long' | 'short' | 'narrow' = 'short'): string {
+    try {
+      let tempSeconds = seconds;
+      if (NumberUtil.isNotNumber(tempSeconds)) {
+        tempSeconds = 0;
+      }
+
+      const isNegative = tempSeconds < 0;
+      const absSeconds = Math.abs(tempSeconds);
+      const hours = absSeconds / 3600;
+
+      const duration = {
+        hours: hours,
+      };
+
+      const toHumanOption: {
+        unitDisplay?: 'long' | 'short' | 'narrow';
+      } = display === 'short' ? { unitDisplay: 'short' } : {};
+      const durationOutput = Duration.fromObject(duration, { locale: IntlUtil.getLanguage() }).toHuman(toHumanOption);
+      return isNegative ? `-${durationOutput}` : durationOutput;
+    } catch (e) {
+      console.error(e);
+      return '';
+    }
+  }
+
+  /**
+   * Convert percentage to locale based formatted percentage string.
+   * Eg: 0.75 will be 75%
+   *     3500 will be 350,000%
+   * Reference
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#decimal_and_percent_formatting
+   */
+  public static toPercentage(value: string | number, maximumFractionDigits = 2): string {
+    if (StringsUtil.isBlank(value as string)) {
+      return '';
+    }
+
+    if (Number.isNaN(Number(value))) {
+      return value.toString();
+    }
+    const language = IntlUtil.getLanguage();
+    const options = {
+      style: 'percent' as Intl.NumberFormatOptionsStyle,
+    };
+
+    return Intl.NumberFormat(language, {
+      ...options,
+      maximumFractionDigits: maximumFractionDigits,
+      minimumFractionDigits: 0,
+    }).format(parseFloat(value as string));
   }
 }

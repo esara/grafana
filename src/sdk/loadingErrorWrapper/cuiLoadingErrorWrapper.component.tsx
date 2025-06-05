@@ -1,5 +1,6 @@
 import React from 'react';
 import { LoadingPlaceholder } from '@grafana/ui';
+import { StringsUtil } from 'utils/strings/strings.util';
 
 interface LoadingErrorWrapperProps {
   isLoading: boolean;
@@ -16,7 +17,7 @@ export const CuiLoadingErrorWrapper: React.FC<LoadingErrorWrapperProps> = ({
     return <LoadingPlaceholder text="Loading..." />;
   }
 
-  if (error) {
+  if (StringsUtil.isNotBlank(error)) {
     return <div>Error: {error}</div>;
   }
 
