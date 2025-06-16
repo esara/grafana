@@ -12,7 +12,7 @@
     &-card {
       cursor: pointer;
       transition: transform 0.2s ease-in-out;
-      background-color: $background-color-secondary !important;
+      background-color: var(--background-color-secondary) !important;
       flex: 1 1 10rem;
       min-width: 25rem;
       max-width: 25rem;

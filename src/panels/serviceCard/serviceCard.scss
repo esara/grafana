@@ -3,7 +3,7 @@
 #{$prefix} {
   &--service-card {
     &__root-cause-container {
-      color: $urgent-root-cause-color !important;
+      color: var(--urgent-root-cause-color) !important;
     }
   }
   &--slo-budget-heading {

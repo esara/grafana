@@ -5,15 +5,15 @@
     margin: 0;
 
     &-primary {
-        color: $text-primary;
+        color: var(--text-primary);
       }
     
       &-secondary {
-        color: $text-secondary;
+        color: var(--text-secondary);
       }
     
       &-disabled {
-        color: $text-disabled;
+        color: var(--text-disabled);
       }
     
     // Text sizes using rem values

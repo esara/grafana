@@ -11,7 +11,7 @@
     gap: 2 rem;
 
     &-empty-state {
-      background-color: $background-color-primary;
+      background-color: var(--background-color-primary);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -24,7 +24,7 @@
     &-card {
       cursor: pointer;
       transition: transform 0.2s ease-in-out;
-      background-color: $urgent-root-cause-color !important;
+      background-color: var(--urgent-root-cause-color) !important;
       flex: 1 1 10rem;
       min-width: 25rem;
       max-width: 25rem;
@@ -34,7 +34,7 @@
 
       &:hover {
         transform: scale(1.02);
-        background-color: $urgent-root-cause-color-transparent !important;
+        background-color: var(--urgent-root-cause-color-transparent) !important;
       }
       /* The * selector targets all elements inside the root-cause-content-card */
       * {
