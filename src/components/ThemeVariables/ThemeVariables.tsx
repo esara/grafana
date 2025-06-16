@@ -5,6 +5,10 @@ interface ThemeVariablesProps {
     children: React.ReactNode;
 }
 
+/**
+ * Defines grafana color tokens as css variables.
+ * 
+ */
 export const ThemeVariables: React.FC<ThemeVariablesProps> = ({ children }) => {
     const theme = useTheme2();
     const containerRef = useRef<HTMLDivElement>(null);
@@ -74,30 +78,16 @@ export const ThemeVariables: React.FC<ThemeVariablesProps> = ({ children }) => {
         el.style.setProperty('--text-size-2xl', '1.5rem');
         el.style.setProperty('--text-size-3xl', '1.875rem');
         el.style.setProperty('--text-size-4xl', '2.25rem');
-
-        if (theme.isDark) {
-            // Root cause colors
-            el.style.setProperty('--urgent-root-cause-color', 'rgba(250, 77, 86, 0.3)');
-            el.style.setProperty('--urgent-root-cause-color-transparent', 'rgba(250, 77, 86, 0.5)');
-            el.style.setProperty('--urgent-root-cause-active-color', 'rgba(250, 77, 86, 0.7)');
-
-            el.style.setProperty('--root-cause-headline-color', 'rgba(250, 77, 86, 0.3)');
-            el.style.setProperty('--root-cause-headline-hover-color', 'rgba(250, 77, 86, 0.5)');
-            el.style.setProperty('--root-cause-headline-active-color', 'rgba(250, 77, 86, 0.7)');
-        } else {
-            // Root cause colors
-            el.style.setProperty('--urgent-root-cause-color', 'rgba(250, 77, 86)');
-            el.style.setProperty('--urgent-root-cause-color-transparent', 'rgba(250, 77, 86, 0.5)');
-            el.style.setProperty('--urgent-root-cause-active-color', 'rgba(250, 77, 86, 0.7)');
-
-            el.style.setProperty('--root-cause-headline-color', 'rgba(250, 77, 86, 0.3)');
-            el.style.setProperty('--root-cause-headline-hover-color', 'rgba(250, 77, 86, 0.5)');
-            el.style.setProperty('--root-cause-headline-active-color', 'rgba(250, 77, 86, 0.7)');
-        }
+        
+        // Root cause colors
+        el.style.setProperty('--urgent-root-cause-color', 'rgba(250, 77, 86, 0.3)');
+        el.style.setProperty('--urgent-root-cause-color-transparent', 'rgba(250, 77, 86, 0.5)');
+        el.style.setProperty('--urgent-root-cause-active-color', 'rgba(250, 77, 86, 0.7)');
+        
     }, [theme]);
 
     return (
-        <div ref={containerRef} className="theme-variables-container">
+        <div ref={containerRef} style={{display: 'contents'}}>
             {children}
         </div>
     );

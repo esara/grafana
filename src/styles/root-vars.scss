@@ -1,2 +1,20 @@
 // Prefix for all classes
 $prefix: '.causely-app';
+
+#{$prefix} {
+    &--text-color-urgent {
+        color: rgb(255, 85, 85)
+        ;
+    }
+
+    &--text-color-warning {
+        color: rgb(255, 221, 51)
+        ;
+    }
+
+    &--text-color-normal {
+        color: rgb(0, 220, 120)
+
+        ;
+    }
+}
