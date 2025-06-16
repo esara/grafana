@@ -22,132 +22,39 @@
   "links": [],
   "panels": [
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 13,
-      "panels": [],
-      "title": "04 - Service Cards",
-      "type": "row"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 22,
-        "x": 0,
-        "y": 1
-      },
-      "id": 15,
-      "options": {
-        "pageSize": 4,
-        "panelType": "single",
-        "singleServiceData": {
-          "label": "datadog-operator",
-          "value": "67f6a06f-4e2a-5bbf-a8db-ac07537ea61b"
-        }
-      },
-      "pluginVersion": "1.1.1",
-      "title": "Panel Title",
-      "type": "causely-servicecard-panel"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 10
-      },
-      "id": 14,
-      "options": {
-        "pageSize": 4,
-        "panelType": "collection"
-      },
-      "pluginVersion": "1.1.1",
-      "title": "Service Cards",
-      "type": "causely-servicecard-panel"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 19
-      },
       "id": 12,
-      "panels": [],
+      "panels": [
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 2
+          },
+          "id": 1,
+          "options": {
+            "seriesCountSize": "sm",
+            "showSeriesCount": false,
+            "text": "Default value of text input option"
+          },
+          "pluginVersion": "12.0.1",
+          "title": "Causely Service Health Panel",
+          "type": "causely-service-panel"
+        }
+      ],
       "title": "01 - Service Health Panel",
       "type": "row"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 20
-      },
-      "id": 1,
-      "options": {
-        "seriesCountSize": "sm",
-        "showSeriesCount": false,
-        "text": "Default value of text input option"
-      },
-      "pluginVersion": "1.1.1",
-      "title": "Causely Service Health Panel",
-      "type": "causely-service-panel"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 28
-      },
-      "id": 10,
-      "panels": [],
-      "title": "02- Urgent Root Cause Global ",
-      "type": "row"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 29
-      },
-      "id": 3,
-      "options": {
-        "apiUserScope": {
-          "id": "9999",
-          "name": "Global",
-          "scopes": []
-        },
-        "panelType": "urgentRcs"
-      },
-      "pluginVersion": "1.1.1",
-      "title": "Scope Globally",
-      "type": "causely-rootcause-panel"
     },
     {
       "collapsed": true,
@@ -155,7 +62,45 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 37
+        "y": 1
+      },
+      "id": 10,
+      "panels": [
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 3
+          },
+          "id": 3,
+          "options": {
+            "apiUserScope": {
+              "id": "9999",
+              "name": "Global",
+              "scopes": []
+            },
+            "panelType": "urgentRcs"
+          },
+          "pluginVersion": "12.0.1",
+          "title": "Scope Globally",
+          "type": "causely-rootcause-panel"
+        }
+      ],
+      "title": "02- Urgent Root Cause Global ",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 2
       },
       "id": 11,
       "panels": [
@@ -239,44 +184,45 @@
       "type": "row"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 38
+        "y": 3
       },
       "id": 8,
-      "panels": [],
+      "panels": [
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 5
+          },
+          "id": 6,
+          "options": {
+            "apiUserScope": {
+              "audience": "USER",
+              "id": "9999",
+              "lastUpdate": "2025-05-27T20:31:16.120756Z",
+              "name": "Global",
+              "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
+              "scopes": []
+            },
+            "panelType": "headlines"
+          },
+          "pluginVersion": "12.0.1",
+          "title": "HeadLines Global",
+          "type": "causely-rootcause-panel"
+        }
+      ],
       "title": "03 - HeadLines Global",
       "type": "row"
-    },
-    {
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 39
-      },
-      "id": 6,
-      "options": {
-        "apiUserScope": {
-          "audience": "USER",
-          "id": "9999",
-          "lastUpdate": "2025-05-27T20:31:16.120756Z",
-          "name": "Global",
-          "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
-          "scopes": []
-        },
-        "panelType": "headlines"
-      },
-      "pluginVersion": "1.1.1",
-      "title": "HeadLines Global",
-      "type": "causely-rootcause-panel"
     },
     {
       "collapsed": true,
@@ -284,7 +230,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 47
+        "y": 4
       },
       "id": 9,
       "panels": [
@@ -325,6 +271,64 @@
       ],
       "title": "03 - HeadLine Other Scopes",
       "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 13,
+      "panels": [
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 22,
+            "x": 0,
+            "y": 1
+          },
+          "id": 15,
+          "options": {
+            "pageSize": 4,
+            "panelType": "single",
+            "singleServiceData": {
+              "label": "datadog-operator",
+              "value": "67f6a06f-4e2a-5bbf-a8db-ac07537ea61b"
+            }
+          },
+          "pluginVersion": "12.0.1",
+          "title": "Panel Title",
+          "type": "causely-servicecard-panel"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 24,
+            "x": 0,
+            "y": 10
+          },
+          "id": 14,
+          "options": {
+            "pageSize": 4,
+            "panelType": "collection"
+          },
+          "pluginVersion": "12.0.1",
+          "title": "Service Cards",
+          "type": "causely-servicecard-panel"
+        }
+      ],
+      "title": "04 - Service Cards",
+      "type": "row"
     }
   ],
   "preload": false,
@@ -342,5 +346,5 @@
   "timezone": "",
   "title": "Provisioned Causely dashboard",
   "uid": "a538aeff-5a8a-42a5-901c-938d896fdd6f",
-  "version": 5
+  "version": 1
 }
