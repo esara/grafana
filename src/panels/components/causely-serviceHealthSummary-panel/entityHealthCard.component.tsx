@@ -1,8 +1,9 @@
 import React, { FC, ReactElement } from 'react';
 import { Card } from '@grafana/ui';
+import { RouteUtil } from 'utils/route/route.util';
+import { useOpenNewTab } from 'hooks/useOpenNewTab.hook';
 
 import './entityHealthCard.scss'
-import { RouteUtil } from 'utils/route/route.util';
 
 export type EntityHealthCardData = {
     title: string;
@@ -21,10 +22,14 @@ type EntityHealthCardProps = {
 export const EntityHealthCard: FC<EntityHealthCardProps> = (
   props: EntityHealthCardProps,
 ): ReactElement => {
+    
     const { data, label } = props;
     const { severity, count, total, percentage, rootCauseCount, title } = data;
+    
+    const openNewTab = useOpenNewTab();
+    
     const handleOnClick = () => {
-        window.open(RouteUtil.getServicesRoute(), '_blank', 'noopener,noreferrer');
+        openNewTab(RouteUtil.getServicesRoute());
     };
 
     return (

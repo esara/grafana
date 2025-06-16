@@ -35,10 +35,6 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -58,20 +54,11 @@
           "value": "09516398-3210-5d61-8703-91e513159e37"
         }
       },
-      "pluginVersion": "1.0.2",
-      "targets": [
-        {
-          "refId": "A"
-        }
-      ],
+      "pluginVersion": "1.1.1",
       "title": "Panel Title",
       "type": "causely-servicecard-panel"
     },
     {
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -87,17 +74,12 @@
         "pageSize": 4,
         "panelType": "collection"
       },
-      "pluginVersion": "1.0.2",
-      "targets": [
-        {
-          "refId": "A"
-        }
-      ],
+      "pluginVersion": "1.1.1",
       "title": "Service Cards",
       "type": "causely-servicecard-panel"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -105,93 +87,67 @@
         "y": 20
       },
       "id": 12,
-      "panels": [
-        {
-          "datasource": {
-            "type": "grafana-testdata-datasource",
-            "uid": "trlxrdZVk"
-          },
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 53
-          },
-          "id": 1,
-          "options": {
-            "seriesCountSize": "sm",
-            "showSeriesCount": false,
-            "text": "Default value of text input option"
-          },
-          "pluginVersion": "1.0.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "grafana-testdata-datasource",
-                "uid": "db84e60d-b92a-4089-82cb-34842fb1754b"
-              },
-              "rawFrameContent": "[\n  {\n    \"columns\": [\n      {\n        \"text\": \"Time\",\n        \"type\": \"time\"\n      },\n      {\n        \"text\": \"Label\",\n        \"type\": \"string\"\n      },\n      {\n        \"text\": \"Value\",\n        \"type\": \"number\"\n      }\n    ],\n    \"rows\": [\n      [1609459200000, \"A\", 10],\n      [1609462800000, \"B\", 20],\n      [1609466400000, \"C\", 15],\n      [1609470000000, \"D\", 25],\n      [1609473600000, \"E\", 30]\n    ]\n  },\n{\n    \"columns\": [\n      {\n        \"text\": \"Time\",\n        \"type\": \"time\"\n      },\n      {\n        \"text\": \"Label\",\n        \"type\": \"string\"\n      },\n      {\n        \"text\": \"Value\",\n        \"type\": \"number\"\n      }\n    ],\n    \"rows\": [\n      [1609459200000, \"A\", 40],\n      [1609462800000, \"B\", 50],\n      [1609466400000, \"C\", 45],\n      [1609470000000, \"D\", 55],\n      [1609473600000, \"E\", 60]\n    ]\n  }\n]",
-              "refId": "A",
-              "scenarioId": "raw_frame"
-            }
-          ],
-          "title": "Causely Service Health Panel",
-          "type": "causely-service-panel"
-        }
-      ],
+      "panels": [],
       "title": "01 - Service Health Panel",
       "type": "row"
     },
     {
-      "collapsed": true,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
-        "h": 1,
+        "h": 8,
         "w": 24,
         "x": 0,
         "y": 21
       },
+      "id": 1,
+      "options": {
+        "seriesCountSize": "sm",
+        "showSeriesCount": false,
+        "text": "Default value of text input option"
+      },
+      "pluginVersion": "1.1.1",
+      "title": "Causely Service Health Panel",
+      "type": "causely-service-panel"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 29
+      },
       "id": 10,
-      "panels": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 11,
-            "w": 24,
-            "x": 0,
-            "y": 54
-          },
-          "id": 3,
-          "options": {
-            "apiUserScope": {
-              "id": "9999",
-              "name": "Global",
-              "scopes": []
-            },
-            "panelType": "urgentRcs"
-          },
-          "pluginVersion": "1.0.2",
-          "targets": [
-            {
-              "refId": "A"
-            }
-          ],
-          "title": "Scope Globally",
-          "type": "causely-rootcause-panel"
-        }
-      ],
+      "panels": [],
       "title": "02- Urgent Root Cause Global ",
       "type": "row"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 30
+      },
+      "id": 3,
+      "options": {
+        "apiUserScope": {
+          "id": "9999",
+          "name": "Global",
+          "scopes": []
+        },
+        "panelType": "urgentRcs"
+      },
+      "pluginVersion": "1.1.1",
+      "title": "Scope Globally",
+      "type": "causely-rootcause-panel"
     },
     {
       "collapsed": true,
@@ -199,15 +155,11 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 41
       },
       "id": 11,
       "panels": [
         {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
           "fieldConfig": {
             "defaults": {},
             "overrides": []
@@ -216,7 +168,7 @@
             "h": 11,
             "w": 24,
             "x": 0,
-            "y": 55
+            "y": 82
           },
           "id": 5,
           "options": {
@@ -245,19 +197,10 @@
             "panelType": "urgentRcs"
           },
           "pluginVersion": "1.0.2",
-          "targets": [
-            {
-              "refId": "A"
-            }
-          ],
           "title": "Scope testPublic",
           "type": "causely-rootcause-panel"
         },
         {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
           "fieldConfig": {
             "defaults": {},
             "overrides": []
@@ -266,7 +209,7 @@
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 66
+            "y": 93
           },
           "id": 4,
           "options": {
@@ -288,11 +231,6 @@
             "panelType": "urgentRcs"
           },
           "pluginVersion": "1.0.2",
-          "targets": [
-            {
-              "refId": "A"
-            }
-          ],
           "title": "Scope testPrivate",
           "type": "causely-rootcause-panel"
         }
@@ -301,54 +239,44 @@
       "type": "row"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 42
       },
       "id": 8,
-      "panels": [
-        {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 12,
-            "x": 0,
-            "y": 120
-          },
-          "id": 6,
-          "options": {
-            "apiUserScope": {
-              "audience": "USER",
-              "id": "9999",
-              "lastUpdate": "2025-05-27T20:31:16.120756Z",
-              "name": "Global",
-              "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
-              "scopes": []
-            },
-            "panelType": "headlines"
-          },
-          "pluginVersion": "1.0.2",
-          "targets": [
-            {
-              "refId": "A"
-            }
-          ],
-          "title": "HeadLines Global",
-          "type": "causely-rootcause-panel"
-        }
-      ],
+      "panels": [],
       "title": "03 - HeadLines Global",
       "type": "row"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 43
+      },
+      "id": 6,
+      "options": {
+        "apiUserScope": {
+          "audience": "USER",
+          "id": "9999",
+          "lastUpdate": "2025-05-27T20:31:16.120756Z",
+          "name": "Global",
+          "ownerId": "3aa454ce-e288-4e6f-a4b7-895ee9d6387f",
+          "scopes": []
+        },
+        "panelType": "headlines"
+      },
+      "pluginVersion": "1.1.1",
+      "title": "HeadLines Global",
+      "type": "causely-rootcause-panel"
     },
     {
       "collapsed": true,
@@ -356,15 +284,11 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 51
       },
       "id": 9,
       "panels": [
         {
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
           "fieldConfig": {
             "defaults": {},
             "overrides": []
@@ -373,7 +297,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 129
+            "y": 156
           },
           "id": 7,
           "options": {
@@ -395,11 +319,6 @@
             "panelType": "headlines"
           },
           "pluginVersion": "1.0.2",
-          "targets": [
-            {
-              "refId": "A"
-            }
-          ],
           "title": "HeadLines (Scope EmptyState)",
           "type": "causely-rootcause-panel"
         }
@@ -410,7 +329,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 40,
+  "schemaVersion": 41,
   "tags": [],
   "templating": {
     "list": []
@@ -423,6 +342,5 @@
   "timezone": "",
   "title": "Provisioned Causely dashboard",
   "uid": "a538aeff-5a8a-42a5-901c-938d896fdd6f",
-  "version": 12,
-  "weekStart": ""
+  "version": 1
 }

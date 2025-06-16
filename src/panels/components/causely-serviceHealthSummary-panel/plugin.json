@@ -26,5 +26,6 @@
   "dependencies": {
     "grafanaDependency": ">=12.0.1",
     "plugins": []
-  }
+  },
+  "skipDataQuery": true
 }

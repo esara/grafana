@@ -9,6 +9,7 @@ import { CUIText } from 'sdk/text/cui-text.component';
 import { CuiTagList } from 'sdk/tagList/cuiTagList.component';
 import { RouteUtil } from 'utils/route/route.util';
 import { CUISection } from 'sdk/section/cuiSection.component';
+import { useOpenNewTab } from 'hooks/useOpenNewTab.hook';
 
 type RootCauseHeadlineProps = {
     headline: ApiHeadlineItem;
@@ -47,6 +48,8 @@ const sanitizeRootCauseSentence = (headline: ApiHeadlineItem): string => {
 }
 
 export const RootCauseHeadline: FC<RootCauseHeadlineProps> = ({ headline }) => {
+    const openNewTab = useOpenNewTab();
+    
     const rootCauseSanitizedSentence = sanitizeRootCauseSentence(headline);
     const statusInfo = DefectsUtil.isDetected(headline.defect) ? 'active' : 'inactive';
     const isServiceImpacting = headline.defect.serviceCount > 0;
@@ -55,7 +58,7 @@ export const RootCauseHeadline: FC<RootCauseHeadlineProps> = ({ headline }) => {
     
     return (
         <div onClick={() => {
-            window.open(RouteUtil.getSingleRootCauseRoutePath(headline.defect.id), '_blank');
+            openNewTab(RouteUtil.getSingleRootCauseRoutePath(headline.defect.id));
             }}
         >
             <CUISection>

@@ -12,6 +12,7 @@ import { ArraysUtil } from "utils/arrays/arrays.util";
 import { CUIRenderWhen } from "sdk/cuiRenderWhen/coreRenderWhen.component";
 import { SloConnectionComponent } from "./sloConnection/sloConnection.component";
 import { SdkUtil } from "sdk/sdk.util";
+import { useOpenNewTab } from 'hooks/useOpenNewTab.hook';
 import clsx from "clsx";
 
 import './serviceCard.scss';
@@ -32,7 +33,8 @@ const renderCUISectionDescription = (value: React.ReactNode, className?: string)
     )
 }
 export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEntity }) => {
-
+    const openNewTab = useOpenNewTab();
+    
     const relatedDefects = serviceCardEntity.relatedDefects;
     const noRootCauses = ArraysUtil.isEmpty(relatedDefects?.aggregatingDefects) && ArraysUtil.isEmpty(relatedDefects?.directDefects) && ArraysUtil.isEmpty(relatedDefects?.impactingDefects);
 
@@ -45,7 +47,7 @@ export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEn
 
     return (
         <div className={SdkUtil.withPrefix('service-card')} onClick={() => {
-            window.open(RouteUtil.getSingleTopologyRoutePath(serviceCardEntity.id), '_blank');
+            openNewTab(RouteUtil.getSingleTopologyRoutePath(serviceCardEntity.id));
         }}>
 
             <CUIHeading>{EntityUtil.simplifyEntityname(serviceCardEntity)}</CUIHeading>

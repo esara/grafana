@@ -1,4 +1,6 @@
 import React from 'react';
+import { SdkUtil } from 'sdk/sdk.util';
+
 import './cuiTag.scss';
 
 interface CuiTagProps {
@@ -20,7 +22,7 @@ export const CuiTag: React.FC<CuiTagProps> = ({
   };
 
   return (
-    <span className={`cui-tag ${className}`} style={style}>
+    <span className={`${SdkUtil.withPrefix('tag')} ${className}`} style={style}>
       {children}
     </span>
   );
