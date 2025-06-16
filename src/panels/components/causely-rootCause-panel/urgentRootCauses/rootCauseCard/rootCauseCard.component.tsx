@@ -15,6 +15,7 @@ import { CUISectionDescription } from "sdk/sectionDescription/cuiSectionDescript
 import './rootCauseCard.scss';
 import { EntityTypeDefs } from "utils/entityTypeDefs/EntityTypeDefs.singleton";
 import { ArraysUtil } from "utils/arrays/arrays.util";
+import { useOpenNewTab } from 'hooks/useOpenNewTab.hook';
 
 type RootCauseCardProps = {
     rootCause: ApiDefect
@@ -61,6 +62,7 @@ const getTagsList = (rootCause: ApiDefect): string[] => {
 }
 
 export const RootCauseCard = ({ rootCause }: RootCauseCardProps) => {
+    const openNewTab = useOpenNewTab();
     const evidence: RootCauseEvidence = useRootCauseEvidence(rootCause.id);
 
     const activeSymptomsCount = rootCause.symptoms.filter((symptom) => symptom.active).length;
@@ -68,7 +70,7 @@ export const RootCauseCard = ({ rootCause }: RootCauseCardProps) => {
 
     return (
         <div className="root-cause-card" onClick={() => {
-            window.open(RouteUtil.getSingleRootCauseRoutePath(rootCause.id), '_blank');
+            openNewTab(RouteUtil.getSingleRootCauseRoutePath(rootCause.id));
         }}>
             <CUISection>
                 <CuiTagList tags={getTagsList(rootCause)} />

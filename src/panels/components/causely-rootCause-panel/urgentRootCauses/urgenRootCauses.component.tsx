@@ -8,6 +8,7 @@ import { Spinner } from "@grafana/ui";
 import { useRootCausePanelApi } from "./useUrgentRootCausesApi";
 
 import './urgentRootCauses.scss'
+import { SdkUtil } from "sdk/sdk.util";
 
 export const UrgentRootCauseComponent = ({ userScope }: { userScope: ApiUserScope }) => {
     const { isLoading, data, error } = useRootCausePanelApi(userScope)
@@ -20,10 +21,10 @@ export const UrgentRootCauseComponent = ({ userScope }: { userScope: ApiUserScop
     
     return (
         <CuiLoadingErrorWrapper isLoading={isLoading} error={error}>
-            <div className={'cui--root-cause-content'}>
+            <div className={SdkUtil.withPrefix('root-cause-content')}>
 
                 <CUIRenderWhen condition={isEmptyState}>
-                    <div className={'cui--root-cause-content-empty-state'}>
+                    <div className={SdkUtil.withPrefix('root-cause-content-empty-state')}>
                         <CUIText size={'1.5'}>
                         There are no urgent root causes. Causely actively monitoring and if anything comes up, we will update here.
                         </CUIText>
@@ -35,14 +36,14 @@ export const UrgentRootCauseComponent = ({ userScope }: { userScope: ApiUserScop
                         const rootCauseData: ApiDefect = rootCause.node;
 
                         return (
-                            <div key={rootCause.node.id} className={'cui--root-cause-content-card'}>
+                            <div key={rootCause.node.id} className={SdkUtil.withPrefix('root-cause-content-card')}>
                                 <RootCauseCard rootCause={rootCauseData} />
                             </div>
                         )
                     })}
 
                     <CUIRenderWhen condition={totalCount > 4}>
-                        <div key={'AdditionalRC'} className={'cui--root-cause-content-card'}>
+                        <div key={'AdditionalRC'} className={SdkUtil.withPrefix('root-cause-content-card')}>
                             <CUIText size={'1.5'}>
                                 {totalCount - 3} more urgent root causes are affecting you system.  Go to causely to see more.
                             </CUIText>

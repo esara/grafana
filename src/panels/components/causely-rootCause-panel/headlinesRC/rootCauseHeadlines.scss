@@ -23,13 +23,13 @@
       text-align: center;
       height: 100%;
       padding: 2rem;
-      background-color: $background-color-secondary;
+      background-color: var(--background-color-secondary);
       border-radius: 4px;
     }
 
     &__headline-card {
       cursor: pointer;
-      background-color: $background-color-secondary;
+      background-color: var(--background-color-secondary);
       border-radius: 4px;
       padding: 1rem;
       margin-bottom: 1rem;
@@ -37,14 +37,14 @@
 
       &:hover {
         transform: scale(1.01);
-        background-color: $color-secondary-transparent;
+        background-color: var(--color-secondary-transparent);
       }
 
       &--urgent {
-        background-color: $urgent-root-cause-color;
+        background-color: var(--urgent-root-cause-color);
 
         &:hover {
-          background-color: $urgent-root-cause-color-transparent;
+          background-color: var(--urgent-root-cause-color-transparent);
         }
       }
     }

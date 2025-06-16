@@ -11,8 +11,10 @@ import clsx from 'clsx';
 import { useRootCauseHeadlinesApi } from './useRootCauseHeadlinesApi.hook';
 import { CUIText } from 'sdk/text/cui-text.component';
 import { RouteUtil } from 'utils/route/route.util';
+import { useOpenNewTab } from 'hooks/useOpenNewTab.hook';
 
 import './rootCauseHeadlines.scss';
+
 import { CUISection } from 'sdk/section/cuiSection.component';
 const getCardClassName = (headline: ApiHeadlineItem): string => {
     const isActive = DefectsUtil.isDetected(headline?.defect);
@@ -26,6 +28,7 @@ const getCardClassName = (headline: ApiHeadlineItem): string => {
 
 export const RootCauseHeadlines = ({ userScope }: { userScope: ApiUserScope }) => {
     const { isLoading, headlinesData, error } = useRootCauseHeadlinesApi(userScope);
+    const openNewTab = useOpenNewTab();
     
     const { headlines, urgentRcActiveCount } = headlinesData;
     
@@ -45,7 +48,7 @@ export const RootCauseHeadlines = ({ userScope }: { userScope: ApiUserScope }) =
                         No notable headlines in the last 24hrs
                     </div>
                     <div className={getCardClassName(null)} onClick={() => {
-                        window.open(RouteUtil.getDiagnoseRoutePath(), '_blank');
+                        openNewTab(RouteUtil.getDiagnoseRoutePath());
                     }}>
                         <CUIHeading>
                             Not all root cause announce themselves
@@ -67,7 +70,8 @@ export const RootCauseHeadlines = ({ userScope }: { userScope: ApiUserScope }) =
 
                     <CUIRenderWhen condition={urgentRcActiveCount > 3}>
                         <div className={getCardClassName(headlines[0])} onClick={() => {
-                            window.open(RouteUtil.getDiagnoseRoutePath(), '_blank');
+                            console.log('openNewTab', RouteUtil.getDiagnoseRoutePath());
+                            openNewTab(RouteUtil.getDiagnoseRoutePath());
                         }}>
                             <CUIHeading>
                                 {`There is another ${urgentRcActiveCount - 3} Urgent Root Cause(s) active. View in Causely`}
@@ -77,7 +81,8 @@ export const RootCauseHeadlines = ({ userScope }: { userScope: ApiUserScope }) =
 
                     <CUIRenderWhen condition={urgentRcActiveCount < 4}>
                         <div className={getCardClassName(null)} onClick={() => {
-                            window.open(RouteUtil.getDiagnoseRoutePath(), '_blank');
+                            console.log('openNewTab', RouteUtil.getDiagnoseRoutePath());
+                            openNewTab(RouteUtil.getDiagnoseRoutePath());
                         }}>
                             <CUIHeading>
                                 Not all root cause announce themselves
