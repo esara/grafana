@@ -40,7 +40,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 2
+            "y": 1
           },
           "id": 1,
           "options": {
@@ -48,7 +48,7 @@
             "showSeriesCount": false,
             "text": "Default value of text input option"
           },
-          "pluginVersion": "12.0.1",
+          "pluginVersion": "1.1.1",
           "title": "Causely Service Health Panel",
           "type": "causely-service-panel"
         }
@@ -75,7 +75,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 3
+            "y": 2
           },
           "id": 3,
           "options": {
@@ -86,7 +86,7 @@
             },
             "panelType": "urgentRcs"
           },
-          "pluginVersion": "12.0.1",
+          "pluginVersion": "1.1.1",
           "title": "Scope Globally",
           "type": "causely-rootcause-panel"
         }
@@ -113,7 +113,7 @@
             "h": 11,
             "w": 24,
             "x": 0,
-            "y": 82
+            "y": 3
           },
           "id": 5,
           "options": {
@@ -141,7 +141,7 @@
             },
             "panelType": "urgentRcs"
           },
-          "pluginVersion": "1.0.2",
+          "pluginVersion": "1.1.1",
           "title": "Scope testPublic",
           "type": "causely-rootcause-panel"
         },
@@ -154,7 +154,7 @@
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 93
+            "y": 14
           },
           "id": 4,
           "options": {
@@ -175,7 +175,7 @@
             },
             "panelType": "urgentRcs"
           },
-          "pluginVersion": "1.0.2",
+          "pluginVersion": "1.1.1",
           "title": "Scope testPrivate",
           "type": "causely-rootcause-panel"
         }
@@ -202,7 +202,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 5
+            "y": 4
           },
           "id": 6,
           "options": {
@@ -216,7 +216,7 @@
             },
             "panelType": "headlines"
           },
-          "pluginVersion": "12.0.1",
+          "pluginVersion": "1.1.1",
           "title": "HeadLines Global",
           "type": "causely-rootcause-panel"
         }
@@ -243,7 +243,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 156
+            "y": 5
           },
           "id": 7,
           "options": {
@@ -264,7 +264,7 @@
             },
             "panelType": "headlines"
           },
-          "pluginVersion": "1.0.2",
+          "pluginVersion": "1.1.1",
           "title": "HeadLines (Scope EmptyState)",
           "type": "causely-rootcause-panel"
         }
@@ -291,18 +291,18 @@
             "h": 9,
             "w": 22,
             "x": 0,
-            "y": 1
+            "y": 6
           },
           "id": 15,
           "options": {
             "pageSize": 4,
             "panelType": "single",
             "singleServiceData": {
-              "label": "datadog-operator",
-              "value": "67f6a06f-4e2a-5bbf-a8db-ac07537ea61b"
+              "label": "postgres",
+              "value": "0c947063-7346-5101-b1cd-1cbaeb2d5fcb"
             }
           },
-          "pluginVersion": "12.0.1",
+          "pluginVersion": "1.1.1",
           "title": "Panel Title",
           "type": "causely-servicecard-panel"
         },
@@ -315,14 +315,14 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 10
+            "y": 15
           },
           "id": 14,
           "options": {
             "pageSize": 4,
             "panelType": "collection"
           },
-          "pluginVersion": "12.0.1",
+          "pluginVersion": "1.1.1",
           "title": "Service Cards",
           "type": "causely-servicecard-panel"
         }
@@ -346,5 +346,5 @@
   "timezone": "",
   "title": "Provisioned Causely dashboard",
   "uid": "a538aeff-5a8a-42a5-901c-938d896fdd6f",
-  "version": 1
+  "version": 4
 }
