@@ -70,7 +70,6 @@ export const RootCauseHeadlines = ({ userScope }: { userScope: ApiUserScope }) =
 
                     <CUIRenderWhen condition={urgentRcActiveCount > 3}>
                         <div className={getCardClassName(headlines[0])} onClick={() => {
-                            console.log('openNewTab', RouteUtil.getDiagnoseRoutePath());
                             openNewTab(RouteUtil.getDiagnoseRoutePath());
                         }}>
                             <CUIHeading>
@@ -81,7 +80,6 @@ export const RootCauseHeadlines = ({ userScope }: { userScope: ApiUserScope }) =
 
                     <CUIRenderWhen condition={urgentRcActiveCount < 4}>
                         <div className={getCardClassName(null)} onClick={() => {
-                            console.log('openNewTab', RouteUtil.getDiagnoseRoutePath());
                             openNewTab(RouteUtil.getDiagnoseRoutePath());
                         }}>
                             <CUIHeading>
