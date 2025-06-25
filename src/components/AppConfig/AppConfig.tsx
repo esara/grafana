@@ -138,7 +138,7 @@ const AppConfig = ({ plugin }: AppConfigProps) => {
         <Field label="Causely ClientId" description="" className={s.marginTop}>
           <Input
               width={60}
-              id="causey-clientid"
+              id="causely-clientid"
               data-testid={testIds.appConfig.causelyClientId}
               label={`Causely ClientId`}
               value={state?.causelyClientId}
