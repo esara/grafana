@@ -18,7 +18,7 @@ import clsx from "clsx";
 import './serviceCard.scss';
 import { Divider } from "@grafana/ui";
 import { EntityUtil } from "utils/entity/entity.util";
-import { ApiDefect } from "api/api.types";
+import { ServiceUtil } from "utils/service/service.util";
 
 interface ServiceCardProps {
     serviceCardEntity: ServiceCardEntity;
@@ -61,7 +61,11 @@ export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEn
         }}>
 
             <CUIHeading>{EntityUtil.simplifyEntityname(serviceCardEntity)}</CUIHeading>
-            
+            <CUISectionDescription>
+                        <CUIText variant="secondary">
+                            {ServiceUtil.getNameSpaceAndClusterNameInfo(serviceCardEntity)}
+                        </CUIText>
+                    </CUISectionDescription>
             <Divider />
             
             <CUISection>
