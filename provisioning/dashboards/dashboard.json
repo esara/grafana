@@ -154,7 +154,7 @@
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 14
+            "y": 32
           },
           "id": 4,
           "options": {
@@ -273,7 +273,7 @@
       "type": "row"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -281,54 +281,53 @@
         "y": 5
       },
       "id": 13,
-      "panels": [
-        {
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 22,
-            "x": 0,
-            "y": 6
-          },
-          "id": 15,
-          "options": {
-            "pageSize": 4,
-            "panelType": "single",
-            "singleServiceData": {
-              "label": "postgres",
-              "value": "0c947063-7346-5101-b1cd-1cbaeb2d5fcb"
-            }
-          },
-          "pluginVersion": "1.1.1",
-          "title": "Panel Title",
-          "type": "causely-servicecard-panel"
-        },
-        {
-          "fieldConfig": {
-            "defaults": {},
-            "overrides": []
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 24,
-            "x": 0,
-            "y": 15
-          },
-          "id": 14,
-          "options": {
-            "pageSize": 4,
-            "panelType": "collection"
-          },
-          "pluginVersion": "1.1.1",
-          "title": "Service Cards",
-          "type": "causely-servicecard-panel"
-        }
-      ],
+      "panels": [],
       "title": "04 - Service Cards",
       "type": "row"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 22,
+        "x": 0,
+        "y": 6
+      },
+      "id": 15,
+      "options": {
+        "pageSize": 4,
+        "panelType": "single",
+        "singleServiceData": {
+          "label": "postgres",
+          "value": "0c947063-7346-5101-b1cd-1cbaeb2d5fcb"
+        }
+      },
+      "pluginVersion": "11.6.0",
+      "title": "Panel Title",
+      "type": "causely-servicecard-panel"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 14,
+      "options": {
+        "pageSize": 4,
+        "panelType": "collection"
+      },
+      "pluginVersion": "11.6.0",
+      "title": "Service Cards",
+      "type": "causely-servicecard-panel"
     }
   ],
   "preload": false,
@@ -346,5 +345,5 @@
   "timezone": "",
   "title": "Provisioned Causely dashboard",
   "uid": "a538aeff-5a8a-42a5-901c-938d896fdd6f",
-  "version": 4
+  "version": 1
 }
