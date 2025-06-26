@@ -1,15 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import { QueryDefectConnections } from 'api/graphql/queries/queryDefectConnections';
-import { ApiDefectConnection, ApiDefectSeverity, ApiQueryDefectConnectionArgs, ApiUserScope } from 'api/api.types';
+import { ApiDefectConnection, ApiDefectEdge, ApiDefectSeverity, ApiQueryDefectConnectionArgs, ApiUserScope } from 'api/api.types';
 
 const defaultDefectConnectionVariables: ApiQueryDefectConnectionArgs = {
-    first: 4, // Adjust this number based on your needs
+    first: 10, // Adjust this number based on your needs
     defectFilter: {
         includeInactiveDefect: false,
-        severities: [ApiDefectSeverity.Critical, ApiDefectSeverity.High],
+        severities: [ApiDefectSeverity.Critical, ApiDefectSeverity.High, ApiDefectSeverity.Medium, ApiDefectSeverity.Low],
         scopesFilter: {
             scopes: []
-        }
+        },
+        includeNonSvcImpact: true
     },
 };
 
@@ -19,7 +20,7 @@ export const useRootCausePanelApi = (userScope: ApiUserScope) => {
     const [error, setError] = useState<string | null>(null);
 
     const fetchData = useCallback(() => {
-        const variables: ApiQueryDefectConnectionArgs = {   
+        const variables: ApiQueryDefectConnectionArgs = {
             ...defaultDefectConnectionVariables,
             defectFilter: {
                 ...defaultDefectConnectionVariables.defectFilter,
@@ -27,12 +28,19 @@ export const useRootCausePanelApi = (userScope: ApiUserScope) => {
                     scopes: userScope?.scopes || []
                 }
             }
-            
+
         };
 
         QueryDefectConnections(variables)
             .then(response => {
-                setData(response.data.defectConnection);
+
+                //This is temporary fix until https://github.com/Causely/causely/pull/4828 is merged which fixes includeNonSvcImpact Working
+                const serviceDegradingEdges = response.data.defectConnection.edges.filter((edge: ApiDefectEdge) => edge.node.serviceCount > 0);
+                setData({
+                    ...response.data.defectConnection,
+                    edges: serviceDegradingEdges,
+                    totalCount: response.data.defectConnection.totalCount - serviceDegradingEdges.length
+                });
             })
             .catch(error => {
                 setError(error instanceof Error ? error.message : 'An unknown error occurred');

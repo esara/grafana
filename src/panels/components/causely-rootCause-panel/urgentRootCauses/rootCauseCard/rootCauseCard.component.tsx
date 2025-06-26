@@ -55,7 +55,7 @@ const getTagsList = (rootCause: ApiDefect): string[] => {
     tagsList.push('Active');
 
     if (rootCause?.serviceCount > 0) {
-        tagsList.push(`Impacts ${rootCause.serviceCount} Service(s)`);
+        tagsList.push(`${rootCause.serviceCount} Service(s) Degraded`);
     }
 
     return tagsList;
