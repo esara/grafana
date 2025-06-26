@@ -11,7 +11,7 @@ import { QueryEntityTypeCounts } from 'api/graphql/queries/queryEntityTypeCounts
 import { ServiceCardsPanelOptions } from '../module';
 
 
-const UnHealthyServiceStates = new Set(['Critical', 'Major']);
+const UnHealthyServiceStates = new Set(['Critical', 'Major', 'Minor', 'Warning']);
 
 const entityConnectionVariables: ApiQueryEntityConnectionArgs = {
     entityFilter: {
@@ -179,7 +179,7 @@ export const useServiceCardsApi = ({apiUserScope, pageSize}: ServiceCardsPanelOp
             intervalRef.current = setInterval(() => {
                 fetchData();
                 
-            }, 20000); // 20 seconds
+            }, 30000); // 30 seconds
         }
     }, [fetchData]);
 

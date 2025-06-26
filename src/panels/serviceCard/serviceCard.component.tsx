@@ -18,6 +18,7 @@ import clsx from "clsx";
 import './serviceCard.scss';
 import { Divider } from "@grafana/ui";
 import { EntityUtil } from "utils/entity/entity.util";
+import { ServiceUtil } from "utils/service/service.util";
 
 interface ServiceCardProps {
     serviceCardEntity: ServiceCardEntity;
@@ -31,6 +32,15 @@ const renderCUISectionDescription = (value: React.ReactNode, className?: string)
             </CUIText>
         </CUISectionDescription>
     )
+}
+
+const renderCUISectionDescriptionWithServiceDegradingHighlight = (value: React.ReactNode, isServiceDegrading: boolean) => {
+    if (isServiceDegrading) {
+        return renderCUISectionDescription(value, SdkUtil.withPrefix('text-color-urgent'));
+    }
+    return renderCUISectionDescription(value);
+    
+    
 }
 export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEntity }) => {
     const openNewTab = useOpenNewTab();
@@ -51,7 +61,11 @@ export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEn
         }}>
 
             <CUIHeading>{EntityUtil.simplifyEntityname(serviceCardEntity)}</CUIHeading>
-            
+            <CUISectionDescription>
+                        <CUIText variant="secondary">
+                            {ServiceUtil.getNameSpaceAndClusterNameInfo(serviceCardEntity)}
+                        </CUIText>
+                    </CUISectionDescription>
             <Divider />
             
             <CUISection>
@@ -73,21 +87,21 @@ export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEn
                         <CUIRenderWhen condition={relatedDefects?.aggregatingDefects?.length > 0}>
                             {
                                 relatedDefects?.aggregatingDefects?.map((defect) => (
-                                    renderCUISectionDescription(DefectsUtil.defectOnEntityDescription(defect), SdkUtil.withPrefix('text-color-urgent'))
+                                    renderCUISectionDescriptionWithServiceDegradingHighlight(DefectsUtil.defectOnEntityDescription(defect), DefectsUtil.isServiceDegrading(defect))
                                 ))
                             }
                         </CUIRenderWhen>
                         <CUIRenderWhen condition={relatedDefects?.directDefects?.length > 0} >
                             {
                                 relatedDefects?.directDefects?.map((defect) => (
-                                    renderCUISectionDescription(DefectsUtil.defectOnEntityDescription(defect), SdkUtil.withPrefix('text-color-urgent'))
+                                    renderCUISectionDescriptionWithServiceDegradingHighlight(DefectsUtil.defectOnEntityDescription(defect), DefectsUtil.isServiceDegrading(defect))
                                 ))
                             }
                         </CUIRenderWhen>
                         <CUIRenderWhen condition={relatedDefects?.impactingDefects?.length > 0} >
                             {
                                 relatedDefects?.impactingDefects?.map((defect) => (
-                                    renderCUISectionDescription(`Cross-Service Root Cause - ${DefectsUtil.defectOnEntityDescription(defect)}`, SdkUtil.withPrefix('text-color-urgent'))
+                                    renderCUISectionDescriptionWithServiceDegradingHighlight(`Cross-Service Root Cause - ${DefectsUtil.defectOnEntityDescription(defect)}`, DefectsUtil.isServiceDegrading(defect))
                                 ))
                             }
                         </CUIRenderWhen>

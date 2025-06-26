@@ -54,7 +54,7 @@ export const RootCauseHeadline: FC<RootCauseHeadlineProps> = ({ headline }) => {
     const statusInfo = DefectsUtil.isDetected(headline.defect) ? 'active' : 'inactive';
     const isServiceImpacting = headline.defect.serviceCount > 0;
 
-    const tagsList = isServiceImpacting ? [`${StringsUtil.firstToUpperCase(statusInfo)}`, `Impacts ${headline.defect.serviceCount } Service(s)`] : [`${StringsUtil.firstToUpperCase(statusInfo)}` ];
+    const tagsList = isServiceImpacting ? [`${StringsUtil.firstToUpperCase(statusInfo)}`, `${headline.defect.serviceCount } Service(s) Degraded`] : [`${StringsUtil.firstToUpperCase(statusInfo)}` ];
     
     return (
         <div onClick={() => {

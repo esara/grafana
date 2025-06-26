@@ -108,10 +108,10 @@ export const useSingleServiceCardApi = (singleServiceData: ComboboxOption<string
         setIsLoading(true);        
         fetchData();
         
-        // Set up interval to refetch data every 20 seconds
+        // Set up interval to refetch data every 30 seconds
         const interval = setInterval(() => {
             fetchData();
-        }, 20000);
+        }, 30000);
 
         // Cleanup interval on component unmount
         return () => clearInterval(interval);

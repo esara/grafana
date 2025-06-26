@@ -88,7 +88,7 @@ export const useRootCauseHeadlinesApi = (userScope: ApiUserScope) => {
             }).finally(() => {
                 setIsLoading(false);
             });
-        const interval = setInterval(() => {fetchHeadlines(); fetchDefectCounts();}, 15000); // Update data every 15 seconds
+        const interval = setInterval(() => {fetchHeadlines(); fetchDefectCounts();}, 30000); // Update data every 30 seconds
 
         return () => clearInterval(interval); // Cleanup interval
     }, [fetchHeadlines, fetchDefectCounts]);

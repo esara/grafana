@@ -3,10 +3,9 @@ import { Combobox, ComboboxOption } from '@grafana/ui';
 import { StandardEditorProps } from '@grafana/data';
 import { GetEntityConnectionQueryData, QueryEntityConnection } from 'api/graphql/queries/queryEntityConnection';
 import { QueryResult } from 'api/apiUtil';
-import { ApiEntity, ApiEntityEdge, ApiQueryEntityConnectionArgs } from 'api/api.types';
 import { EntityUtil } from 'utils/entity/entity.util';
-import { ArraysUtil } from 'utils/arrays/arrays.util';
-import { TopologyUtil } from 'utils/topology/topology.util';
+import { ServiceUtil } from 'utils/service/service.util';
+import { ApiQueryEntityConnectionArgs, ApiEntityEdge } from 'api/api.types';
 
 
 export const ServiceSelectEditor: React.FC<StandardEditorProps<ComboboxOption<string>>> = ({ value, onChange }) => {
@@ -26,17 +25,6 @@ export const ServiceSelectEditor: React.FC<StandardEditorProps<ComboboxOption<st
 
         const serviceOptions: Array<ComboboxOption<string>> = [];
 
-        const getNamespaceNameDescriptions = (entity: ApiEntity) => {
-            const namespaceNames = ArraysUtil.unique(TopologyUtil.getNamespaceNames(entity));
-            return namespaceNames.map(ns => `ns:${ns}`).join(', ');
-        }
-
-        const getClusterName = (entity: ApiEntity) => {
-            const clusterName = TopologyUtil.getClusterName(entity);
-            return clusterName ? `cl:${clusterName}` : '';
-        }
-    
-
         return QueryEntityConnection(entityConnectionVariables).then((res: QueryResult<GetEntityConnectionQueryData>) => {
 
             res.data?.entityConnection?.edges?.forEach((edge: ApiEntityEdge) => {
@@ -44,7 +32,7 @@ export const ServiceSelectEditor: React.FC<StandardEditorProps<ComboboxOption<st
 
                 serviceOptions.push({
                     label: EntityUtil.simplifyEntityname(entity),
-                    description: `${getNamespaceNameDescriptions(entity)}   ${getClusterName(entity)}`,
+                    description: `${ServiceUtil.getNameSpaceAndClusterNameInfo(entity)}`,
                     value: entity.id,
                 });
             });
