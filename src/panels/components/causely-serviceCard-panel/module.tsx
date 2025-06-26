@@ -39,6 +39,7 @@ export const plugin = new PanelPlugin<ServiceCardsPanelOptions>(ServiceCardsPane
             id: 'singleServiceData',
             path: 'singleServiceData',
             name: 'Service',
+            description: 'Search to find your service, results maxed to 25',
             editor: ServiceSelectEditor,
             showIf: (options) => options.panelType === PanelType.Single,
         })

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Combobox, ComboboxOption, LoadingBar } from '@grafana/ui';
+import React, { useState } from 'react';
+import { Combobox, ComboboxOption } from '@grafana/ui';
 import { StandardEditorProps } from '@grafana/data';
 import { GetEntityConnectionQueryData, QueryEntityConnection } from 'api/graphql/queries/queryEntityConnection';
 import { QueryResult } from 'api/apiUtil';
-import { ApiEntityEdge, ApiQueryEntityConnectionArgs } from 'api/api.types';
-import { CUIRenderWhen } from 'sdk/cuiRenderWhen/coreRenderWhen.component';
+import { ApiEntity, ApiEntityEdge, ApiQueryEntityConnectionArgs } from 'api/api.types';
 import { EntityUtil } from 'utils/entity/entity.util';
+import { ArraysUtil } from 'utils/arrays/arrays.util';
+import { TopologyUtil } from 'utils/topology/topology.util';
 
 
 export const ServiceSelectEditor: React.FC<StandardEditorProps<ComboboxOption<string>>> = ({ value, onChange }) => {
@@ -13,27 +14,38 @@ export const ServiceSelectEditor: React.FC<StandardEditorProps<ComboboxOption<st
     const [selected, setSelected] = useState<ComboboxOption<string>>(value);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    useEffect(() => {
-        getOptions(null);
-    }, []);
-
     const getOptions = ((inputValue: string = null): Promise<Array<ComboboxOption<string>>> => {
+        setIsLoading(true);
         const entityConnectionVariables: ApiQueryEntityConnectionArgs = {
             entityFilter: {
                 entityTypes: ['Service'],
                 nameExpr: inputValue,
             },
-            first: 10// Adjust as needed
+            first: 25
         };
 
         const serviceOptions: Array<ComboboxOption<string>> = [];
 
+        const getNamespaceNameDescriptions = (entity: ApiEntity) => {
+            const namespaceNames = ArraysUtil.unique(TopologyUtil.getNamespaceNames(entity));
+            return namespaceNames.map(ns => `ns:${ns}`).join(', ');
+        }
+
+        const getClusterName = (entity: ApiEntity) => {
+            const clusterName = TopologyUtil.getClusterName(entity);
+            return clusterName ? `cl:${clusterName}` : '';
+        }
+    
+
         return QueryEntityConnection(entityConnectionVariables).then((res: QueryResult<GetEntityConnectionQueryData>) => {
 
             res.data?.entityConnection?.edges?.forEach((edge: ApiEntityEdge) => {
+                const entity = edge.node;
+
                 serviceOptions.push({
-                    label: EntityUtil.simplifyEntityname(edge.node),
-                    value: edge.node.id,
+                    label: EntityUtil.simplifyEntityname(entity),
+                    description: `${getNamespaceNameDescriptions(entity)}   ${getClusterName(entity)}`,
+                    value: entity.id,
                 });
             });
             return serviceOptions;
@@ -51,19 +63,12 @@ export const ServiceSelectEditor: React.FC<StandardEditorProps<ComboboxOption<st
     };
 
     return (
-        <>
-            <CUIRenderWhen condition={isLoading}>
-                <LoadingBar width={100} />
-            </CUIRenderWhen>
-            <CUIRenderWhen condition={!isLoading}>
-                <Combobox
-                    placeholder="Choose a service"
-                    options={getOptions}
-                    // @ts-ignore
-                    onChange={handleChange}
-                    value={selected}
-                />
-            </CUIRenderWhen>
-        </>
+        <Combobox
+            placeholder="Search for service"
+            options={getOptions}
+            onChange={handleChange}
+            value={selected}
+            loading={isLoading}
+        />
     );
 };
