@@ -3,11 +3,9 @@ import { Combobox, ComboboxOption } from '@grafana/ui';
 import { StandardEditorProps } from '@grafana/data';
 import { GetEntityConnectionQueryData, QueryEntityConnection } from 'api/graphql/queries/queryEntityConnection';
 import { QueryResult } from 'api/apiUtil';
-import { ApiEntity, ApiEntityEdge, ApiQueryEntityConnectionArgs } from 'api/api.types';
 import { EntityUtil } from 'utils/entity/entity.util';
-import { ArraysUtil } from 'utils/arrays/arrays.util';
-import { TopologyUtil } from 'utils/topology/topology.util';
 import { ServiceUtil } from 'utils/service/service.util';
+import { ApiQueryEntityConnectionArgs, ApiEntityEdge } from 'api/api.types';
 
 
 export const ServiceSelectEditor: React.FC<StandardEditorProps<ComboboxOption<string>>> = ({ value, onChange }) => {
