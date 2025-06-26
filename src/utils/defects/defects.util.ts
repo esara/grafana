@@ -16,7 +16,14 @@ export class DefectsUtil {
     }
     const rootCauseName = EntityTypeDefs.getInstance().getDefectDef(rootcause.entity.typeName, rootcause.name).displayName;
 
-    return `${rootCauseName} on ${EntityUtil.simplifyEntityname(rootcause.entity)}`;
+    if (DefectsUtil.isServiceDegrading(rootcause)) {
+      return `Service Degrading: ${rootCauseName} on ${EntityUtil.simplifyEntityname(rootcause.entity)}`;
+    }
+    return `Non-Service Degrading: ${rootCauseName} on ${EntityUtil.simplifyEntityname(rootcause.entity)}`;
+  }
+
+  public static isServiceDegrading(rootcause: ApiDefect): boolean {
+    return rootcause?.serviceCount > 0;
   }
 
   public static isDetected(defect: ApiDefect): boolean {

@@ -179,7 +179,7 @@ export const useServiceCardsApi = ({apiUserScope, pageSize}: ServiceCardsPanelOp
             intervalRef.current = setInterval(() => {
                 fetchData();
                 
-            }, 20000); // 20 seconds
+            }, 30000); // 30 seconds
         }
     }, [fetchData]);
 
