@@ -5,6 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
+	"sync"
+	"time"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/instancemgmt"
@@ -25,11 +28,14 @@ var (
 // App is an example app backend plugin which can respond to data queries.
 type App struct {
 	backend.CallResourceHandler
-	domain   string
-	clientId string
-	secret   string
-	username string
-	password string
+	domain      string
+	clientId    string
+	secret      string
+	username    string
+	password    string
+	token       string
+	tokenExpiry time.Time
+	tokenMutex  sync.RWMutex
 }
 
 type JSONDataStruct struct {
@@ -81,4 +87,58 @@ func (a *App) CheckHealth(_ context.Context, _ *backend.CheckHealthRequest) (*ba
 		Status:  backend.HealthStatusOk,
 		Message: "ok",
 	}, nil
+}
+
+// getValidToken returns a valid token, either from cache or by authenticating.
+func (app *App) getValidToken() (string, error) {
+	app.tokenMutex.RLock()
+	// Check if we have a valid cached token
+	if app.token != "" && time.Now().Before(app.tokenExpiry) {
+		token := app.token
+		app.tokenMutex.RUnlock()
+		return token, nil
+	}
+	app.tokenMutex.RUnlock()
+
+	// Need to authenticate - acquire write lock
+	app.tokenMutex.Lock()
+	defer app.tokenMutex.Unlock()
+
+	// Double-check after acquiring write lock (another goroutine might have refreshed)
+	if app.token != "" && time.Now().Before(app.tokenExpiry) {
+		return app.token, nil
+	}
+
+	// Create authentication payload and url using either clientId or username
+	var loginUrl string
+	var payload map[string]string
+	var err error
+
+	authUrl := fmt.Sprintf("https://auth.%s", app.domain)
+
+	if app.clientId != "" && app.secret != "" {
+		payload = map[string]string{"clientId": app.clientId, "secret": app.secret}
+		loginUrl, err = url.JoinPath(authUrl, "frontegg/identity/resources/auth/v2/api-token")
+	} else if app.username != "" && app.password != "" {
+		payload = map[string]string{"email": app.username, "password": app.password}
+		loginUrl, err = url.JoinPath(authUrl, "frontegg/identity/resources/auth/v1/user")
+	} else {
+		return "", fmt.Errorf("missing clientId and username credentials")
+	}
+
+	if err != nil {
+		return "", fmt.Errorf("failed to construct login URL: %w", err)
+	}
+
+	// Authenticate and get new token
+	token, err := authenticate(loginUrl, payload)
+	if err != nil {
+		return "", fmt.Errorf("authentication failed: %w", err)
+	}
+
+	// Cache the token with 24-hour expiry minus a small buffer for safety
+	app.token = token
+	app.tokenExpiry = time.Now().Add(43200 * time.Minute) // `12h to be safe
+
+	return token, nil
 }
