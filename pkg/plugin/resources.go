@@ -15,10 +15,10 @@ import (
 const defaultTimeout = 10 * time.Second
 
 type UserResponse struct {
-	Access_token  string `json:"access_token"` // For client ID authentication
-	Refresh_token string `json:"refreshToken"`
-	AccessToken   string `json:"accessToken"` // For username authentication
-	RefreshToken  string `json:"refreshToken"`
+	Access_token  string `json:"access_token"`  // For client ID authentication
+	Refresh_token string `json:"refresh_token"` // For client ID authentication
+	AccessToken   string `json:"accessToken"`   // For username authentication
+	RefreshToken  string `json:"refreshToken"`  // For username authentication
 	ExpiresIn     int    `json:"expiresIn"`
 }
 
@@ -51,7 +51,11 @@ func authenticate(loginUrl string, payload map[string]string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer res.Body.Close()
+	defer func() {
+		if closeErr := res.Body.Close(); closeErr != nil {
+			log.DefaultLogger.Error("Error closing response body", "error", closeErr)
+		}
+	}()
 
 	if res.StatusCode != http.StatusOK {
 		responseData, _ := io.ReadAll(res.Body)
@@ -106,7 +110,11 @@ func getGraphQL(token string, body io.Reader, domain string) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("request failed: %w", err)
 	}
-	defer res.Body.Close()
+	defer func() {
+		if closeErr := res.Body.Close(); closeErr != nil {
+			log.DefaultLogger.Error("Error closing response body", "error", closeErr)
+		}
+	}()
 
 	if res.StatusCode != http.StatusOK {
 		responseData, _ := io.ReadAll(res.Body)
@@ -130,32 +138,9 @@ func (app *App) handleQuery(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var err error
-	var loginUrl string
-	var payload map[string]string
-	authUrl := fmt.Sprintf("https://auth.%s", app.domain)
-	// Create authentication payload and url using either clientId or username
-	if app.clientId != "" && app.secret != "" {
-		payload = map[string]string{"clientId": app.clientId, "secret": app.secret}
-		loginUrl, err = url.JoinPath(authUrl, "frontegg/identity/resources/auth/v2/api-token")
-	} else if app.username != "" && app.password != "" {
-		payload = map[string]string{"email": app.username, "password": app.password}
-		loginUrl, err = url.JoinPath(authUrl, "frontegg/identity/resources/auth/v1/user")
-	} else {
-		log.DefaultLogger.Error("Missing clientId aod username credentials")
-		http.Error(w, "missing clientId aod username credentials", http.StatusInternalServerError)
-		return
-	}
-	// Check for errors during loginUrl creation
+	token, err := app.getValidToken()
 	if err != nil {
-		log.DefaultLogger.Error("Failed to construct login URL", "error", err)
-		http.Error(w, "failed to construct login URL", http.StatusInternalServerError)
-		return
-	}
-
-	token, err := authenticate(loginUrl, payload)
-	if err != nil {
-		log.DefaultLogger.Error("Authentication failed", "error", err)
+		log.DefaultLogger.Error("Failed to get valid token", "error", err)
 		http.Error(w, "authentication failed, see Grafana server log for details", http.StatusInternalServerError)
 		return
 	}
