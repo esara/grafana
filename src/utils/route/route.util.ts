@@ -36,7 +36,10 @@ export enum AppRoute {
 }
 
 export class RouteUtil {
-  
+
+  public static getUrgentRootCausesRoutePath(): string {
+    return `${CauselyPortalBaseUrl()}${AppRoute.rootCauses}`;
+  }
 
   public static getSingleRootCauseRoutePath(rootCauseId: string): string {
     return `${CauselyPortalBaseUrl()}${AppRoute.rootCauses}/${rootCauseId}`;

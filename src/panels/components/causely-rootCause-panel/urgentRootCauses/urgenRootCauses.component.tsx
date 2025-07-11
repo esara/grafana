@@ -9,16 +9,19 @@ import { useRootCausePanelApi } from "./useUrgentRootCausesApi";
 
 import './urgentRootCauses.scss'
 import { SdkUtil } from "sdk/sdk.util";
+import { RouteUtil } from "utils/route/route.util";
+import { useOpenNewTab } from "hooks/useOpenNewTab.hook";
 
 export const UrgentRootCauseComponent = ({ userScope }: { userScope: ApiUserScope }) => {
     const { isLoading, data, error } = useRootCausePanelApi(userScope)
 
     const totalCount = data?.totalCount;
+    const openNewTab = useOpenNewTab();
 
     const rootCauseEdges: ApiDefectEdge[] = data?.edges.length > 4 ? (data?.edges.slice(0, 3) as ApiDefectEdge[]) : (data?.edges as ApiDefectEdge[]);
 
-    const isEmptyState = !data ||data?.edges.length === 0;
-    
+    const isEmptyState = !data || data?.edges.length === 0;
+
     return (
         <CuiLoadingErrorWrapper isLoading={isLoading} error={error}>
             <div className={SdkUtil.withPrefix('root-cause-content')}>
@@ -26,7 +29,7 @@ export const UrgentRootCauseComponent = ({ userScope }: { userScope: ApiUserScop
                 <CUIRenderWhen condition={isEmptyState}>
                     <div className={SdkUtil.withPrefix('root-cause-content-empty-state')}>
                         <CUIText size={'1.5'}>
-                        There are no urgent root causes. Causely actively monitoring and if anything comes up, we will update here.
+                            There are no urgent root causes. Causely actively monitoring and if anything comes up, we will update here.
                         </CUIText>
                         <Spinner />
                     </div>
@@ -43,15 +46,18 @@ export const UrgentRootCauseComponent = ({ userScope }: { userScope: ApiUserScop
                     })}
 
                     <CUIRenderWhen condition={totalCount > 4}>
-                        <div key={'AdditionalRC'} className={SdkUtil.withPrefix('root-cause-content-card')}>
-                            <CUIText size={'1.5'}>
-                                {totalCount - 3} more urgent root causes are affecting you system.  Go to causely to see more.
-                            </CUIText>
-                        </div>
-                    </CUIRenderWhen>
+                        <div key={'AdditionalRC'}
+                            className={SdkUtil.withPrefix('root-cause-content-card')}
+                            onClick={() => openNewTab(RouteUtil.getUrgentRootCausesRoutePath())}
+                        >
+                        <CUIText size={'1.5'}>
+                            {totalCount - 3} more urgent root causes are affecting your system. Go to Causely to see more.
+                        </CUIText>
+                    </div>
                 </CUIRenderWhen>
+            </CUIRenderWhen>
 
-            </div>
-        </CuiLoadingErrorWrapper>
+        </div>
+        </CuiLoadingErrorWrapper >
     )
 };
