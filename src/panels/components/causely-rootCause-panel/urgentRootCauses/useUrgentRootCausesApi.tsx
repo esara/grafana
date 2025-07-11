@@ -1,17 +1,20 @@
 import { useState, useEffect, useCallback } from 'react';
 import { QueryDefectConnections } from 'api/graphql/queries/queryDefectConnections';
-import { ApiDefectConnection, ApiDefectEdge, ApiDefectSeverity, ApiQueryDefectConnectionArgs, ApiUserScope } from 'api/api.types';
+import { ApiDefectConnection, ApiDefectEdge, ApiDefectSeverity, ApiDefectState, ApiQueryDefectConnectionArgs, ApiUserScope } from 'api/api.types';
+import { TimeUtil, TimeOption } from 'utils/time/time.util';
 
 const defaultDefectConnectionVariables: ApiQueryDefectConnectionArgs = {
     first: 10, // Adjust this number based on your needs
     defectFilter: {
-        includeInactiveDefect: false,
         severities: [ApiDefectSeverity.Critical, ApiDefectSeverity.High, ApiDefectSeverity.Medium, ApiDefectSeverity.Low],
         scopesFilter: {
             scopes: []
         },
+        startTime: TimeUtil.getStartTime(TimeOption.SEVEN_DAY),
+        state: ApiDefectState.Active,
         includeNonSvcImpact: true
     },
+    groupRecurring: true
 };
 
 export const useRootCausePanelApi = (userScope: ApiUserScope) => {
@@ -33,13 +36,11 @@ export const useRootCausePanelApi = (userScope: ApiUserScope) => {
 
         QueryDefectConnections(variables)
             .then(response => {
-
-                //This is temporary fix until https://github.com/Causely/causely/pull/4828 is merged which fixes includeNonSvcImpact Working
                 const serviceDegradingEdges = response.data.defectConnection.edges.filter((edge: ApiDefectEdge) => edge.node.serviceCount > 0);
                 setData({
                     ...response.data.defectConnection,
                     edges: serviceDegradingEdges,
-                    totalCount: response.data.defectConnection.totalCount - serviceDegradingEdges.length
+                    totalCount: response.data.defectConnection.totalCount
                 });
             })
             .catch(error => {
