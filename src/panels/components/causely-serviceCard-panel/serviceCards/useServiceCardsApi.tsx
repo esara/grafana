@@ -25,7 +25,7 @@ export type ServiceCardEntity = ApiEntity & {
     sloConnections?: ApiSloNodeWithMetaData[];
 };
 
-export const useServiceCardsApi = ({apiUserScope, pageSize}: ServiceCardsPanelOptions) => {
+export const useServiceCardsApi = ({ apiUserScope, pageSize }: ServiceCardsPanelOptions) => {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState<Record<string, ServiceCardEntity>>(null);
     const [error, setError] = useState<string | null>(null);
@@ -84,7 +84,7 @@ export const useServiceCardsApi = ({apiUserScope, pageSize}: ServiceCardsPanelOp
         setError(null);
         updateApiAutoRefresh(cursorDirection);
         fetchServiceCounts();
-        
+
         let idToEntityMap: Record<string, ServiceCardEntity> = {};
         QueryEntityConnection({
             ...entityConnectionVariables,
@@ -159,7 +159,9 @@ export const useServiceCardsApi = ({apiUserScope, pageSize}: ServiceCardsPanelOp
 
             setData(idToEntityMap);
         }).catch((error) => {
-            setError(error instanceof Error ? error.message : 'An unknown error occurred');
+            const errorMessage = `${error.data.error}: ${error.data.message}`;
+            console.error(`Query Failure "useServiceCardsApi": ${JSON.stringify(error)}`)
+            setError(errorMessage);
         }).finally(() => {
             setIsLoading(false);
         });
@@ -174,27 +176,29 @@ export const useServiceCardsApi = ({apiUserScope, pageSize}: ServiceCardsPanelOp
         if (intervalRef.current) {
             clearInterval(intervalRef.current);
         }
-        
+
         if (!isAutoRefreshPausedRef.current) {
             intervalRef.current = setInterval(() => {
                 fetchData();
-                
+
             }, 30000); // 30 seconds
         }
     }, [fetchData]);
 
-    const fetchEntityRelatedDefects = (entities: ApiEntity[]): Promise<ApiEntityRelatedDefects[]> => {
+    const fetchEntityRelatedDefects = useCallback((entities: ApiEntity[]): Promise<ApiEntityRelatedDefects[]> => {
         const entityIds = entities.map((entity: ApiEntity) => entity.id);
 
         return QueryEntityRelatedDefects({
             entityIds: entityIds,
-            // groupRecurring: true,
         }).then((response) => {
             return response.data?.entityRelatedDefects || [];
+        }).catch((error) => {
+            console.error(`Query Failure "useServiceCardsApi.fetchEntityRelatedDefects": ${JSON.stringify(error)}`)
+            return []; //Fail silently 
         });
-    };
+    }, []);
 
-    const fetchSloConnection = (entities: ApiEntity[]): Promise<ApiSloNode[]> => {
+    const fetchSloConnection = useCallback((entities: ApiEntity[]): Promise<ApiSloNode[]> => {
         const sloMetricQuery = SloUtil.toSloAttributeMetricQuery(EntityTypeDefs.getInstance(), true);
         const entityIds = entities.map((entity: ApiEntity) => entity.id);
 
@@ -207,14 +211,17 @@ export const useServiceCardsApi = ({apiUserScope, pageSize}: ServiceCardsPanelOp
             }
         }).then(response => {
             return response.data?.sloConnection.edges.map((edge: ApiSloEdge) => edge.node) || [];
+        }).catch((error) => {
+            console.error(`Query Failure "useServiceCardsApi.fetchSloConnection": ${JSON.stringify(error)}`)
+            return []; //Fail silently 
         });
-    }
+    }, []);
 
     useEffect(() => {
         setIsLoading(true);
         fetchData();
         startAutoRefresh();
-        
+
         return () => {
             if (intervalRef.current) {
                 clearInterval(intervalRef.current);

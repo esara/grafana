@@ -72,4 +72,9 @@ export class DefectsUtil {
     return `Identified ${IntlUtil.toRelativeScaledTime(TimeUtil.fromISO(defect.fromTime).toJSDate())}`;
   }
 
+  public static getActiveSymptomsCount(defect: ApiDefect): number {
+    return [...(defect?.symptoms ?? []), ...(defect?.events ?? [])]
+      .filter((manifestation) => manifestation.active).length;
+  }
+
 }

@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { QueryDefectConnections } from 'api/graphql/queries/queryDefectConnections';
-import { ApiDefectConnection, ApiDefectEdge, ApiDefectSeverity, ApiDefectState, ApiQueryDefectConnectionArgs, ApiUserScope } from 'api/api.types';
+import { ApiDefectConnection, ApiDefectSeverity, ApiDefectState, ApiQueryDefectConnectionArgs, ApiUserScope } from 'api/api.types';
 import { TimeUtil, TimeOption } from 'utils/time/time.util';
 
 const defaultDefectConnectionVariables: ApiQueryDefectConnectionArgs = {
-    first: 10, // Adjust this number based on your needs
+    first: 4, //Will only every show at most 4 RCs in the panel
     defectFilter: {
         severities: [ApiDefectSeverity.Critical, ApiDefectSeverity.High, ApiDefectSeverity.Medium, ApiDefectSeverity.Low],
         scopesFilter: {
@@ -12,7 +12,7 @@ const defaultDefectConnectionVariables: ApiQueryDefectConnectionArgs = {
         },
         startTime: TimeUtil.getStartTime(TimeOption.SEVEN_DAY),
         state: ApiDefectState.Active,
-        includeNonSvcImpact: true
+        includeNonSvcImpact: false // Only looking at service degrading RC's
     },
     groupRecurring: true
 };
@@ -31,20 +31,18 @@ export const useRootCausePanelApi = (userScope: ApiUserScope) => {
                     scopes: userScope?.scopes || []
                 }
             }
-
         };
 
         QueryDefectConnections(variables)
             .then(response => {
-                const serviceDegradingEdges = response.data.defectConnection.edges.filter((edge: ApiDefectEdge) => edge.node.serviceCount > 0);
                 setData({
                     ...response.data.defectConnection,
-                    edges: serviceDegradingEdges,
-                    totalCount: response.data.defectConnection.totalCount
                 });
             })
             .catch(error => {
-                setError(error instanceof Error ? error.message : 'An unknown error occurred');
+                const errorMessage = `${error.data.error}: ${error.data.message}`;
+                console.error(`Query Failure "useRootCausePanelApi.QueryDefectConnections": ${JSON.stringify(error)}`)
+                setError(errorMessage);
             })
             .finally(() => {
                 setIsLoading(false);

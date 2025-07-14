@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import { IntlUtil } from 'utils/intl/intl.util';
 
 import { StringsUtil } from 'utils/strings/strings.util';
 
@@ -184,5 +185,13 @@ export class TimeUtil {
     }
 
     return closestTimeframe as TimeOption;
+  }
+
+  public static formatDate(dateString: string): string {
+    const date = DateTime.fromISO(dateString);
+    if (!date.isValid) {
+      return '';
+    }
+    return IntlUtil.toDateAndTime(date.toJSDate());
   }
 }
