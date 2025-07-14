@@ -144,7 +144,6 @@ export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEn
                                 {renderCUISectionDescription(<SloConnectionComponent slo={slo} />)}
                             </div>
                         ))
-
                     }
                 </CUIRenderWhen>
             </CUISection>

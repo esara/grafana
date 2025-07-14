@@ -24,20 +24,20 @@ export const useSingleServiceCardApi = (singleServiceData: ComboboxOption<string
         QueryEntity({
             entityId: singleServiceData.value,
         }).then((response) => {
-                const entity: ApiEntity = response.data?.entity;
-                
-                if (ObjectsUtil.isUnset(entity)) {
-                    setData(null);
-                    return null;
-                }
-                
-                return Promise.all([
-                    fetchEntityRelatedDefects([entity]),
-                    fetchSloConnection([entity])
-                ]).then(([relatedDefects, sloConnection]) => {
-                    return { entity, relatedDefects, sloConnection };
-                });
-            })
+            const entity: ApiEntity = response.data?.entity;
+
+            if (ObjectsUtil.isUnset(entity)) {
+                setData(null);
+                return null;
+            }
+
+            return Promise.all([
+                fetchEntityRelatedDefects([entity]),
+                fetchSloConnection([entity])
+            ]).then(([relatedDefects, sloConnection]) => {
+                return { entity, relatedDefects, sloConnection };
+            });
+        })
             .then((result) => {
                 if (!result || !result.entity) {
                     setData(null);
@@ -67,24 +67,27 @@ export const useSingleServiceCardApi = (singleServiceData: ComboboxOption<string
                 setData(serviceCardEntity);
             })
             .catch((error) => {
-                setError(error instanceof Error ? error.message : 'An unknown error occurred');
+                const errorMessage = `${error.data.error}: ${error.data.message}`;
+                console.error(`Query Failure "useSingleServiceCardApi": ${JSON.stringify(error)}`)
+                setError(errorMessage);
             })
             .finally(() => {
                 setIsLoading(false);
             });
     }, [singleServiceData]);
 
-    const fetchEntityRelatedDefects = (entities: ApiEntity[]): Promise<ApiEntityRelatedDefects[]> => {
+    const fetchEntityRelatedDefects = useCallback((entities: ApiEntity[]): Promise<ApiEntityRelatedDefects[]> => {
         const entityIds = entities.map((entity: ApiEntity) => entity.id);
 
-        return QueryEntityRelatedDefects({
-            entityIds: entityIds,
-        }).then((response) => {
-            return response.data?.entityRelatedDefects || [];
-        });
-    };
+        return QueryEntityRelatedDefects({ entityIds: entityIds, })
+            .then((response) => { return response.data?.entityRelatedDefects || [];})
+            .catch(error => {
+                console.error(`Error fetching entityRelatedDefects: ${error.message}`)
+                return []; //Fail Silently
+            });
+    }, []);
 
-    const fetchSloConnection = (entities: ApiEntity[]): Promise<ApiSloNode[]> => {
+    const fetchSloConnection = useCallback((entities: ApiEntity[]): Promise<ApiSloNode[]> => {
         const sloMetricQuery = SloUtil.toSloAttributeMetricQuery(EntityTypeDefs.getInstance(), true);
         const entityIds = entities.map((entity: ApiEntity) => entity.id);
 
@@ -97,17 +100,20 @@ export const useSingleServiceCardApi = (singleServiceData: ComboboxOption<string
             }
         }).then(response => {
             return response.data?.sloConnection.edges.map((edge: ApiSloEdge) => edge.node) || [];
+        }).catch( error => {
+            console.error(`Error fetching sloConnection data: ${error.message}`)
+            return []; //Fail Silently
         });
-    };
+    },[]);
 
     useEffect(() => {
         if (ObjectsUtil.isUnset(singleServiceData)) {
             return undefined;
         }
 
-        setIsLoading(true);        
+        setIsLoading(true);
         fetchData();
-        
+
         // Set up interval to refetch data every 30 seconds
         const interval = setInterval(() => {
             fetchData();

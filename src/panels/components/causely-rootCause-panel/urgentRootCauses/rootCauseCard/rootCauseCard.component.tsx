@@ -16,6 +16,7 @@ import './rootCauseCard.scss';
 import { EntityTypeDefs } from "utils/entityTypeDefs/EntityTypeDefs.singleton";
 import { ArraysUtil } from "utils/arrays/arrays.util";
 import { useOpenNewTab } from 'hooks/useOpenNewTab.hook';
+import { TimeUtil } from "utils/time/time.util";
 
 type RootCauseCardProps = {
     rootCause: ApiDefect
@@ -65,7 +66,7 @@ export const RootCauseCard = ({ rootCause }: RootCauseCardProps) => {
     const openNewTab = useOpenNewTab();
     const evidence: RootCauseEvidence = useRootCauseEvidence(rootCause.id);
 
-    const activeSymptomsCount = rootCause.symptoms.filter((symptom) => symptom.active).length;
+    const activeSymptomsCount = DefectsUtil.getActiveSymptomsCount(rootCause);
     const symptomDescriptions = RootCauseCardUtil.getSymptomDescription(rootCause);
 
     return (
@@ -103,7 +104,7 @@ export const RootCauseCard = ({ rootCause }: RootCauseCardProps) => {
                 <CUIHeading>Time</CUIHeading>
                 <CUISectionDescription>
                     <CUIText variant="secondary">
-                        {DefectsUtil.toTimeInfo(rootCause)}
+                        {TimeUtil.formatDate(rootCause.fromTime)}
                     </CUIText>
                 </CUISectionDescription>
             </CUISection>

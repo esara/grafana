@@ -1,4 +1,4 @@
-import i18next, {  } from 'i18next';
+import i18next, { } from 'i18next';
 import { Duration } from 'luxon';
 import { NumberUtil } from 'utils/number/number.util';
 import { StringsUtil } from 'utils/strings/strings.util';
@@ -9,6 +9,18 @@ import { StringsUtil } from 'utils/strings/strings.util';
  * language preference.
  */
 export class IntlUtil {
+
+  private static readonly dateOption: Intl.DateTimeFormatOptions = {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  };
+
+  private static readonly timeOption: Intl.DateTimeFormatOptions = {
+    hour: 'numeric',
+    minute: 'numeric',
+  };
 
   /**
    * Get the current language.
@@ -135,5 +147,23 @@ export class IntlUtil {
       maximumFractionDigits: maximumFractionDigits,
       minimumFractionDigits: 0,
     }).format(parseFloat(value as string));
+  }
+
+  /**
+   * Convert given date or current date into a locale based formatted date and time string.
+   * Without timeZone the format is `Sat, Dec 19, 2020, 10:23 PM`
+   * With timeZone the format is `Sun, Dec 20, 2020, 2:23 PM Australian Eastern Daylight Time`
+   */
+  public static toDateAndTime(date?: Date, timeZone?: string): string {
+    let options = {
+      ...IntlUtil.dateOption,
+      ...IntlUtil.timeOption,
+    };
+
+    if (StringsUtil.isNotBlank(timeZone)) {
+      options = { ...options, timeZone: timeZone, timeZoneName: 'long' };
+    }
+    const language = IntlUtil.getLanguage();
+    return Intl.DateTimeFormat(language, options).format(date ?? Date.now());
   }
 }
