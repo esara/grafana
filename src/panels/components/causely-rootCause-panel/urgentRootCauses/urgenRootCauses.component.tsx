@@ -30,6 +30,7 @@ export const UrgentRootCauseComponent = ({ userScope }: { userScope: ApiUserScop
                     <div className={SdkUtil.withPrefix('root-cause-content-empty-state')}>
                         <CUIText size={'1.5'}>
                             There are no urgent root causes. Causely actively monitoring and if anything comes up, we will update here.
+                            There are no urgent root causes. Causely actively monitoring and if anything comes up, we will update here.
                         </CUIText>
                         <Spinner />
                     </div>

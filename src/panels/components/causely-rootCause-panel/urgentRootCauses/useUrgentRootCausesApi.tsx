@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { QueryDefectConnections } from 'api/graphql/queries/queryDefectConnections';
 import { ApiDefectConnection, ApiDefectSeverity, ApiDefectState, ApiQueryDefectConnectionArgs, ApiUserScope } from 'api/api.types';
-import { TimeUtil, TimeOption } from 'utils/time/time.util';
 
 const defaultDefectConnectionVariables: ApiQueryDefectConnectionArgs = {
     first: 4, //Will only every show at most 4 RCs in the panel
@@ -10,7 +9,6 @@ const defaultDefectConnectionVariables: ApiQueryDefectConnectionArgs = {
         scopesFilter: {
             scopes: []
         },
-        startTime: TimeUtil.getStartTime(TimeOption.SEVEN_DAY),
         state: ApiDefectState.Active,
         includeNonSvcImpact: false // Only looking at service degrading RC's
     },
