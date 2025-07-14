@@ -1,4 +1,4 @@
-import i18next, {  } from 'i18next';
+import i18next, { } from 'i18next';
 import { Duration } from 'luxon';
 import { NumberUtil } from 'utils/number/number.util';
 import { StringsUtil } from 'utils/strings/strings.util';
@@ -149,12 +149,12 @@ export class IntlUtil {
     }).format(parseFloat(value as string));
   }
 
-   /**
+  /**
    * Convert given date or current date into a locale based formatted date and time string.
    * Without timeZone the format is `Sat, Dec 19, 2020, 10:23 PM`
    * With timeZone the format is `Sun, Dec 20, 2020, 2:23 PM Australian Eastern Daylight Time`
    */
-   public static toDateAndTime(date?: Date, timeZone?: string): string {
+  public static toDateAndTime(date?: Date, timeZone?: string): string {
     let options = {
       ...IntlUtil.dateOption,
       ...IntlUtil.timeOption,
