@@ -7,7 +7,7 @@
     "test": "jest --watch --onlyChanged",
     "test:ci": "jest --passWithNoTests --maxWorkers 4",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint --cache --ignore-path ./.gitignore --ext .js,.jsx,.ts,.tsx .",
+    "lint": "eslint --cache .",
     "lint:fix": "npm run lint -- --fix && prettier --write --list-different .",
     "e2e": "playwright test",
     "server": "docker compose up --build",
@@ -17,7 +17,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@grafana/eslint-config": "^8.2.0",
-    "@grafana/plugin-e2e": "^2.1.13",
+    "@grafana/plugin-e2e": "^2.2.0",
     "@grafana/tsconfig": "^2.0.0",
     "@playwright/test": "^1.55.1",
     "@stylistic/eslint-plugin-ts": "^3.1.0",
@@ -29,11 +29,12 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^24.6.2",
     "@types/react-router-dom": "^5.2.0",
+    "@types/testing-library__jest-dom": "5.14.8",
     "@typescript-eslint/eslint-plugin": "^8.45.0",
     "@typescript-eslint/parser": "^8.32.1",
     "copy-webpack-plugin": "^13.0.1",
     "css-loader": "^7.1.2",
-    "eslint": "^8.57.1",
+    "eslint": "^9.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jsdoc": "^60.8.2",
     "eslint-plugin-react": "^7.37.5",
@@ -67,17 +68,17 @@
   "dependencies": {
     "@emotion/css": "11.13.5",
     "@grafana/data": "^12.2.0",
+    "@grafana/i18n": "^12.2.0",
     "@grafana/runtime": "^12.2.0",
     "@grafana/schema": "^12.2.0",
     "@grafana/ui": "^12.2.0",
-    "node": "^24.9.0",
     "clsx": "2.1.1",
+    "luxon": "3.7.2",
+    "node": "^24.9.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-router-dom": "^7.9.3",
-    "rxjs": "7.8.2",
-    "luxon": "3.7.2",
-    "@grafana/i18n": "^12.2.0"
+    "rxjs": "7.8.2"
   },
   "packageManager": "npm@10.9.2"
 }

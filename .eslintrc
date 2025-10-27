@@ -1,7 +1,0 @@
-{
-  "extends": "./.config/.eslintrc",
-  "rules": {
-    "eol-last": "off",
-    "react-hooks/exhaustive-deps": "off",
-  }
-}
