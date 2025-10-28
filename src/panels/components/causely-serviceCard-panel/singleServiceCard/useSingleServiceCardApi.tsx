@@ -22,7 +22,7 @@ export const useSingleServiceCardApi = (singleServiceData: ComboboxOption<string
         const entityIds = entities.map((entity: ApiEntity) => entity.id);
 
         return QueryEntityRelatedDefects({ entityIds: entityIds, })
-            .then((response) => { return response.data?.entityRelatedDefects || [];})
+            .then((response) => { return response.data?.entityRelatedDefects || []; })
             .catch(error => {
                 console.error(`Error fetching entityRelatedDefects: ${error.message}`)
                 return []; //Fail Silently
@@ -42,14 +42,15 @@ export const useSingleServiceCardApi = (singleServiceData: ComboboxOption<string
             }
         }).then(response => {
             return response.data?.sloConnection.edges.map((edge: ApiSloEdge) => edge.node) || [];
-        }).catch( error => {
+        }).catch(error => {
             console.error(`Error fetching sloConnection data: ${error.message}`)
             return []; //Fail Silently
         });
-    },[]);
-    
+    }, []);
+
     const fetchData = useCallback((): void => {
         setError(null);
+        setIsLoading(true);
 
         QueryEntity({
             entityId: singleServiceData.value,
@@ -111,7 +112,6 @@ export const useSingleServiceCardApi = (singleServiceData: ComboboxOption<string
             return undefined;
         }
 
-        setIsLoading(true);
         fetchData();
 
         // Set up interval to refetch data every 30 seconds

@@ -99,22 +99,22 @@ export const useServiceCardsApi = ({ apiUserScope, pageSize }: ServiceCardsPanel
         });
     }, []);
 
-    const updateApiAutoRefresh = useCallback((cursorDirection?: CuiPaginationDirection): void => {
-        if (cursorDirection) {
-            isAutoRefreshPausedRef.current = true;
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-                intervalRef.current = null;
-            }
-        } else if (ObjectsUtil.isUnset(cursorDirection)) {
-            isAutoRefreshPausedRef.current = false;
-            startAutoRefresh();
+    const clearAutoRefresh = useCallback(() => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
         }
     }, []);
 
     const fetchData = useCallback((cursorDirection?: CuiPaginationDirection): void => {
         setError(null);
-        updateApiAutoRefresh(cursorDirection);
+
+        // Pause auto-refresh during pagination
+        if (cursorDirection) {
+            isAutoRefreshPausedRef.current = true;
+            clearAutoRefresh();
+        }
+
         fetchServiceCounts();
 
         let idToEntityMap: Record<string, ServiceCardEntity> = {};
@@ -196,8 +196,13 @@ export const useServiceCardsApi = ({ apiUserScope, pageSize }: ServiceCardsPanel
             setError(errorMessage);
         }).finally(() => {
             setIsLoading(false);
+
+            // Resume auto-refresh if not paused
+            if (ObjectsUtil.isUnset(cursorDirection)) {
+                isAutoRefreshPausedRef.current = false;
+            }
         });
-    }, [fetchServiceCounts, apiUserScope, pageInfo?.endCursor, pageInfo?.startCursor, pageSize]);
+    }, [fetchServiceCounts, apiUserScope, pageInfo?.endCursor, pageInfo?.startCursor, pageSize, clearAutoRefresh]);
 
     /**
      * Auto Refresh should always be on, unless the user is page scrolling.
@@ -205,19 +210,17 @@ export const useServiceCardsApi = ({ apiUserScope, pageSize }: ServiceCardsPanel
      * Click First Page in pagination controls will reset the auto refresh
      */
     const startAutoRefresh = useCallback(() => {
-        if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-        }
+        clearAutoRefresh();
 
         if (!isAutoRefreshPausedRef.current) {
             intervalRef.current = setInterval(() => {
                 fetchData();
-
             }, 30000); // 30 seconds
         }
-    }, [fetchData]);
+    }, [fetchData, clearAutoRefresh]);
 
     useEffect(() => {
+        setIsLoading(true);
         fetchData();
         startAutoRefresh();
 
