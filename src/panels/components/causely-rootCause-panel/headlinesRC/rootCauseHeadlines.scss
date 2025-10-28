@@ -1,4 +1,4 @@
-@import 'styles/root-vars';
+@use 'styles/root-vars' as *;
 
 #{$prefix} {
   &--rootCause__headlines {

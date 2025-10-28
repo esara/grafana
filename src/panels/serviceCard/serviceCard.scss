@@ -1,4 +1,4 @@
-@import 'styles/root-vars.scss';
+@use 'styles/root-vars' as *;
 
 #{$prefix} {
   &--service-card {
