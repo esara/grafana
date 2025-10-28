@@ -41,6 +41,7 @@ export default defineConfig([
     rules: {
       'eol-last': 'off',
       'react-hooks/exhaustive-deps': 'off',
+      'react/no-direct-set-state-in-effect': 'off',
     },
   },
 ]);

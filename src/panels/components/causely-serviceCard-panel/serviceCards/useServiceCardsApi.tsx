@@ -67,6 +67,38 @@ export const useServiceCardsApi = ({ apiUserScope, pageSize }: ServiceCardsPanel
         });
     }, [apiUserScope]);
 
+    const fetchEntityRelatedDefects = useCallback((entities: ApiEntity[]): Promise<ApiEntityRelatedDefects[]> => {
+        const entityIds = entities.map((entity: ApiEntity) => entity.id);
+
+        return QueryEntityRelatedDefects({
+            entityIds: entityIds,
+        }).then((response) => {
+            return response.data?.entityRelatedDefects || [];
+        }).catch((error) => {
+            console.error(`Query Failure "useServiceCardsApi.fetchEntityRelatedDefects": ${JSON.stringify(error)}`)
+            return []; //Fail silently 
+        });
+    }, []);
+
+    const fetchSloConnection = useCallback((entities: ApiEntity[]): Promise<ApiSloNode[]> => {
+        const sloMetricQuery = SloUtil.toSloAttributeMetricQuery(EntityTypeDefs.getInstance(), true);
+        const entityIds = entities.map((entity: ApiEntity) => entity.id);
+
+        return QuerySloConnection({
+            filter: {
+                metricQuery: sloMetricQuery,
+                relatedByFilter: {
+                    relatedIds: entityIds,
+                }
+            }
+        }).then(response => {
+            return response.data?.sloConnection.edges.map((edge: ApiSloEdge) => edge.node) || [];
+        }).catch((error) => {
+            console.error(`Query Failure "useServiceCardsApi.fetchSloConnection": ${JSON.stringify(error)}`)
+            return []; //Fail silently 
+        });
+    }, []);
+
     const updateApiAutoRefresh = useCallback((cursorDirection?: CuiPaginationDirection): void => {
         if (cursorDirection) {
             isAutoRefreshPausedRef.current = true;
@@ -185,40 +217,7 @@ export const useServiceCardsApi = ({ apiUserScope, pageSize }: ServiceCardsPanel
         }
     }, [fetchData]);
 
-    const fetchEntityRelatedDefects = useCallback((entities: ApiEntity[]): Promise<ApiEntityRelatedDefects[]> => {
-        const entityIds = entities.map((entity: ApiEntity) => entity.id);
-
-        return QueryEntityRelatedDefects({
-            entityIds: entityIds,
-        }).then((response) => {
-            return response.data?.entityRelatedDefects || [];
-        }).catch((error) => {
-            console.error(`Query Failure "useServiceCardsApi.fetchEntityRelatedDefects": ${JSON.stringify(error)}`)
-            return []; //Fail silently 
-        });
-    }, []);
-
-    const fetchSloConnection = useCallback((entities: ApiEntity[]): Promise<ApiSloNode[]> => {
-        const sloMetricQuery = SloUtil.toSloAttributeMetricQuery(EntityTypeDefs.getInstance(), true);
-        const entityIds = entities.map((entity: ApiEntity) => entity.id);
-
-        return QuerySloConnection({
-            filter: {
-                metricQuery: sloMetricQuery,
-                relatedByFilter: {
-                    relatedIds: entityIds,
-                }
-            }
-        }).then(response => {
-            return response.data?.sloConnection.edges.map((edge: ApiSloEdge) => edge.node) || [];
-        }).catch((error) => {
-            console.error(`Query Failure "useServiceCardsApi.fetchSloConnection": ${JSON.stringify(error)}`)
-            return []; //Fail silently 
-        });
-    }, []);
-
     useEffect(() => {
-        setIsLoading(true);
         fetchData();
         startAutoRefresh();
 

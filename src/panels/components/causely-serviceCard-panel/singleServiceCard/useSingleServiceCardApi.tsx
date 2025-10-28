@@ -18,6 +18,36 @@ export const useSingleServiceCardApi = (singleServiceData: ComboboxOption<string
     const [data, setData] = useState<ServiceCardEntity | null>(null);
     const [error, setError] = useState<string | null>(null);
 
+    const fetchEntityRelatedDefects = useCallback((entities: ApiEntity[]): Promise<ApiEntityRelatedDefects[]> => {
+        const entityIds = entities.map((entity: ApiEntity) => entity.id);
+
+        return QueryEntityRelatedDefects({ entityIds: entityIds, })
+            .then((response) => { return response.data?.entityRelatedDefects || [];})
+            .catch(error => {
+                console.error(`Error fetching entityRelatedDefects: ${error.message}`)
+                return []; //Fail Silently
+            });
+    }, []);
+
+    const fetchSloConnection = useCallback((entities: ApiEntity[]): Promise<ApiSloNode[]> => {
+        const sloMetricQuery = SloUtil.toSloAttributeMetricQuery(EntityTypeDefs.getInstance(), true);
+        const entityIds = entities.map((entity: ApiEntity) => entity.id);
+
+        return QuerySloConnection({
+            filter: {
+                metricQuery: sloMetricQuery,
+                relatedByFilter: {
+                    relatedIds: entityIds,
+                }
+            }
+        }).then(response => {
+            return response.data?.sloConnection.edges.map((edge: ApiSloEdge) => edge.node) || [];
+        }).catch( error => {
+            console.error(`Error fetching sloConnection data: ${error.message}`)
+            return []; //Fail Silently
+        });
+    },[]);
+    
     const fetchData = useCallback((): void => {
         setError(null);
 
@@ -75,36 +105,6 @@ export const useSingleServiceCardApi = (singleServiceData: ComboboxOption<string
                 setIsLoading(false);
             });
     }, [singleServiceData]);
-
-    const fetchEntityRelatedDefects = useCallback((entities: ApiEntity[]): Promise<ApiEntityRelatedDefects[]> => {
-        const entityIds = entities.map((entity: ApiEntity) => entity.id);
-
-        return QueryEntityRelatedDefects({ entityIds: entityIds, })
-            .then((response) => { return response.data?.entityRelatedDefects || [];})
-            .catch(error => {
-                console.error(`Error fetching entityRelatedDefects: ${error.message}`)
-                return []; //Fail Silently
-            });
-    }, []);
-
-    const fetchSloConnection = useCallback((entities: ApiEntity[]): Promise<ApiSloNode[]> => {
-        const sloMetricQuery = SloUtil.toSloAttributeMetricQuery(EntityTypeDefs.getInstance(), true);
-        const entityIds = entities.map((entity: ApiEntity) => entity.id);
-
-        return QuerySloConnection({
-            filter: {
-                metricQuery: sloMetricQuery,
-                relatedByFilter: {
-                    relatedIds: entityIds,
-                }
-            }
-        }).then(response => {
-            return response.data?.sloConnection.edges.map((edge: ApiSloEdge) => edge.node) || [];
-        }).catch( error => {
-            console.error(`Error fetching sloConnection data: ${error.message}`)
-            return []; //Fail Silently
-        });
-    },[]);
 
     useEffect(() => {
         if (ObjectsUtil.isUnset(singleServiceData)) {
