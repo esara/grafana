@@ -67,22 +67,54 @@ export const useServiceCardsApi = ({ apiUserScope, pageSize }: ServiceCardsPanel
         });
     }, [apiUserScope]);
 
-    const updateApiAutoRefresh = useCallback((cursorDirection?: CuiPaginationDirection): void => {
-        if (cursorDirection) {
-            isAutoRefreshPausedRef.current = true;
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-                intervalRef.current = null;
+    const fetchEntityRelatedDefects = useCallback((entities: ApiEntity[]): Promise<ApiEntityRelatedDefects[]> => {
+        const entityIds = entities.map((entity: ApiEntity) => entity.id);
+
+        return QueryEntityRelatedDefects({
+            entityIds: entityIds,
+        }).then((response) => {
+            return response.data?.entityRelatedDefects || [];
+        }).catch((error) => {
+            console.error(`Query Failure "useServiceCardsApi.fetchEntityRelatedDefects": ${JSON.stringify(error)}`)
+            return []; //Fail silently 
+        });
+    }, []);
+
+    const fetchSloConnection = useCallback((entities: ApiEntity[]): Promise<ApiSloNode[]> => {
+        const sloMetricQuery = SloUtil.toSloAttributeMetricQuery(EntityTypeDefs.getInstance(), true);
+        const entityIds = entities.map((entity: ApiEntity) => entity.id);
+
+        return QuerySloConnection({
+            filter: {
+                metricQuery: sloMetricQuery,
+                relatedByFilter: {
+                    relatedIds: entityIds,
+                }
             }
-        } else if (ObjectsUtil.isUnset(cursorDirection)) {
-            isAutoRefreshPausedRef.current = false;
-            startAutoRefresh();
+        }).then(response => {
+            return response.data?.sloConnection.edges.map((edge: ApiSloEdge) => edge.node) || [];
+        }).catch((error) => {
+            console.error(`Query Failure "useServiceCardsApi.fetchSloConnection": ${JSON.stringify(error)}`)
+            return []; //Fail silently 
+        });
+    }, []);
+
+    const clearAutoRefresh = useCallback(() => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
         }
     }, []);
 
     const fetchData = useCallback((cursorDirection?: CuiPaginationDirection): void => {
         setError(null);
-        updateApiAutoRefresh(cursorDirection);
+
+        // Pause auto-refresh during pagination
+        if (cursorDirection) {
+            isAutoRefreshPausedRef.current = true;
+            clearAutoRefresh();
+        }
+
         fetchServiceCounts();
 
         let idToEntityMap: Record<string, ServiceCardEntity> = {};
@@ -164,8 +196,13 @@ export const useServiceCardsApi = ({ apiUserScope, pageSize }: ServiceCardsPanel
             setError(errorMessage);
         }).finally(() => {
             setIsLoading(false);
+
+            // Resume auto-refresh if not paused
+            if (ObjectsUtil.isUnset(cursorDirection)) {
+                isAutoRefreshPausedRef.current = false;
+            }
         });
-    }, [fetchServiceCounts, apiUserScope, pageInfo?.endCursor, pageInfo?.startCursor, pageSize]);
+    }, [fetchServiceCounts, apiUserScope, pageInfo?.endCursor, pageInfo?.startCursor, pageSize, clearAutoRefresh]);
 
     /**
      * Auto Refresh should always be on, unless the user is page scrolling.
@@ -173,49 +210,14 @@ export const useServiceCardsApi = ({ apiUserScope, pageSize }: ServiceCardsPanel
      * Click First Page in pagination controls will reset the auto refresh
      */
     const startAutoRefresh = useCallback(() => {
-        if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-        }
+        clearAutoRefresh();
 
         if (!isAutoRefreshPausedRef.current) {
             intervalRef.current = setInterval(() => {
                 fetchData();
-
             }, 30000); // 30 seconds
         }
-    }, [fetchData]);
-
-    const fetchEntityRelatedDefects = useCallback((entities: ApiEntity[]): Promise<ApiEntityRelatedDefects[]> => {
-        const entityIds = entities.map((entity: ApiEntity) => entity.id);
-
-        return QueryEntityRelatedDefects({
-            entityIds: entityIds,
-        }).then((response) => {
-            return response.data?.entityRelatedDefects || [];
-        }).catch((error) => {
-            console.error(`Query Failure "useServiceCardsApi.fetchEntityRelatedDefects": ${JSON.stringify(error)}`)
-            return []; //Fail silently 
-        });
-    }, []);
-
-    const fetchSloConnection = useCallback((entities: ApiEntity[]): Promise<ApiSloNode[]> => {
-        const sloMetricQuery = SloUtil.toSloAttributeMetricQuery(EntityTypeDefs.getInstance(), true);
-        const entityIds = entities.map((entity: ApiEntity) => entity.id);
-
-        return QuerySloConnection({
-            filter: {
-                metricQuery: sloMetricQuery,
-                relatedByFilter: {
-                    relatedIds: entityIds,
-                }
-            }
-        }).then(response => {
-            return response.data?.sloConnection.edges.map((edge: ApiSloEdge) => edge.node) || [];
-        }).catch((error) => {
-            console.error(`Query Failure "useServiceCardsApi.fetchSloConnection": ${JSON.stringify(error)}`)
-            return []; //Fail silently 
-        });
-    }, []);
+    }, [fetchData, clearAutoRefresh]);
 
     useEffect(() => {
         setIsLoading(true);
