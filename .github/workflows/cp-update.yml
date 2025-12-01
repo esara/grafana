@@ -24,6 +24,5 @@ jobs:
         with:
           attestation: true
           node-version: "22"
-          go-version: "stable"
         # Make sure to save the token in your repository secrets
-        # token: $
+          token: ${{ secrets.GH_PAT_TOKEN }}
