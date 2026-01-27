@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Combobox, ComboboxOption } from '@grafana/ui';
 import { StandardEditorProps } from '@grafana/data';
-import { GetEntityConnectionQueryData, QueryEntityConnection } from 'api/graphql/queries/queryEntityConnection';
+import { GetEntityConnectionQueryData, QueryEntityConnectionLean } from 'api/graphql/queries/queryEntityConnection';
 import { QueryResult } from 'api/apiUtil';
 import { EntityUtil } from 'utils/entity/entity.util';
 import { ServiceUtil } from 'utils/service/service.util';
@@ -25,7 +25,7 @@ export const ServiceSelectEditor: React.FC<StandardEditorProps<ComboboxOption<st
 
         const serviceOptions: Array<ComboboxOption<string>> = [];
 
-        return QueryEntityConnection(entityConnectionVariables).then((res: QueryResult<GetEntityConnectionQueryData>) => {
+        return QueryEntityConnectionLean(entityConnectionVariables).then((res: QueryResult<GetEntityConnectionQueryData>) => {
 
             res.data?.entityConnection?.edges?.forEach((edge: ApiEntityEdge) => {
                 const entity = edge.node;
