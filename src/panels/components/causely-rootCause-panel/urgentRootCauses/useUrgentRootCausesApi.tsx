@@ -1,18 +1,30 @@
 import { useState, useEffect, useCallback } from 'react';
 import { QueryDefectConnections } from 'api/graphql/queries/queryDefectConnections';
-import { ApiDefectConnection, ApiDefectSeverity, ApiDefectState, ApiQueryDefectConnectionArgs, ApiUserScope } from 'api/api.types';
+import { ApiDefectConnection, ApiDefectSeverity, ApiDefectSortField, ApiDefectState, ApiQueryDefectConnectionArgs, ApiSortingOrder, ApiUserScope } from 'api/api.types';
 
 const defaultDefectConnectionVariables: ApiQueryDefectConnectionArgs = {
-    first: 4, //Will only every show at most 4 RCs in the panel
+    first: 3, //Will only every show at most 4 RCs in the panel
     defectFilter: {
-        severities: [ApiDefectSeverity.Critical, ApiDefectSeverity.High, ApiDefectSeverity.Medium, ApiDefectSeverity.Low],
+        severities: [ApiDefectSeverity.Critical, ApiDefectSeverity.High],
         scopesFilter: {
             scopes: []
         },
-        state: ApiDefectState.Active,
-        includeNonSvcImpact: false // Only looking at service degrading RC's
+        state: ApiDefectState.Active
     },
-    groupRecurring: true
+    groupRecurring: true,
+    orderBy: [
+    {
+      field: ApiDefectSortField.ServiceCount,
+      order: ApiSortingOrder.Desc
+    },
+    {
+      field: ApiDefectSortField.ActiveSymptoms,
+      order: ApiSortingOrder.Desc
+    },
+    {
+      field: ApiDefectSortField.FromTime,
+      order: ApiSortingOrder.Desc
+    }]
 };
 
 export const useRootCausePanelApi = (userScope: ApiUserScope) => {
