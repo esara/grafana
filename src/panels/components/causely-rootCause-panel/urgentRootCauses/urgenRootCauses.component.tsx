@@ -18,7 +18,7 @@ export const UrgentRootCauseComponent = ({ userScope }: { userScope: ApiUserScop
     const totalCount = data?.totalCount;
     const openNewTab = useOpenNewTab();
 
-    const rootCauseEdges: ApiDefectEdge[] = data?.edges.length > 3 ? (data?.edges.slice(0, 3) as ApiDefectEdge[]) : (data?.edges as ApiDefectEdge[]);
+    const rootCauseEdges: ApiDefectEdge[] = data?.edges ?? [];
 
     const isEmptyState = !data || data?.edges.length === 0;
 
@@ -45,7 +45,7 @@ export const UrgentRootCauseComponent = ({ userScope }: { userScope: ApiUserScop
                         )
                     })}
 
-                    <CUIRenderWhen condition={totalCount > 4}>
+                    <CUIRenderWhen condition={totalCount > 3}>
                         <div key={'AdditionalRC'}
                             className={SdkUtil.withPrefix('root-cause-content-card')}
                             onClick={() => openNewTab(RouteUtil.getUrgentRootCausesRoutePath())}
