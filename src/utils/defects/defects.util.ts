@@ -31,7 +31,7 @@ export class DefectsUtil {
     return status === 'detected';
   }
 
-  public static isDiagnose(defect: ApiDefect): boolean {
+  public static isUrgent(defect: ApiDefect): boolean {
     return (
       StringsUtil.equalsIgnoreCase(defect?.severity, ApiDefectSeverity.Critical) ||
       StringsUtil.equalsIgnoreCase(defect?.severity, ApiDefectSeverity.High)

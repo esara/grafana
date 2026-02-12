@@ -19,6 +19,7 @@ import './serviceCard.scss';
 import { Divider } from "@grafana/ui";
 import { EntityUtil } from "utils/entity/entity.util";
 import { ServiceUtil } from "utils/service/service.util";
+import { ApiDefect } from "api/api.types";
 
 interface ServiceCardProps {
     serviceCardEntity: ServiceCardEntity;
@@ -34,17 +35,18 @@ const renderCUISectionDescription = (value: React.ReactNode, className?: string)
     )
 }
 
-const renderCUISectionDescriptionWithServiceDegradingHighlight = (value: React.ReactNode, isServiceDegrading: boolean) => {
-    if (isServiceDegrading) {
+const renderCUISectionDescriptionWithUrgentHighlight = (value: React.ReactNode, defect: ApiDefect) => {
+    const isUrgent = defect ? DefectsUtil.isUrgent(defect) : false;
+    if (isUrgent) {
         return renderCUISectionDescription(value, SdkUtil.withPrefix('text-color-urgent'));
     }
     return renderCUISectionDescription(value);
-    
-    
+
+
 }
 export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEntity }) => {
     const openNewTab = useOpenNewTab();
-    
+
     const relatedDefects = serviceCardEntity.relatedDefects;
     const noRootCauses = ArraysUtil.isEmpty(relatedDefects?.aggregatingDefects) && ArraysUtil.isEmpty(relatedDefects?.directDefects) && ArraysUtil.isEmpty(relatedDefects?.impactingDefects);
 
@@ -62,12 +64,12 @@ export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEn
 
             <CUIHeading>{EntityUtil.simplifyEntityname(serviceCardEntity)}</CUIHeading>
             <CUISectionDescription>
-                        <CUIText variant="secondary">
-                            {ServiceUtil.getNameSpaceAndClusterNameInfo(serviceCardEntity)}
-                        </CUIText>
-                    </CUISectionDescription>
+                <CUIText variant="secondary">
+                    {ServiceUtil.getNameSpaceAndClusterNameInfo(serviceCardEntity)}
+                </CUIText>
+            </CUISectionDescription>
             <Divider />
-            
+
             <CUISection>
                 <CUIHeading>{rootCauseCount < 2 ? 'Root Cause' : `Root Causes (${rootCauseCount})`}</CUIHeading>
                 <CUIRenderWhen condition={ObjectsUtil.isUnset(relatedDefects)}>
@@ -87,21 +89,21 @@ export const ServiceCardComponent: React.FC<ServiceCardProps> = ({ serviceCardEn
                         <CUIRenderWhen condition={relatedDefects?.aggregatingDefects?.length > 0}>
                             {
                                 relatedDefects?.aggregatingDefects?.map((defect) => (
-                                    renderCUISectionDescriptionWithServiceDegradingHighlight(DefectsUtil.defectOnEntityDescription(defect), DefectsUtil.isServiceDegrading(defect))
+                                    renderCUISectionDescriptionWithUrgentHighlight(DefectsUtil.defectOnEntityDescription(defect), defect)
                                 ))
                             }
                         </CUIRenderWhen>
                         <CUIRenderWhen condition={relatedDefects?.directDefects?.length > 0} >
                             {
                                 relatedDefects?.directDefects?.map((defect) => (
-                                    renderCUISectionDescriptionWithServiceDegradingHighlight(DefectsUtil.defectOnEntityDescription(defect), DefectsUtil.isServiceDegrading(defect))
+                                    renderCUISectionDescriptionWithUrgentHighlight(DefectsUtil.defectOnEntityDescription(defect), defect)
                                 ))
                             }
                         </CUIRenderWhen>
                         <CUIRenderWhen condition={relatedDefects?.impactingDefects?.length > 0} >
                             {
                                 relatedDefects?.impactingDefects?.map((defect) => (
-                                    renderCUISectionDescriptionWithServiceDegradingHighlight(`Cross-Service Root Cause - ${DefectsUtil.defectOnEntityDescription(defect)}`, DefectsUtil.isServiceDegrading(defect))
+                                    renderCUISectionDescriptionWithUrgentHighlight(`Cross-Service Root Cause - ${DefectsUtil.defectOnEntityDescription(defect)}`, defect)
                                 ))
                             }
                         </CUIRenderWhen>
