@@ -18,7 +18,7 @@ import './rootCauseHeadlines.scss';
 import { CUISection } from 'sdk/section/cuiSection.component';
 const getCardClassName = (headline: ApiHeadlineItem): string => {
     const isActive = DefectsUtil.isDetected(headline?.defect);
-    const isUrgent = DefectsUtil.isDiagnose(headline?.defect);
+    const isUrgent = DefectsUtil.isUrgent(headline?.defect);
 
     return clsx(SdkUtil.withPrefix('rootCause__headlines__headline-card'), {
         [SdkUtil.withPrefix('rootCause__headlines__headline-card--urgent')]: isActive && isUrgent,
@@ -29,9 +29,9 @@ const getCardClassName = (headline: ApiHeadlineItem): string => {
 export const RootCauseHeadlines = ({ userScope }: { userScope: ApiUserScope }) => {
     const { isLoading, headlinesData, error } = useRootCauseHeadlinesApi(userScope);
     const openNewTab = useOpenNewTab();
-    
+
     const { headlines, urgentRcActiveCount } = headlinesData;
-    
+
     const isEmptyState: boolean = ArraysUtil.isEmpty(headlines);
 
     return (
