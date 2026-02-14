@@ -56,7 +56,7 @@ func NewApp(_ context.Context, appSettings backend.AppInstanceSettings) (instanc
 	var jsonDataStruct JSONDataStruct
 	err = json.Unmarshal(appSettings.JSONData, &jsonDataStruct)
 	if err != nil {
-		fmt.Println("Error unmarshalling JSONData:", err)
+		log.DefaultLogger.Error("Error unmarshalling JSONData", "error", err)
 		return nil, err
 	}
 	app.domain = jsonDataStruct.CauselyDomain
