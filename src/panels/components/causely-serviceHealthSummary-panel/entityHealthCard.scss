@@ -1,43 +1,48 @@
-.service-health-summary-panel {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  align-items: stretch;
-  height: 100%;
-  overflow: scroll;
-}
-.entity-health-card {
-  .content {
-    margin: 0.5rem 0;
+@use 'styles/root-vars' as *;
+
+#{$prefix} {
+  &--service-health-summary-panel {
     display: flex;
-    align-items: center;
-    gap: 0.25rem;
-  }
-  .count {
-    margin: 0.5rem 0;
-    font-size: 1.75rem;
-  }
-  .severity-critical{
-    color: #fa4d56;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: stretch;
+    height: 100%;
+    overflow: scroll;
   }
 
-  .severity-major{
-    color: #ff832b;
-  }
+  &--entity-health-card {
+    &__content {
+      margin: 0.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
 
-  .severity-minor{
-    color: #f1c21b;
-  }
-  .severity-warning{
-    color: #f1c21b;
-  }
+    &__count {
+      margin: 0.5rem 0;
+      font-size: 1.75rem;
+    }
 
-  .severity-normal{
-    color: #42be65
-  }
+    &__severity-critical {
+      color: #fa4d56;
+    }
 
-  .percentage {
-      font-size: .90rem;
+    &__severity-major {
+      color: #ff832b;
+    }
+
+    &__severity-minor,
+    &__severity-warning {
+      color: #f1c21b;
+    }
+
+    &__severity-normal {
+      color: #42be65;
+    }
+
+    &__percentage {
+      font-size: 0.9rem;
       color: #c6c6c6;
     }
+  }
 }
