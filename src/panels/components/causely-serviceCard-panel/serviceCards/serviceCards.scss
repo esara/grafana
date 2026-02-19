@@ -46,19 +46,19 @@
         color:  rgb(0, 220, 120);
       }
     }
-  }
 
-  &__pagination {
-    margin-top: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: sticky;
-    bottom: 0;
-    background-color: var(--background-color-primary);
-    padding: 1rem;
-    border-top: 1px solid var(--color-secondary-border-text);
-    z-index: 10;
-    overflow: hidden;
+    &__pagination {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: sticky;
+      bottom: 0;
+      background-color: var(--background-color-primary);
+      padding: 1rem;
+      border-top: 1px solid var(--color-secondary-border-text);
+      z-index: 10;
+      overflow: hidden;
+    }
   }
 }
