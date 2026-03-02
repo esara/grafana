@@ -7,8 +7,10 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"sync"
 	"time"
 
+	"github.com/grafana/grafana-plugin-sdk-go/backend/httpclient"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
@@ -22,17 +24,27 @@ type UserResponse struct {
 	ExpiresIn     int    `json:"expiresIn"`
 }
 
-// NewHTTPClient creates a new http.Client with the default timeout.
-func NewHTTPClient() *http.Client {
-	return &http.Client{Timeout: defaultTimeout}
-}
+var (
+	httpClient     *http.Client
+	httpClientErr  error
+	httpClientOnce sync.Once
+)
 
-var httpClient *http.Client
+// initHTTPClient initializes the shared HTTP client using the Grafana SDK's httpclient,
+// which provides proxy support, logging, tracing, and other Grafana-integrated behavior.
+func initHTTPClient() {
+	httpClientOnce.Do(func() {
+		httpClient, httpClientErr = httpclient.New(httpclient.Options{
+			Timeouts: &httpclient.TimeoutOptions{Timeout: defaultTimeout},
+		})
+	})
+}
 
 // authenticate sends a POST request to Frontegg to get the access token.
 func authenticate(loginUrl string, payload map[string]string) (string, error) {
-	if httpClient == nil {
-		httpClient = NewHTTPClient()
+	initHTTPClient()
+	if httpClientErr != nil {
+		return "", httpClientErr
 	}
 
 	payloadBytes, err := json.Marshal(payload)
@@ -59,7 +71,8 @@ func authenticate(loginUrl string, payload map[string]string) (string, error) {
 
 	if res.StatusCode != http.StatusOK {
 		responseData, _ := io.ReadAll(res.Body)
-		log.DefaultLogger.Error("Authentication failed", "status", res.Status, "response", string(responseData))
+		log.DefaultLogger.Error("Authentication failed", "status", res.Status, "responseLength", len(responseData))
+		log.DefaultLogger.Debug("Authentication failed response body (DEBUG only)", "response", string(responseData))
 		return "", fmt.Errorf("authentication failed, see Grafana server log for details")
 	}
 
@@ -90,8 +103,9 @@ func authenticate(loginUrl string, payload map[string]string) (string, error) {
 
 // getGraphQL proxies the GraphQL request to the Causely API and returns the json response.
 func getGraphQL(token string, body io.Reader, domain string) ([]byte, error) {
-	if httpClient == nil {
-		httpClient = NewHTTPClient()
+	initHTTPClient()
+	if httpClientErr != nil {
+		return nil, httpClientErr
 	}
 
 	baseUrl := fmt.Sprintf("https://api.%s", domain)
@@ -118,7 +132,8 @@ func getGraphQL(token string, body io.Reader, domain string) ([]byte, error) {
 
 	if res.StatusCode != http.StatusOK {
 		responseData, _ := io.ReadAll(res.Body)
-		log.DefaultLogger.Error("GraphQL request failed", "status", res.Status, "response", string(responseData))
+		log.DefaultLogger.Error("GraphQL request failed", "status", res.Status, "responseLength", len(responseData))
+		log.DefaultLogger.Debug("GraphQL request failed response body (DEBUG only)", "response", string(responseData))
 		return nil, fmt.Errorf("request failed, see Grafana server log for details")
 	}
 
