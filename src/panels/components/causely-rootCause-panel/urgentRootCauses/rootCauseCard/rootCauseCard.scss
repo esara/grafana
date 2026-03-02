@@ -2,9 +2,9 @@
 
 #{$prefix} {
     &--root-cause-card {
-
-        &-tag-list {
-            background-color: red;
-        }
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        cursor: pointer;
     }
 }
