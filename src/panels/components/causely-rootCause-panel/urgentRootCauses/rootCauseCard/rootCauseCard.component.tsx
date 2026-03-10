@@ -17,6 +17,7 @@ import { EntityTypeDefs } from "utils/entityTypeDefs/EntityTypeDefs.singleton";
 import { ArraysUtil } from "utils/arrays/arrays.util";
 import { useOpenNewTab } from 'hooks/useOpenNewTab.hook';
 import { TimeUtil } from "utils/time/time.util";
+import { SdkUtil } from "sdk/sdk.util";
 
 type RootCauseCardProps = {
     rootCause: ApiDefect
@@ -70,7 +71,7 @@ export const RootCauseCard = ({ rootCause }: RootCauseCardProps) => {
     const symptomDescriptions = RootCauseCardUtil.getSymptomDescription(rootCause);
 
     return (
-        <div className="root-cause-card" onClick={() => {
+        <div className={SdkUtil.withPrefix('root-cause-card')} onClick={() => {
             openNewTab(RouteUtil.getSingleRootCauseRoutePath(rootCause.id));
         }}>
             <CUISection>
