@@ -1,11 +1,18 @@
 import { test, expect } from './fixtures';
+import { dismissBlockingPortals } from './dismissBlockingPortals';
 
 test('should be possible to save app configuration', async ({ appConfigPage, page }) => {
   // Wait for the page to load
   await page.waitForLoadState('networkidle');
 
+  await dismissBlockingPortals(page);
+
   // Click the Configuration tab first to ensure we're on the right page
-  await page.locator('[data-testid="data-testid Tab Configuration"]').click();
+  const configurationTab = page.locator('[data-testid="data-testid Tab Configuration"]');
+  await configurationTab.waitFor({ state: 'visible' });
+  if ((await configurationTab.getAttribute('aria-selected')) !== 'true') {
+    await configurationTab.click();
+  }
   await page.waitForLoadState('networkidle');
 
   // enter some valid values
