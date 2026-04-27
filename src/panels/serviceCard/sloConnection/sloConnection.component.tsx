@@ -1,7 +1,9 @@
 import { ApiSloState } from 'api/api.types';
+import { colorManipulator, GrafanaTheme2 } from '@grafana/data';
+import { css } from '@emotion/css';
+import { useStyles2 } from '@grafana/ui';
 import clsx from 'clsx';
 import React, { FC, ReactElement } from 'react';
-import { SdkUtil } from 'sdk/sdk.util';
 import { EqualityUtil } from 'utils/equality/equality.util';
 import { ApiSloNodeWithMetaData, SloUtil } from 'utils/slo/slo.util';
 
@@ -9,57 +11,75 @@ type SloConnectionComponentProps = {
   slo: ApiSloNodeWithMetaData;
 };
 
-type SLOBudgetStats = {
-  displayText: string;
-  className: string;
-}
+const getSloRowStyles = (theme: GrafanaTheme2) => ({
+  row: css({
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  }),
+  sloLabel: css({
+    flex: 1,
+  }),
+  budget: css({
+    float: 'right',
+  }),
+  budgetStable: css({
+    color: colorManipulator.alpha(theme.colors.success.main, 0.8),
+  }),
+  budgetEscalating: css({
+    color: colorManipulator.alpha(theme.colors.warning.main, 0.8),
+  }),
+  budgetExhausted: css({
+    color: colorManipulator.alpha(theme.colors.error.main, 0.8),
+  }),
+  budgetUnknown: css({
+    color: theme.colors.text.secondary,
+  }),
+});
 
-const getSloBudgetStatus = (slo: ApiSloNodeWithMetaData): SLOBudgetStats => {
-  switch (slo.state) {
+function budgetClassForState(
+  styles: ReturnType<typeof getSloRowStyles>,
+  state: ApiSloState | undefined,
+): string {
+  switch (state) {
     case ApiSloState.Normal:
-      return {
-        displayText: 'Stable',
-        className: SdkUtil.withPrefix('slo-budget-heading--stable')
-      };
+      return styles.budgetStable;
     case ApiSloState.AtRisk:
-      return {
-        displayText: 'Escalating',
-        className: SdkUtil.withPrefix('slo-budget-heading--escalating')
-      };
+      return styles.budgetEscalating;
     case ApiSloState.Violated:
-      return {
-        displayText: 'Exhausted',
-        className: SdkUtil.withPrefix('slo-budget-heading--exhausted')
-      };
+      return styles.budgetExhausted;
     default:
-      return {
-        displayText: 'Unknown',
-        className: SdkUtil.withPrefix('slo-budget-heading--unknown')
-      };
+      return styles.budgetUnknown;
   }
 }
-
 
 export const SloConnectionComponent: FC<SloConnectionComponentProps> = React.memo(function SloCompactRow(
   props: SloConnectionComponentProps,
 ): ReactElement {
   const { slo } = props;
   const sloName = SloUtil.toSloName(slo);
-  const budgetStatus: SLOBudgetStats = getSloBudgetStatus(slo);
+  const styles = useStyles2(getSloRowStyles);
+  const budgetStateClass = budgetClassForState(styles, slo.state);
 
-  // const { tooltipContent, percentage } = SloUtil.toErrorBudgetRemainingInfo(slo);
-  // const mergedTooltipContent = `${statusInfo.statusTooltip} <br/> ${tooltipContent}`;
-  // const percentageDisplay = IntlUtil.toPercentage(percentage / 100, 0);
-  // const errorBudgetRemainingClass = clsx(statusInfo.className, SdkUtil.withPrefix('slo__compact-row__icon'));
+  let displayText = 'Unknown';
+  switch (slo.state) {
+    case ApiSloState.Normal:
+      displayText = 'Stable';
+      break;
+    case ApiSloState.AtRisk:
+      displayText = 'Escalating';
+      break;
+    case ApiSloState.Violated:
+      displayText = 'Exhausted';
+      break;
+    default:
+      displayText = 'Unknown';
+  }
 
   return (
-    <div
-      className={SdkUtil.withPrefix('slo__compact-row')}
-    >
-      <span className={clsx(SdkUtil.withPrefix('slo-budget-heading__slo'))}>{sloName}</span>
-      <span className={clsx(SdkUtil.withPrefix('slo-budget-heading__budget'), budgetStatus.className)}>
-        {budgetStatus.displayText}
-      </span>
+    <div className={styles.row}>
+      <span className={styles.sloLabel}>{sloName}</span>
+      <span className={clsx(styles.budget, budgetStateClass)}>{displayText}</span>
     </div>
   );
 }, EqualityUtil.areEqual);
