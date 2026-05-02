@@ -1,6 +1,6 @@
 module github.com/esara/causely
 
-go 1.25.7
+go 1.26.2
 
 require github.com/grafana/grafana-plugin-sdk-go v0.292.0
 
