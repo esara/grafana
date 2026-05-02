@@ -4,7 +4,6 @@ import { config } from '@grafana/runtime';
 import { Alert } from '@grafana/ui';
 import { DATASOURCE_REF } from '../../constants';
 import { PluginPropsContext } from '../../utils/utils.plugin';
-import './../../styles/main.scss';
 
 function App(props: AppRootProps) {
   return (

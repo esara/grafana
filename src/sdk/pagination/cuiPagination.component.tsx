@@ -1,7 +1,8 @@
 import React from 'react';
-import { IconButton } from '@grafana/ui';
-import { SdkUtil } from '../sdk.util';
-import './cuiPagination.scss';
+import { IconButton, useStyles2 } from '@grafana/ui';
+import { css } from '@emotion/css';
+import { GrafanaTheme2 } from '@grafana/data';
+import clsx from 'clsx';
 
 interface CuiPaginationProps {
   onLeftScroll: () => void;
@@ -15,8 +16,31 @@ interface CuiPaginationProps {
 
 export enum CuiPaginationDirection {
   PREVIOUS = 'previous',
-  NEXT = 'next'
+  NEXT = 'next',
 }
+
+const getPaginationStyles = (theme: GrafanaTheme2) => ({
+  root: css({
+    margin: theme.spacing(1),
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.spacing(1),
+    justifyContent: 'center',
+  }),
+  iconBtn: css({
+    transition: theme.transitions.create(['transform'], {
+      duration: theme.transitions.duration.short,
+    }),
+    '&:hover:not(:disabled)': {
+      transform: 'scale(1.05)',
+    },
+    '&:disabled': {
+      opacity: 0.5,
+      cursor: 'not-allowed',
+    },
+  }),
+});
+
 export const CuiPagination: React.FC<CuiPaginationProps> = ({
   onLeftScroll,
   onRightScroll,
@@ -25,15 +49,17 @@ export const CuiPagination: React.FC<CuiPaginationProps> = ({
   leftDisabled = false,
   rightDisabled = false,
 }) => {
+  const styles = useStyles2(getPaginationStyles);
+
   return (
-    <div className={`${SdkUtil.withPrefix('pagination')} ${className}`}>
+    <div className={clsx(styles.root, className)}>
       <IconButton
         name="angle-left"
         size="lg"
         onClick={onLeftScroll}
         disabled={leftDisabled}
         tooltip="Previous Page"
-        className={SdkUtil.withPrefix('pagination__button-left')}
+        className={styles.iconBtn}
       />
       <IconButton
         name="compress-arrows"
@@ -41,7 +67,7 @@ export const CuiPagination: React.FC<CuiPaginationProps> = ({
         onClick={onPageOneScroll}
         disabled={(rightDisabled && leftDisabled) || (leftDisabled && !rightDisabled)}
         tooltip="First page"
-        className={SdkUtil.withPrefix('pagination__button-right')}
+        className={styles.iconBtn}
       />
       <IconButton
         name="angle-right"
@@ -49,7 +75,7 @@ export const CuiPagination: React.FC<CuiPaginationProps> = ({
         onClick={onRightScroll}
         disabled={rightDisabled}
         tooltip="Next Page"
-        className={SdkUtil.withPrefix('pagination__button-right')}
+        className={styles.iconBtn}
       />
     </div>
   );

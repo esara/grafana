@@ -1,13 +1,18 @@
-import React from "react";
-import { SdkUtil } from "sdk/sdk.util";
-
-import './cuiSectionDescription.scss';
+import React from 'react';
+import { css } from '@emotion/css';
+import { useStyles2 } from '@grafana/ui';
+import clsx from 'clsx';
 
 interface CuiSectionDescriptionProps {
-    children: React.ReactNode;
-    className?: string;
+  children: React.ReactNode;
+  className?: string;
 }
 
 export const CUISectionDescription: React.FC<CuiSectionDescriptionProps> = ({ children, className = '' }) => {
-    return <div className={`${SdkUtil.withPrefix('section-description')} ${className}`}>{children}</div>;
+  const styles = useStyles2((theme) =>
+    css({
+      marginTop: theme.spacing(1),
+    }),
+  );
+  return <div className={clsx(styles, className)}>{children}</div>;
 };
