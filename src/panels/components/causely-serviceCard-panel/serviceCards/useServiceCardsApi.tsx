@@ -38,7 +38,7 @@ export const useServiceCardsApi = ({ apiUserScope, pageSize }: ServiceCardsPanel
         unhealthy: 0
     });
 
-    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+    const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const isAutoRefreshPausedRef = useRef(false);
 
     const fetchServiceCounts = useCallback(() => {
