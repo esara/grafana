@@ -1,4 +1,4 @@
-import i18next, { } from 'i18next';
+import i18next from 'i18next';
 import { Duration } from 'luxon';
 import { NumberUtil } from 'utils/number/number.util';
 import { StringsUtil } from 'utils/strings/strings.util';
