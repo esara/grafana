@@ -42,6 +42,8 @@ export default defineConfig([
       'eol-last': 'off',
       'react-hooks/exhaustive-deps': 'off',
       'react-hooks/set-state-in-effect': 'off',
+      // @grafana/eslint-config still sets overrides.arrow, which @stylistic v6 removed.
+      '@stylistic/type-annotation-spacing': ['error', { after: true, before: false }],
     },
   },
 ]);
